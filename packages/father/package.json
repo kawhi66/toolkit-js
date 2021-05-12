@@ -1,0 +1,31 @@
+{
+  "name": "@toolkit-js/father",
+  "version": "0.0.1",
+  "description": "Library build tool inspired by [father](https://github.com/umijs/father).",
+  "keywords": [
+    "father",
+    "library",
+    "toolkit"
+  ],
+  "author": "https://kawhi.site",
+  "homepage": "https://github.com/kawhi66/toolkit-js",
+  "license": "MIT",
+  "main": "lib/father.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kawhi66/toolkit-js.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/kawhi66/toolkit-js/issues"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "name": "toolkit-js",
+  "private": true,
+  "devDependencies": {
+    "lerna": "^3.22.1"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "npmClient": "npm",
+  "useWorkspaces": false,
+  "version": "independent",
+  "packages": ["packages/*"],
+  "command": {
+    "version": {
+      "allowBranch": "main",
+      "ignoreChanges": ["**/__tests__/**", "**/*.md"]
+    },
+    "publish": {
+      "registry": "https://registry.npmjs.org"
+    }
+  }
+}

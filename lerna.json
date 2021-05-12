@@ -9,8 +9,7 @@
       "ignoreChanges": ["**/__tests__/**", "**/*.md"]
     },
     "publish": {
-      "registry": "https://registry.npmjs.org",
-      "access": "public"
+      "registry": "https://registry.npmjs.org"
     }
   }
 }

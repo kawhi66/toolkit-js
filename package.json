@@ -1,7 +1,19 @@
 {
   "name": "toolkit-js",
   "private": true,
+  "scripts": {
+    "build": "node scripts/build.js"
+  },
   "devDependencies": {
-    "lerna": "^3.22.1"
+    "@babel/core": "^7.14.2",
+    "chalk": "^4.1.1",
+    "chokidar": "^3.5.1",
+    "lerna": "^3.22.1",
+    "rimraf": "^3.0.2",
+    "signale": "^1.4.0",
+    "slash2": "^2.0.0",
+    "through2": "^4.0.2",
+    "vinyl-fs": "^3.0.3",
+    "yargs-parser": "^20.2.7"
   }
 }

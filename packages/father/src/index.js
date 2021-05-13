@@ -1,7 +1,2 @@
-'use strict';
-
-module.exports = father;
-
-function father() {
-    // TODO
-}
+import build from "./build";
+export default build;

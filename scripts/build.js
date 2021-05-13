@@ -136,7 +136,7 @@ function isLerna(cwd) {
 }
 
 // Init
-const args = yParser(process.argv.slice(3));
+const args = yParser(process.argv.slice(2));
 const watch = args.w || args.watch;
 if (isLerna(cwd)) {
   const dirs = readdirSync(join(cwd, "packages")).filter((dir) => dir.charAt(0) !== ".");

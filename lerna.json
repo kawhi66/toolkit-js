@@ -1,12 +1,20 @@
 {
-  "npmClient": "npm",
+  "npmClient": "yarn",
   "useWorkspaces": false,
   "version": "independent",
-  "packages": ["packages/*"],
+  "packages": [
+    "packages/*"
+  ],
   "command": {
+    "bootstrap": {
+      "registry": "https://r.npm.taobao.org"
+    },
     "version": {
       "allowBranch": "main",
-      "ignoreChanges": ["**/__tests__/**", "**/*.md"]
+      "ignoreChanges": [
+        "**/__tests__/**",
+        "**/*.md"
+      ]
     },
     "publish": {
       "registry": "https://registry.npmjs.org"

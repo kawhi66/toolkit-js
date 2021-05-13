@@ -2,7 +2,9 @@
   "name": "toolkit-js",
   "private": true,
   "scripts": {
-    "build": "node scripts/build.js"
+    "bootstrap": "lerna bootstrap",
+    "build": "node scripts/build.js",
+    "clean": "lerna clean -y"
   },
   "devDependencies": {
     "@babel/core": "^7.14.2",

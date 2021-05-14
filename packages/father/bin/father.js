@@ -2,6 +2,11 @@
 
 console.log("@toolkit-js/father 123");
 
+/**
+ * father transform - 把 src 目录转化成 lib（cjs） 或 es（esm）
+ * father build - 跟进 entry 把项目依赖打包在一起输出一个文件
+ */
+
 const { existsSync } = require("fs");
 const { join } = require("path");
 const yParser = require("yargs-parser");

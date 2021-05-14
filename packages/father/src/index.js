@@ -1,2 +1,3 @@
+import transform from "./transform";
 import build from "./build";
-export default build;
+export default { transform, build };

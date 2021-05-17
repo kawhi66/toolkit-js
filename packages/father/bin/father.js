@@ -1,7 +1,5 @@
 #!/usr/bin/env node
 
-console.log("@toolkit-js/father 123");
-
 /**
  * father transform - 把 src 目录转化成 lib（cjs） 或 es（esm）
  * father build - 跟进 entry 把项目依赖打包在一起输出一个文件
@@ -12,7 +10,6 @@ const { join } = require("path");
 const yParser = require("yargs-parser");
 const chalk = require("chalk");
 const signale = require("signale");
-const { transform, build } = require("../lib");
 
 // print version and @local
 const args = yParser(process.argv.slice(2));
@@ -41,7 +38,7 @@ updater({ pkg }).notify({ defer: true });
 const cmd = args._[0];
 switch (cmd) {
   case "transform":
-    transform({
+    require("../lib").transform({
       cwd: process.cwd(),
       watch: args.w || args.watch,
       // compile options
@@ -52,7 +49,7 @@ switch (cmd) {
     });
     break;
   case "build":
-    build({
+    require("../lib").build({
       cwd: process.cwd(),
       watch: args.w || args.watch,
       // compile options
@@ -63,7 +60,23 @@ switch (cmd) {
       process.exit(1);
     });
     break;
+  case 'help':
+  case undefined:
+    printHelp();
+    break;
   default:
     console.error(chalk.red(`Unsupported command ${cmd}`));
     process.exit(1);
+}
+
+// TODO
+function printHelp() {
+  console.log(`
+  Usage: father <command> [options]
+
+  Commands:
+
+    ${chalk.green('build')}         running build task
+    ${chalk.green('transform')}     running transform task
+  `);
 }

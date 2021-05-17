@@ -3,7 +3,7 @@ const { Signale } = require("signale");
 module.exports = new Signale({
   types: {
     transform: {
-      badge: "🎅",
+      // badge: "🎅",
       color: "blue",
       label: "transform",
     },

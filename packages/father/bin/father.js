@@ -38,29 +38,33 @@ updater({ pkg }).notify({ defer: true });
 const cmd = args._[0];
 switch (cmd) {
   case "transform":
-    require("../lib").transform({
-      cwd: process.cwd(),
-      watch: args.w || args.watch,
-      // compile options
-      target: "node",
-    }).catch((e) => {
-      signale.error(e);
-      process.exit(1);
-    });
+    require("../lib")
+      .transform({
+        cwd: process.cwd(),
+        watch: args.w || args.watch,
+        // compile options
+        target: "node",
+      })
+      .catch((e) => {
+        signale.error(e);
+        process.exit(1);
+      });
     break;
   case "build":
-    require("../lib").build({
-      cwd: process.cwd(),
-      watch: args.w || args.watch,
-      // compile options
-      target: "node",
-      type: "umd",
-    }).catch((e) => {
-      signale.error(e);
-      process.exit(1);
-    });
+    require("../lib")
+      .build({
+        cwd: process.cwd(),
+        watch: args.w || args.watch,
+        // compile options
+        target: "node",
+        type: "umd",
+      })
+      .catch((e) => {
+        signale.error(e);
+        process.exit(1);
+      });
     break;
-  case 'help':
+  case "help":
   case undefined:
     printHelp();
     break;
@@ -76,7 +80,7 @@ function printHelp() {
 
   Commands:
 
-    ${chalk.green('build')}         running build task
-    ${chalk.green('transform')}     running transform task
+    ${chalk.green("build")}         running build task
+    ${chalk.green("transform")}     running transform task
   `);
 }

@@ -3,6 +3,7 @@ import { existsSync, readFileSync, statSync } from "fs";
 import vfs from "vinyl-fs";
 import signale from "signale";
 import lodash from "lodash";
+import log from "./utils/log";
 import rimraf from "rimraf";
 import through from "through2";
 import slash from "slash2";
@@ -10,7 +11,7 @@ import * as chokidar from "chokidar";
 import * as babel from "@babel/core";
 import gulpTs from "gulp-typescript";
 import gulpLess from "gulp-less";
-import gulpPlumber from 'gulp-plumber';
+import gulpPlumber from "gulp-plumber";
 import gulpIf from "gulp-if";
 import chalk from "chalk";
 import getBabelConfig from "./config/babel";
@@ -18,7 +19,8 @@ import getBabelConfig from "./config/babel";
 import * as ts from "typescript";
 
 export default async function (opts) {
-  const { cwd, rootPath, type, watch, dispose, importLibToEs, log, target, disableTypeCheck, lessInBabelMode } = opts;
+  // TODO dispose
+  const { cwd, rootPath, type, watch, dispose, importLibToEs, target, disableTypeCheck } = opts;
   const srcPath = join(cwd, "src");
   const targetDir = type === "esm" ? "es" : "lib";
   const targetPath = join(cwd, targetDir);
@@ -32,17 +34,14 @@ export default async function (opts) {
       target,
       type,
       typescript: true,
-      // runtimeHelpers,
+      runtimeHelpers: false,
       filePath: slash(relative(cwd, file.path)),
-      // browserFiles,
-      // nodeFiles,
       // nodeVersion,
       // lazy: cjs && cjs.lazy,
-      lessInBabelMode
     });
-    // if (importLibToEs && type === "esm") {
-    //   babelOpts.plugins.push(require.resolve("../lib/importLibToEs"));
-    // }
+    if (importLibToEs && type === "esm") {
+      babelOpts.plugins.push(require.resolve("./config/importLibToEs"));
+    }
     // babelOpts.presets.push(...extraBabelPresets);
     // babelOpts.plugins.push(...extraBabelPlugins);
 
@@ -101,29 +100,15 @@ export default async function (opts) {
     }
 
     return vfs
-      .src(src, {
-        allowEmpty: true,
-        base: srcPath
-      })
+      .src(src, { allowEmpty: true, base: srcPath })
       .pipe(watch ? gulpPlumber() : through.obj())
-      .pipe(gulpIf(f => !disableTypeCheck && isTsFile(f.path), gulpTs(tsConfig)))
+      .pipe(gulpIf((f) => !disableTypeCheck && isTsFile(f.path), gulpTs(tsConfig)))
       .pipe(
         gulpIf(
-          f => lessInBabelMode && /\.less$/.test(f.path),
-          gulpLess(lessInBabelMode || {})
-        )
-      )
-      .pipe(
-        gulpIf(
-          f => isTransform(f.path),
+          (f) => isTransform(f.path),
           through.obj((file, env, cb) => {
             try {
-              file.contents = Buffer.from(
-                transform({
-                  file,
-                  type
-                })
-              );
+              file.contents = Buffer.from(transform({ file, type }));
               // .jsx -> .js
               file.path = file.path.replace(extname(file.path), ".js");
               cb(null, file);
@@ -138,7 +123,8 @@ export default async function (opts) {
       .pipe(vfs.dest(targetPath));
   }
 
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
+    // TODO
     const patterns = [
       join(srcPath, "**/*"),
       `!${join(srcPath, "**/fixtures{,/**}")}`,
@@ -147,13 +133,13 @@ export default async function (opts) {
       `!${join(srcPath, "**/__tests__{,/**}")}`,
       `!${join(srcPath, "**/*.mdx")}`,
       `!${join(srcPath, "**/*.md")}`,
-      `!${join(srcPath, "**/*.+(test|e2e|spec).+(js|jsx|ts|tsx)")}`
+      `!${join(srcPath, "**/*.+(test|e2e|spec).+(js|jsx|ts|tsx)")}`,
     ];
     createStream(patterns).on("end", () => {
       if (watch) {
         log(chalk.magenta(`Start watching ${slash(srcPath).replace(`${cwd}/`, "")} directory...`));
         const watcher = chokidar.watch(patterns, {
-          ignoreInitial: true
+          ignoreInitial: true,
         });
 
         const files = [];

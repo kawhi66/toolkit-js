@@ -7,20 +7,13 @@ import signale from "signale";
 // import normalizeBundleOpts from "./normalizeBundleOpts";
 
 export default async function build(opts) {
-  const { cwd, rootPath, type, importLibToEs, dispose } = opts;
+  const { cwd, rootPath, type, dispose } = opts;
   const entry = getExistFile({
     cwd,
     files: ["src/index.tsx", "src/index.ts", "src/index.jsx", "src/index.js"],
     returnRelative: true,
   });
-  const rollupConfigs = getRollupConfig({
-    cwd,
-    rootPath: rootPath || cwd,
-    type,
-    entry,
-    importLibToEs,
-    // bundleOpts: normalizeBundleOpts(entry, bundleOpts),
-  });
+  const rollupConfigs = getRollupConfig({ cwd, rootPath: rootPath || cwd, type, entry });
 
   for (const rollupConfig of rollupConfigs) {
     if (opts.watch) {

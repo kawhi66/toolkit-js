@@ -19,19 +19,9 @@ import getBabelConfig from "./config/babel";
 import * as ts from "typescript";
 
 export default async function (opts) {
-  // TODO dispose
-  const {
-    cwd,
-    rootPath,
-    type,
-    watch,
-    dispose,
-    importLibToEs,
-    target,
-    disableTypeCheck,
-  } = opts;
+  const { cwd, rootPath, type, watch, dispose, target, disableTypeCheck } = opts;
   const srcPath = join(cwd, "src");
-  const targetDir = type === "esm" ? "es" : "lib";
+  const targetDir = "lib";
   const targetPath = join(cwd, targetDir);
 
   log(chalk.gray(`Clean ${targetDir} directory`));
@@ -48,18 +38,9 @@ export default async function (opts) {
       // nodeVersion,
       // lazy: cjs && cjs.lazy,
     });
-    if (importLibToEs && type === "esm") {
-      babelOpts.plugins.push(require.resolve("./config/importLibToEs"));
-    }
-    // babelOpts.presets.push(...extraBabelPresets);
-    // babelOpts.plugins.push(...extraBabelPlugins);
 
     const relFile = slash(file.path).replace(`${cwd}/`, "");
-    log(
-      `Transform to ${type} for ${chalk[isBrowser ? "yellow" : "blue"](
-        relFile
-      )}`
-    );
+    log(`Transform to ${type} for ${chalk[isBrowser ? "yellow" : "blue"](relFile)}`);
 
     return babel.transform(file.contents, {
       ...babelOpts,
@@ -115,9 +96,7 @@ export default async function (opts) {
     return vfs
       .src(src, { allowEmpty: true, base: srcPath })
       .pipe(watch ? gulpPlumber() : through.obj())
-      .pipe(
-        gulpIf((f) => !disableTypeCheck && isTsFile(f.path), gulpTs(tsConfig))
-      )
+      .pipe(gulpIf((f) => !disableTypeCheck && isTsFile(f.path), gulpTs(tsConfig)))
       .pipe(
         gulpIf(
           (f) => isTransform(f.path),
@@ -152,14 +131,7 @@ export default async function (opts) {
     ];
     createStream(patterns).on("end", () => {
       if (watch) {
-        log(
-          chalk.magenta(
-            `Start watching ${slash(srcPath).replace(
-              `${cwd}/`,
-              ""
-            )} directory...`
-          )
-        );
+        log(chalk.magenta(`Start watching ${slash(srcPath).replace(`${cwd}/`, "")} directory...`));
         const watcher = chokidar.watch(patterns, {
           ignoreInitial: true,
         });
@@ -174,9 +146,7 @@ export default async function (opts) {
         const debouncedCompileFiles = lodash.debounce(compileFiles, 1000);
         watcher.on("all", (event, fullPath) => {
           const relPath = fullPath.replace(srcPath, "");
-          log(
-            `[${event}] ${slash(join(srcPath, relPath)).replace(`${cwd}/`, "")}`
-          );
+          log(`[${event}] ${slash(join(srcPath, relPath)).replace(`${cwd}/`, "")}`);
           if (!existsSync(fullPath)) return;
           if (statSync(fullPath).isFile()) {
             if (!files.includes(fullPath)) files.push(fullPath);

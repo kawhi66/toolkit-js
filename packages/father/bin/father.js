@@ -36,14 +36,16 @@ updater({ pkg }).notify({ defer: true });
 // }
 
 const cmd = args._[0];
+const argsConfig = {
+  watch: args.w || args.watch || false,
+  type: args.t || args.type || "cjs",
+};
 switch (cmd) {
   case "transform":
     require("../lib")
       .transform({
-        cwd: process.cwd(),
-        watch: args.w || args.watch,
-        // compile options
-        target: "node",
+        ...argsConfig,
+        isTransforming: true,
       })
       .catch((e) => {
         signale.error(e);
@@ -53,11 +55,8 @@ switch (cmd) {
   case "build":
     require("../lib")
       .build({
-        cwd: process.cwd(),
-        watch: args.w || args.watch,
-        // compile options
-        target: "node",
-        type: "umd",
+        ...argsConfig,
+        isTransforming: false,
       })
       .catch((e) => {
         signale.error(e);

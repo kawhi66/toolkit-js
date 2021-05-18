@@ -20,7 +20,7 @@ import getBabelConfig from "./babel";
 // import { IBundleOptions } from "./types";
 
 export default function (opts) {
-  const { type, entry, cwd, rootPath, importLibToEs } = opts;
+  const { type, entry, cwd, rootPath } = opts;
   const {
     umd,
     esm,
@@ -77,11 +77,6 @@ export default function (opts) {
     // ref: https://github.com/rollup/rollup-plugin-babel#usage
     extensions,
   };
-  if (importLibToEs && type === "esm") {
-    babelOpts.plugins.push(require.resolve("./importLibToEs"));
-  }
-  // babelOpts.presets.push(...extraBabelPresets);
-  // babelOpts.plugins.push(...extraBabelPlugins);
 
   // rollup configs
   const input = join(cwd, entry);
@@ -96,10 +91,7 @@ export default function (opts) {
     ...extraExternals,
   ];
   // umd 只要 external peerDependencies
-  const externalPeerDeps = [
-    ...Object.keys(pkg.peerDependencies || {}),
-    ...extraExternals,
-  ];
+  const externalPeerDeps = [...Object.keys(pkg.peerDependencies || {}), ...extraExternals];
 
   function getPkgNameByid(id) {
     const splitted = id.split("/");
@@ -160,9 +152,7 @@ export default function (opts) {
         ],
       }),
       ...(injectOpts ? [inject(injectOpts)] : []),
-      ...(replaceOpts && Object.keys(replaceOpts || {}).length
-        ? [replace(replaceOpts)]
-        : []),
+      ...(replaceOpts && Object.keys(replaceOpts || {}).length ? [replace(replaceOpts)] : []),
       nodeResolve({
         mainFields: ["module", "jsnext:main", "main"],
         extensions,
@@ -177,10 +167,7 @@ export default function (opts) {
               cacheRoot: `${tempDir}/.rollup_plugin_typescript2_cache`,
               // 支持往上找 tsconfig.json
               // 比如 lerna 的场景不需要每个 package 有个 tsconfig.json
-              tsconfig: [
-                join(cwd, "tsconfig.json"),
-                join(rootPath, "tsconfig.json"),
-              ].find(existsSync),
+              tsconfig: [join(cwd, "tsconfig.json"), join(rootPath, "tsconfig.json")].find(existsSync),
               tsconfigDefaults: {
                 compilerOptions: {
                   // Generate declaration files by default
@@ -213,10 +200,7 @@ export default function (opts) {
             format,
             file: join(cwd, `dist/${(esm && esm.file) || `${name}.esm`}.js`),
           },
-          plugins: [
-            ...getPlugins(),
-            ...(esm && esm.minify ? [terser(terserOpts)] : []),
-          ],
+          plugins: [...getPlugins(), ...(esm && esm.minify ? [terser(terserOpts)] : [])],
           external: testExternal.bind(null, external, externalsExclude),
         },
       ];
@@ -229,10 +213,7 @@ export default function (opts) {
             format,
             file: join(cwd, `dist/${(cjs && cjs.file) || name}.js`),
           },
-          plugins: [
-            ...getPlugins(),
-            ...(cjs && cjs.minify ? [terser(terserOpts)] : []),
-          ],
+          plugins: [...getPlugins(), ...(cjs && cjs.minify ? [terser(terserOpts)] : [])],
           external: testExternal.bind(null, external, externalsExclude),
         },
       ];
@@ -274,10 +255,7 @@ export default function (opts) {
                 output: {
                   format,
                   sourcemap: umd && umd.sourcemap,
-                  file: join(
-                    cwd,
-                    `dist/${(umd && umd.file) || `${name}.umd`}.min.js`
-                  ),
+                  file: join(cwd, `dist/${(umd && umd.file) || `${name}.umd`}.min.js`),
                   globals: umd && umd.globals,
                   // name: (umd && umd.name) || (pkg.name && camelCase(basename(pkg.name))),
                   name: "abc",
@@ -290,11 +268,7 @@ export default function (opts) {
                   }),
                   terser(terserOpts),
                 ],
-                external: testExternal.bind(
-                  null,
-                  externalPeerDeps,
-                  externalsExclude
-                ),
+                external: testExternal.bind(null, externalPeerDeps, externalsExclude),
               },
             ]),
       ];

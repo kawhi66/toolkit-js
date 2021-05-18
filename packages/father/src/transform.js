@@ -19,7 +19,7 @@ import getBabelConfig from "./config/babel";
 import * as ts from "typescript";
 
 export default async function (opts) {
-  const { cwd, rootPath, type, watch, dispose, target, disableTypeCheck } = opts;
+  const { cwd, rootPath, type, watch, dispose, disableTypeCheck, babelOpts } = opts;
   const srcPath = join(cwd, "src");
   const targetDir = "lib";
   const targetPath = join(cwd, targetDir);
@@ -29,23 +29,22 @@ export default async function (opts) {
 
   function transform(opts) {
     const { file, type } = opts;
-    const { opts: babelOpts, isBrowser } = getBabelConfig({
-      target,
+    const { opts: babelConfig, isBrowser } = getBabelConfig({
       type,
-      typescript: true,
-      runtimeHelpers: false,
-      filePath: slash(relative(cwd, file.path)),
-      // nodeVersion,
-      // lazy: cjs && cjs.lazy,
+      babelOpts: {
+        ...babelOpts,
+        filePath: slash(relative(cwd, file.path)),
+        typescript: true,
+      },
     });
 
     const relFile = slash(file.path).replace(`${cwd}/`, "");
     log(`Transform to ${type} for ${chalk[isBrowser ? "yellow" : "blue"](relFile)}`);
 
     return babel.transform(file.contents, {
-      ...babelOpts,
+      ...babelConfig,
       filename: file.path,
-      // 不读取外部的babel.config.js配置文件，全采用babelOpts中的babel配置来构建
+      // 不读取外部的babel.config.js配置文件，全采用babelConfig中的babel配置来构建
       configFile: false,
     }).code;
   }

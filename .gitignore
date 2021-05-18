@@ -1,5 +1,6 @@
 /examples/*/lib
 /packages/*/lib
+.vscode
 
 # Logs
 logs

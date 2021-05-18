@@ -1,28 +1,23 @@
-import { ModuleFormat, rollup, watch } from "rollup";
-import { getExistFile } from "./utils";
+import { ModuleFormat, rollup, watch as rollupWatch } from "rollup";
 import getRollupConfig from "./config/rollup";
 import log from "./utils/log";
 import signale from "signale";
 // import { Dispose, IBundleOptions } from "./types";
-// import normalizeBundleOpts from "./normalizeBundleOpts";
 
-export default async function build(opts) {
-  const { cwd, rootPath, type, dispose } = opts;
-  const entry = getExistFile({
+export default async function (opts) {
+  const { cwd, rootPath, type, watch, dispose, disableTypeCheck, babelOpts, rollupOpts } = opts;
+  const rollupConfigs = getRollupConfig({
     cwd,
-    files: ["src/index.tsx", "src/index.ts", "src/index.jsx", "src/index.js"],
-    returnRelative: true,
+    rootPath: rootPath || cwd,
+    type,
+    disableTypeCheck,
+    babelOpts,
+    rollupOpts,
   });
-  const rollupConfigs = getRollupConfig({ cwd, rootPath: rootPath || cwd, type, entry });
 
   for (const rollupConfig of rollupConfigs) {
-    if (opts.watch) {
-      const watcher = watch([
-        {
-          ...rollupConfig,
-          watch: {},
-        },
-      ]);
+    if (watch) {
+      const watcher = rollupWatch([{ ...rollupConfig, watch: {} }]);
       watcher.on("event", (event) => {
         if (event.error) {
           signale.error(event.error);
@@ -41,14 +36,3 @@ export default async function build(opts) {
     }
   }
 }
-
-// export default async function (opts) {
-//   if (Array.isArray(opts.entry)) {
-//     const { entry: entries } = opts;
-//     for (const entry of entries) {
-//       await build(entry, opts);
-//     }
-//   } else {
-//     await build(opts.entry, opts);
-//   }
-// }

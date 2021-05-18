@@ -20,34 +20,38 @@ import getBabelConfig from "./babel";
 // import { IBundleOptions } from "./types";
 
 export default function (opts) {
-  const { type, entry, cwd, rootPath } = opts;
   const {
-    umd,
-    esm,
-    cjs,
-    file,
-    target = "browser",
-    extractCSS = false,
-    injectCSS = true,
-    cssModules: modules,
-    extraPostCSSPlugins = [],
-    extraBabelPresets = [],
-    extraBabelPlugins = [],
-    extraRollupPlugins = [],
-    autoprefixer: autoprefixerOpts,
-    include = /node_modules/,
-    runtimeHelpers: runtimeHelpersOpts,
-    replace: replaceOpts,
-    inject: injectOpts,
-    extraExternals = [],
-    externalsExclude = [],
-    nodeVersion,
-    typescriptOpts,
-    nodeResolveOpts = {},
+    cwd,
+    rootPath,
+    type,
     disableTypeCheck,
-    lessInRollupMode = {},
-    sassInRollupMode = {},
+    babelOpts,
+    rollupOpts: {
+      entry,
+      file,
+      target = "browser",
+      runtimeHelpers: runtimeHelpersOpts,
+      extractCSS = false,
+      injectCSS = true,
+      cssModules: modules,
+      extraPostCSSPlugins = [],
+      extraRollupPlugins = [],
+      autoprefixer: autoprefixerOpts,
+      include = /node_modules/,
+      replace: replaceOpts,
+      inject: injectOpts,
+      extraExternals = [],
+      externalsExclude = [],
+      typescriptOpts,
+      nodeResolveOpts = {},
+      lessInRollupMode = {},
+      sassInRollupMode = {},
+    },
   } = opts;
+
+  // TODO
+  const { umd, esm, cjs } = opts;
+
   const entryExt = extname(entry);
   const name = file || basename(entry, entryExt);
   const isTypeScript = entryExt === ".ts" || entryExt === ".tsx";
@@ -60,15 +64,16 @@ export default function (opts) {
 
   // cjs 不给浏览器用，所以无需 runtimeHelpers
   const runtimeHelpers = type === "cjs" ? false : runtimeHelpersOpts;
-  const babelOpts = {
+  const babelConfig = {
     ...getBabelConfig({
       type,
-      target: type === "esm" ? "browser" : target,
-      // watch 模式下有几率走的 babel？原因未知。
-      // ref: https://github.com/umijs/father/issues/158
-      typescript: true,
-      runtimeHelpers,
-      nodeVersion,
+      babelOpts: {
+        ...babelOpts,
+        target: type === "esm" ? "browser" : target,
+        // watch 模式下有几率走的 babel？原因未知。
+        // ref: https://github.com/umijs/father/issues/158
+        typescript: true,
+      },
     }).opts,
     // ref: https://github.com/rollup/plugins/tree/master/packages/babel#babelhelpers
     babelHelpers: runtimeHelpers ? "runtime" : "bundled",
@@ -135,10 +140,10 @@ export default function (opts) {
           less: {
             plugins: [new NpmImport({ prefix: "~" })],
             javascriptEnabled: true,
-            // ...lessInRollupMode
+            ...lessInRollupMode,
           },
           sass: {
-            // ...sassInRollupMode,
+            ...sassInRollupMode,
           },
           stylus: false,
         },
@@ -148,7 +153,7 @@ export default function (opts) {
             remove: false,
             ...autoprefixerOpts,
           }),
-          // ...extraPostCSSPlugins,
+          ...extraPostCSSPlugins,
         ],
       }),
       ...(injectOpts ? [inject(injectOpts)] : []),
@@ -156,7 +161,7 @@ export default function (opts) {
       nodeResolve({
         mainFields: ["module", "jsnext:main", "main"],
         extensions,
-        // ...nodeResolveOpts,
+        ...nodeResolveOpts,
       }),
       ...(isTypeScript
         ? [
@@ -181,13 +186,13 @@ export default function (opts) {
                 },
               },
               check: !disableTypeCheck,
-              // ...(typescriptOpts || {}),
+              ...(typescriptOpts || {}),
             }),
           ]
         : []),
-      babel(babelOpts),
+      babel(babelConfig),
       json(),
-      // ...(extraRollupPlugins || []),
+      ...(extraRollupPlugins || []),
     ];
   }
 

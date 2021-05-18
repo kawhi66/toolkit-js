@@ -17,16 +17,18 @@ function transformImportLess2Css() {
 
 export default function (opts) {
   const {
-    target,
-    typescript,
     type,
-    runtimeHelpers,
-    filePath,
-    // browserFiles,
-    // nodeFiles,
-    nodeVersion,
-    lazy,
-    // lessInBabelMode,
+    babelOpts: {
+      target,
+      typescript,
+      runtimeHelpers,
+      filePath,
+      // browserFiles,
+      // nodeFiles,
+      nodeVersion,
+      lazy,
+      // lessInBabelMode,
+    },
   } = opts;
   let isBrowser = target === "browser";
   // rollup 场景下不会传入 filePath
@@ -41,9 +43,7 @@ export default function (opts) {
       // }
     }
   }
-  const targets = isBrowser
-    ? { browsers: ["last 2 versions", "IE 10"] }
-    : { node: nodeVersion || 6 };
+  const targets = isBrowser ? { browsers: ["last 2 versions", "IE 10"] } : { node: nodeVersion || 6 };
 
   return {
     opts: {
@@ -59,12 +59,7 @@ export default function (opts) {
       ],
       plugins: [
         ...(type === "cjs" && lazy && !isBrowser
-          ? [
-              [
-                require.resolve("@babel/plugin-transform-modules-commonjs"),
-                { lazy: true },
-              ],
-            ]
+          ? [[require.resolve("@babel/plugin-transform-modules-commonjs"), { lazy: true }]]
           : []),
         // ...(lessInBabelMode ? [transformImportLess2Css] : []),
         require.resolve("@babel/plugin-syntax-dynamic-import"),
@@ -73,14 +68,8 @@ export default function (opts) {
         require.resolve("@babel/plugin-proposal-do-expressions"),
         require.resolve("@babel/plugin-proposal-nullish-coalescing-operator"),
         require.resolve("@babel/plugin-proposal-optional-chaining"),
-        [
-          require.resolve("@babel/plugin-proposal-decorators"),
-          { legacy: true },
-        ],
-        [
-          require.resolve("@babel/plugin-proposal-class-properties"),
-          { loose: true },
-        ],
+        [require.resolve("@babel/plugin-proposal-decorators"), { legacy: true }],
+        [require.resolve("@babel/plugin-proposal-class-properties"), { loose: true }],
         ...(runtimeHelpers
           ? [
               [
@@ -92,9 +81,7 @@ export default function (opts) {
               ],
             ]
           : []),
-        ...(process.env.COVERAGE
-          ? [require.resolve("babel-plugin-istanbul")]
-          : []),
+        ...(process.env.COVERAGE ? [require.resolve("babel-plugin-istanbul")] : []),
       ],
     },
     isBrowser,

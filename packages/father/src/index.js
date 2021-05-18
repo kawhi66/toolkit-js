@@ -18,6 +18,13 @@ const dispose = [];
 export async function transform(args) {
   const [opts] = getConfig({ cwd, args });
   validateConfig(opts, { cwd });
-  console.log(opts);
   await transformTask({ ...opts, cwd, dispose });
+}
+
+export async function build(args) {
+  const optsArray = getConfig({ cwd, args });
+  for (const opts of optsArray) {
+    validateConfig(opts, { cwd });
+    await buildTask({ ...opts, cwd, dispose });
+  }
 }

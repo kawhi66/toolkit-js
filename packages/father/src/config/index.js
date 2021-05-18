@@ -19,7 +19,12 @@ function testDefault(obj) {
 }
 
 function registerBabel(cwd, only) {
-  const { opts: babelConfig } = getBabelConfig({ target: "node", typescript: true });
+  const { opts: babelConfig } = getBabelConfig({
+    babelOpts: {
+      target: "node",
+      typescript: true,
+    },
+  });
   require("@babel/register")({
     ...babelConfig,
     extensions: [".es6", ".es", ".jsx", ".js", ".mjs", ".ts", ".tsx"],
@@ -81,9 +86,11 @@ ${errors.join("\n")}
 }
 
 // TODO root config file
+// TODO babelOpts
+// TODO rollupOpts
 export function getConfig(opts) {
   const { cwd, rootConfig = {}, args = {} } = opts;
-  const entry = getExistFile({
+  const defaultEntry = getExistFile({
     cwd,
     files: ["src/index.tsx", "src/index.ts", "src/index.jsx", "src/index.js"],
     returnRelative: true,
@@ -91,13 +98,26 @@ export function getConfig(opts) {
   const userConfig = getUserConfig({ cwd });
   const userConfigs = Array.isArray(userConfig) ? userConfig : [userConfig];
   return userConfigs.map((userConfig) => {
-    return merge({ entry }, rootConfig, userConfig, args);
+    const { isTransforming, watch, entry, file, type, runtimeHelpers, target, disableTypeCheck } = merge(
+      { entry: defaultEntry },
+      rootConfig,
+      userConfig,
+      args
+    );
+    return {
+      isTransforming,
+      watch,
+      type,
+      disableTypeCheck,
+      babelOpts: { runtimeHelpers, target },
+      rollupOpts: { entry, file },
+    };
   });
 }
 
 // TODO isTransforming - transform or build
 export function validateConfig(opts, { cwd, rootPath }) {
-  if (opts.runtimeHelpers) {
+  if (opts.babelOpts.runtimeHelpers) {
     const pkgPath = join(cwd, "package.json");
     assert(existsSync(pkgPath), `@babel/runtime dependency is required to use runtimeHelpers`);
     const pkg = JSON.parse(readFileSync(pkgPath, "utf-8"));
@@ -109,13 +129,13 @@ export function validateConfig(opts, { cwd, rootPath }) {
     assert.fail(`umd is only for build`);
   }
 
-  if (opts.entry) {
+  if (opts.rollupOpts.entry) {
     const tsConfigPath = join(cwd, "tsconfig.json");
     const tsConfig = existsSync(tsConfigPath) || (rootPath && existsSync(join(rootPath, "tsconfig.json")));
     if (
       !tsConfig &&
-      ((Array.isArray(opts.entry) && opts.entry.some(isTypescriptFile)) ||
-        (!Array.isArray(opts.entry) && isTypescriptFile(opts.entry)))
+      ((Array.isArray(opts.rollupOpts.entry) && opts.rollupOpts.entry.some(isTypescriptFile)) ||
+        (!Array.isArray(opts.rollupOpts.entry) && isTypescriptFile(opts.rollupOpts.entry)))
     ) {
       signale.info(`Project using ${chalk.cyan("typescript")} but tsconfig.json not exists. Use default config.`);
     }

@@ -18,6 +18,7 @@ function testDefault(obj) {
   return obj.default || obj;
 }
 
+// automatically compile files on the fly
 function registerBabel(cwd, only) {
   const { opts: babelConfig } = getBabelConfig({
     babelOpts: {
@@ -58,10 +59,9 @@ function getUserConfig({ cwd }) {
   });
 
   if (configFile) {
-    // register babel for config files
     registerBabel(cwd, CONFIG_FILES);
 
-    const userConfig = testDefault(require(configFile)); // eslint-disable-line
+    const userConfig = testDefault(require(configFile));
     const userConfigs = Array.isArray(userConfig) ? userConfig : [userConfig];
     userConfigs.forEach((userConfig) => {
       const ajv = extendAjv(new AJV({ allErrors: true }));
@@ -85,9 +85,9 @@ ${errors.join("\n")}
   }
 }
 
-// TODO root config file
-// TODO babelOpts
-// TODO rollupOpts
+// TODO - root config file
+// TODO - babelOpts
+// TODO - rollupOpts
 export function getConfig(opts) {
   const { cwd, rootConfig = {}, args = {} } = opts;
   const defaultEntry = getExistFile({
@@ -98,24 +98,42 @@ export function getConfig(opts) {
   const userConfig = getUserConfig({ cwd });
   const userConfigs = Array.isArray(userConfig) ? userConfig : [userConfig];
   return userConfigs.map((userConfig) => {
-    const { isTransforming, watch, entry, file, type, runtimeHelpers, target, disableTypeCheck } = merge(
-      { entry: defaultEntry },
-      rootConfig,
-      userConfig,
-      args
-    );
+    const {
+      isTransforming,
+      watch,
+      entry,
+      file,
+      type,
+      disableTypeCheck,
+      target = "browser",
+      runtimeHelpers,
+      browserFiles = [],
+      nodeVersion,
+      nodeFiles = [],
+      lazy,
+      extraBabelPresets = [],
+      extraBabelPlugins = [],
+    } = merge({ entry: defaultEntry }, rootConfig, userConfig, args);
     return {
       isTransforming,
       watch,
       type,
       disableTypeCheck,
-      babelOpts: { runtimeHelpers, target },
+      babelOpts: {
+        target,
+        runtimeHelpers,
+        browserFiles,
+        nodeVersion,
+        nodeFiles,
+        lazy,
+        extraBabelPresets,
+        extraBabelPlugins,
+      },
       rollupOpts: { entry, file },
     };
   });
 }
 
-// TODO isTransforming - transform or build
 export function validateConfig(opts, { cwd, rootPath }) {
   if (opts.babelOpts.runtimeHelpers) {
     const pkgPath = join(cwd, "package.json");
@@ -124,9 +142,9 @@ export function validateConfig(opts, { cwd, rootPath }) {
     assert((pkg.dependencies || {})["@babel/runtime"], `@babel/runtime dependency is required to use runtimeHelpers`);
   }
 
-  // umd is only for build task
+  // TODO - umd is only for build task
   if (opts.isTransforming && opts.type === "umd") {
-    assert.fail(`umd is only for build`);
+    assert.fail(`umd is only for build task`);
   }
 
   if (opts.rollupOpts.entry) {

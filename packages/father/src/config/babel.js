@@ -1,33 +1,19 @@
 import { extname } from "path";
 
-// TODO
-function transformImportLess2Css() {
-  return {
-    name: "transform-import-less-to-css",
-    visitor: {
-      ImportDeclaration(path, source) {
-        const re = /\.less$/;
-        if (re.test(path.node.source.value)) {
-          path.node.source.value = path.node.source.value.replace(re, ".css");
-        }
-      },
-    },
-  };
-}
-
 export default function (opts) {
   const {
     type,
     babelOpts: {
-      target,
+      target = "browser",
       typescript,
       runtimeHelpers,
       filePath,
-      // browserFiles,
-      // nodeFiles,
+      browserFiles = [],
       nodeVersion,
+      nodeFiles = [],
       lazy,
-      // lessInBabelMode,
+      extraBabelPresets = [],
+      extraBabelPlugins = [],
     },
   } = opts;
   let isBrowser = target === "browser";
@@ -36,11 +22,11 @@ export default function (opts) {
     if (extname(filePath) === ".tsx" || extname(filePath) === ".jsx") {
       isBrowser = true;
     } else {
-      // if (isBrowser) {
-      //   if (nodeFiles.includes(filePath)) isBrowser = false;
-      // } else {
-      //   if (browserFiles.includes(filePath)) isBrowser = true;
-      // }
+      if (isBrowser) {
+        if (nodeFiles.includes(filePath)) isBrowser = false;
+      } else {
+        if (browserFiles.includes(filePath)) isBrowser = true;
+      }
     }
   }
   const targets = isBrowser ? { browsers: ["last 2 versions", "IE 10"] } : { node: nodeVersion || 6 };
@@ -56,12 +42,12 @@ export default function (opts) {
             modules: type === "esm" ? false : "auto",
           },
         ],
+        ...extraBabelPresets,
       ],
       plugins: [
         ...(type === "cjs" && lazy && !isBrowser
           ? [[require.resolve("@babel/plugin-transform-modules-commonjs"), { lazy: true }]]
           : []),
-        // ...(lessInBabelMode ? [transformImportLess2Css] : []),
         require.resolve("@babel/plugin-syntax-dynamic-import"),
         require.resolve("@babel/plugin-proposal-export-default-from"),
         require.resolve("@babel/plugin-proposal-export-namespace-from"),
@@ -70,6 +56,7 @@ export default function (opts) {
         require.resolve("@babel/plugin-proposal-optional-chaining"),
         [require.resolve("@babel/plugin-proposal-decorators"), { legacy: true }],
         [require.resolve("@babel/plugin-proposal-class-properties"), { loose: true }],
+        [require.resolve("@babel/plugin-proposal-private-methods"), { loose: true }],
         ...(runtimeHelpers
           ? [
               [
@@ -82,6 +69,7 @@ export default function (opts) {
             ]
           : []),
         ...(process.env.COVERAGE ? [require.resolve("babel-plugin-istanbul")] : []),
+        ...extraBabelPlugins,
       ],
     },
     isBrowser,

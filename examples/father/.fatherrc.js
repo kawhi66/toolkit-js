@@ -5,4 +5,7 @@ export default {
   target: "node",
   runtimeHelpers: false,
   lazy: true,
+  umd: {
+    name: "abc",
+  },
 };

@@ -21,6 +21,7 @@ function testDefault(obj) {
 // automatically compile files on the fly
 function registerBabel(cwd, only) {
   const { opts: babelConfig } = getBabelConfig({
+    isTransforming: false,
     babelOpts: {
       target: "node",
       typescript: true,
@@ -175,9 +176,26 @@ export function validateConfig(opts, { cwd, rootPath }) {
     assert((pkg.dependencies || {})["@babel/runtime"], `@babel/runtime dependency is required to use runtimeHelpers`);
   }
 
-  // TODO - umd is only for build task
+  if (!opts.isTransforming && opts.type === "cjs" && opts.babelOpts.lazy) {
+    signale.info(`Option lazy is only working for transform task. Will skit it`);
+  }
+
   if (opts.isTransforming && opts.type === "umd") {
-    assert.fail(`umd is only for build task`);
+    throw new Error(
+      `
+Format umd is only working for build task.
+    `.trim()
+    );
+  }
+
+  if (!["esm", "cjs", "umd"].includes(opts.type)) {
+    throw new Error(
+      `
+None format of ${chalk.cyan(
+        "cjs | esm | umd"
+      )} is configured, checkout https://github.com/kawhi66/toolkit-js for usage details.
+`.trim()
+    );
   }
 
   if (opts.rollupOpts.entry) {

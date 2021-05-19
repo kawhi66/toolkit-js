@@ -62,6 +62,7 @@ export default function (opts) {
   const runtimeHelpers = type === "cjs" ? false : runtimeHelpersOpts;
   const babelConfig = {
     ...getBabelConfig({
+      isTransforming: false,
       type,
       babelOpts: {
         ...babelOpts,
@@ -78,8 +79,6 @@ export default function (opts) {
     // ref: https://github.com/rollup/rollup-plugin-babel#usage
     extensions,
   };
-
-  console.log(babelConfig, "------------------------------ babelConfig ------------------------------------");
 
   // rollup configs
   const input = join(cwd, entry);
@@ -241,7 +240,7 @@ export default function (opts) {
           output: {
             format,
             sourcemap: umd && umd.sourcemap,
-            file: join(cwd, `dist/${name}.umd.minjs`),
+            file: join(cwd, `dist/${name}.umd.min.js`),
             globals: umd && umd.globals,
             name: (umd && umd.name) || (pkg.name && camelCase(basename(pkg.name))),
           },

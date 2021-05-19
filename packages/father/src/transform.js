@@ -30,6 +30,7 @@ export default async function (opts) {
   function transform(opts) {
     const { file, type } = opts;
     const { opts: babelConfig, isBrowser } = getBabelConfig({
+      isTransforming: true,
       type,
       babelOpts: {
         ...babelOpts,

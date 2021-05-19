@@ -26,11 +26,10 @@ export default function (opts) {
     type,
     disableTypeCheck,
     babelOpts,
+    babelOpts: { target = "browser", runtimeHelpers: runtimeHelpersOpts },
     rollupOpts: {
       entry,
       file,
-      target = "browser",
-      runtimeHelpers: runtimeHelpersOpts,
       extractCSS = false,
       injectCSS = true,
       cssModules: modules,
@@ -44,13 +43,10 @@ export default function (opts) {
       externalsExclude = [],
       typescriptOpts,
       nodeResolveOpts = {},
-      lessInRollupMode = {},
-      sassInRollupMode = {},
+      minify = false,
+      umd,
     },
   } = opts;
-
-  // TODO
-  const { umd, esm, cjs } = opts;
 
   const entryExt = extname(entry);
   const name = file || basename(entry, entryExt);
@@ -82,6 +78,8 @@ export default function (opts) {
     // ref: https://github.com/rollup/rollup-plugin-babel#usage
     extensions,
   };
+
+  console.log(babelConfig, "------------------------------ babelConfig ------------------------------------");
 
   // rollup configs
   const input = join(cwd, entry);
@@ -140,11 +138,8 @@ export default function (opts) {
           less: {
             plugins: [new NpmImport({ prefix: "~" })],
             javascriptEnabled: true,
-            ...lessInRollupMode,
           },
-          sass: {
-            ...sassInRollupMode,
-          },
+          sass: {},
           stylus: false,
         },
         plugins: [
@@ -201,11 +196,8 @@ export default function (opts) {
       return [
         {
           input,
-          output: {
-            format,
-            file: join(cwd, `dist/${(esm && esm.file) || `${name}.esm`}.js`),
-          },
-          plugins: [...getPlugins(), ...(esm && esm.minify ? [terser(terserOpts)] : [])],
+          output: { format, file: join(cwd, `dist/${name}.esm.js`) },
+          plugins: [...getPlugins(), ...(minify ? [terser(terserOpts)] : [])],
           external: testExternal.bind(null, external, externalsExclude),
         },
       ];
@@ -214,23 +206,16 @@ export default function (opts) {
       return [
         {
           input,
-          output: {
-            format,
-            file: join(cwd, `dist/${(cjs && cjs.file) || name}.js`),
-          },
-          plugins: [...getPlugins(), ...(cjs && cjs.minify ? [terser(terserOpts)] : [])],
+          output: { format, file: join(cwd, `dist/${name}.js`) },
+          plugins: [...getPlugins(), ...(minify ? [terser(terserOpts)] : [])],
           external: testExternal.bind(null, external, externalsExclude),
         },
       ];
 
     case "umd":
       // Add umd related plugins
-      const extraUmdPlugins = [
-        commonjs({
-          include,
-          // namedExports options has been remove from https://github.com/rollup/plugins/pull/149
-        }),
-      ];
+      // namedExports options has been remove from https://github.com/rollup/plugins/pull/149
+      const extraUmdPlugins = [commonjs({ include })];
 
       return [
         {
@@ -238,10 +223,9 @@ export default function (opts) {
           output: {
             format,
             sourcemap: umd && umd.sourcemap,
-            file: join(cwd, `dist/${(umd && umd.file) || `${name}.umd`}.js`),
+            file: join(cwd, `dist/${name}.umd.js`),
             globals: umd && umd.globals,
-            // name: (umd && umd.name) || (pkg.name && camelCase(basename(pkg.name))),
-            name: "abc",
+            name: (umd && umd.name) || (pkg.name && camelCase(basename(pkg.name))),
           },
           plugins: [
             ...getPlugins(),
@@ -252,30 +236,25 @@ export default function (opts) {
           ],
           external: testExternal.bind(null, externalPeerDeps, externalsExclude),
         },
-        ...(umd && umd.minFile === false
-          ? []
-          : [
-              {
-                input,
-                output: {
-                  format,
-                  sourcemap: umd && umd.sourcemap,
-                  file: join(cwd, `dist/${(umd && umd.file) || `${name}.umd`}.min.js`),
-                  globals: umd && umd.globals,
-                  // name: (umd && umd.name) || (pkg.name && camelCase(basename(pkg.name))),
-                  name: "abc",
-                },
-                plugins: [
-                  ...getPlugins({ minCSS: true }),
-                  ...extraUmdPlugins,
-                  replace({
-                    "process.env.NODE_ENV": JSON.stringify("production"),
-                  }),
-                  terser(terserOpts),
-                ],
-                external: testExternal.bind(null, externalPeerDeps, externalsExclude),
-              },
-            ]),
+        {
+          input,
+          output: {
+            format,
+            sourcemap: umd && umd.sourcemap,
+            file: join(cwd, `dist/${name}.umd.minjs`),
+            globals: umd && umd.globals,
+            name: (umd && umd.name) || (pkg.name && camelCase(basename(pkg.name))),
+          },
+          plugins: [
+            ...getPlugins({ minCSS: true }),
+            ...extraUmdPlugins,
+            replace({
+              "process.env.NODE_ENV": JSON.stringify("production"),
+            }),
+            terser(terserOpts),
+          ],
+          external: testExternal.bind(null, externalPeerDeps, externalsExclude),
+        },
       ];
 
     default:

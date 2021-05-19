@@ -31,8 +31,8 @@ export default async function (opts) {
       dispose?.push(() => watcher.close());
     } else {
       const { output, ...input } = rollupConfig;
-      const bundle = await rollup(input); // eslint-disable-line
-      await bundle.write(output); // eslint-disable-line
+      const bundle = await rollup(input);
+      await bundle.write(output);
     }
   }
 }

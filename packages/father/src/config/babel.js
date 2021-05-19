@@ -31,6 +31,8 @@ export default function (opts) {
   }
   const targets = isBrowser ? { browsers: ["last 2 versions", "IE 10"] } : { node: nodeVersion || 6 };
 
+  console.log(type, "------------------------ type -------------------------------");
+
   return {
     opts: {
       presets: [

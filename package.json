@@ -5,7 +5,7 @@
     "bootstrap": "lerna bootstrap",
     "build": "node scripts/build.js",
     "clean": "lerna clean -y",
-    "publish": "yarn build && lerna publish"
+    "publish": "npm run build && lerna publish"
   },
   "devDependencies": {
     "@babel/core": "^7.14.2",

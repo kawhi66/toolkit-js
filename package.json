@@ -4,7 +4,8 @@
   "scripts": {
     "bootstrap": "lerna bootstrap",
     "build": "node scripts/build.js",
-    "clean": "lerna clean -y"
+    "clean": "lerna clean -y",
+    "publish": "yarn build && lerna publish"
   },
   "devDependencies": {
     "@babel/core": "^7.14.2",

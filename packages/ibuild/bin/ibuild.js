@@ -40,7 +40,7 @@ require("../lib")
 
 function printHelp() {
   console.log(`
-  Usage: father [options]
+  Usage: ibuild [options]
 
   Options:
 

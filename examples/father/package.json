@@ -2,7 +2,7 @@
   "private": "true",
   "main": "index.js",
   "scripts": {
-    "build": "father"
+    "build": "ibuild"
   },
   "dependencies": {}
 }

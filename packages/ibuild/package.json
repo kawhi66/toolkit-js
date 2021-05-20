@@ -1,9 +1,10 @@
 {
-  "name": "@toolkit-js/father",
-  "version": "0.0.2",
+  "name": "@toolkit-js/ibuild",
+  "version": "0.0.1",
   "description": "Library build tool inspired by [father](https://github.com/umijs/father).",
   "keywords": [
     "father",
+    "ibuild",
     "library",
     "toolkit"
   ],
@@ -12,7 +13,7 @@
   "license": "MIT",
   "main": "lib/index.js",
   "bin": {
-    "father": "./bin/father.js"
+    "ibuild": "./bin/ibuild.js"
   },
   "publishConfig": {
     "access": "public"

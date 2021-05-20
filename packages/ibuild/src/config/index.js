@@ -35,7 +35,7 @@ function registerBabel(cwd, only) {
   });
 }
 
-export const CONFIG_FILES = [".fatherrc.js", ".fatherrc.jsx", ".fatherrc.ts", ".fatherrc.tsx"];
+export const CONFIG_FILES = [".ibuildrc.js", ".ibuildrc.jsx", ".ibuildrc.ts", ".ibuildrc.tsx"];
 
 // TODO
 const CLASSES = { Function: Function };

@@ -1,11 +1,11 @@
-# `father`
+# `ibuild`
 
 ## Usage
 
 ```
-$ father -h
+$ ibuild -h
 
-  Usage: father [options]
+  Usage: ibuild [options]
 
   Options:
 
@@ -17,9 +17,9 @@ $ father -h
 ```
 
 ```js
-// .fatherrc.js
+// .ibuildrc.js
 export default {
-  file: "test-father",
+  file: "test-ibuild",
   // type: "umd", // not recommended
   disableTypeCheck: false,
   target: "browser",
@@ -29,5 +29,4 @@ export default {
     name: "abc",
   },
 };
-
 ```

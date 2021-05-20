@@ -1,10 +1,5 @@
 #!/usr/bin/env node
 
-/**
- * father transform - 把 src 目录转化成 lib（cjs） 或 es（esm）
- * father build - 跟进 entry 把项目依赖打包在一起输出一个文件
- */
-
 const { existsSync } = require("fs");
 const { join } = require("path");
 const yParser = require("yargs-parser");
@@ -37,42 +32,38 @@ updater({ pkg }).notify({ defer: true });
 
 const cmd = args._[0];
 const argsConfig = {
-  watch: args.w || args.watch || false,
+  transform: args.transform || false,
   type: args.t || args.type || "cjs",
+  watch: args.w || args.watch || false,
 };
+
 switch (cmd) {
-  case "transform":
-    require("../lib")
-      .transform({
-        ...argsConfig,
-        isTransforming: true,
-      })
-      .catch((e) => {
-        signale.error(e);
-        process.exit(1);
-      });
-    break;
   case "build":
     require("../lib")
       .build({
         ...argsConfig,
-        isTransforming: false,
+        isTransforming: args.transform || false,
       })
       .catch((e) => {
         signale.error(e);
         process.exit(1);
       });
     break;
+
   case "help":
   case undefined:
     printHelp();
     break;
+
   default:
     console.error(chalk.red(`Unsupported command ${cmd}`));
     process.exit(1);
 }
 
-// TODO
+/**
+ * father build --transform - 把 src 目录转化成 lib（cjs） 或 es（esm）
+ * father build - 跟进 entry 把项目依赖打包在一起输出一个文件
+ */
 function printHelp() {
   console.log(`
   Usage: father <command> [options]
@@ -80,6 +71,11 @@ function printHelp() {
   Commands:
 
     ${chalk.green("build")}         running build task
-    ${chalk.green("transform")}     running transform task
+
+  Options:
+
+    ${chalk.green("--transform")}         running transform task
+    ${chalk.green("--type")}              build type
+    ${chalk.green("--watch")}             watch building
   `);
 }

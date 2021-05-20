@@ -2,8 +2,8 @@
   "private": "true",
   "main": "index.js",
   "scripts": {
-    "transform": "father transform",
-    "build": "father build"
+    "build": "father build",
+    "father": "father"
   },
   "dependencies": {}
 }

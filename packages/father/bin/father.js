@@ -16,66 +16,38 @@ if (args.v || args.version) {
   process.exit(0);
 }
 
+// print help
+if (args.h || args.help) {
+  printHelp();
+  process.exit(0);
+}
+
 // Notify update when process exits
 const updater = require("update-notifier");
 const pkg = require("../package.json");
 updater({ pkg }).notify({ defer: true });
 
-// function stripEmptyKeys(obj) {
-//   Object.keys(obj).forEach((key) => {
-//     if (!obj[key] || (Array.isArray(obj[key]) && !obj[key].length)) {
-//       delete obj[key];
-//     }
-//   });
-//   return obj;
-// }
-
-const cmd = args._[0];
-const argsConfig = {
-  transform: args.transform || false,
-  type: args.t || args.type || "cjs",
-  watch: args.w || args.watch || false,
-};
-
-switch (cmd) {
-  case "build":
-    require("../lib")
-      .build({
-        ...argsConfig,
-        isTransforming: args.transform || false,
-      })
-      .catch((e) => {
-        signale.error(e);
-        process.exit(1);
-      });
-    break;
-
-  case "help":
-  case undefined:
-    printHelp();
-    break;
-
-  default:
-    console.error(chalk.red(`Unsupported command ${cmd}`));
+require("../lib")
+  .build({
+    transform: args.transform || false,
+    type: args.t || args.type || "cjs",
+    watch: args.w || args.watch || false,
+  })
+  .catch((e) => {
+    signale.error(e);
     process.exit(1);
-}
+  });
 
-/**
- * father build --transform - 把 src 目录转化成 lib（cjs） 或 es（esm）
- * father build - 跟进 entry 把项目依赖打包在一起输出一个文件
- */
 function printHelp() {
   console.log(`
-  Usage: father <command> [options]
-
-  Commands:
-
-    ${chalk.green("build")}         running build task
+  Usage: father [options]
 
   Options:
 
-    ${chalk.green("--transform")}         running transform task
-    ${chalk.green("--type")}              build type
-    ${chalk.green("--watch")}             watch building
+    ${chalk.green("--transform")}         Skip bundle and transform src to lib (default: false)
+    ${chalk.green("-t, --type")}          Use specified build type (cjs | esm | umd, default: cjs)
+    ${chalk.green("-w, --watch")}         Watch building (default: false)
+    ${chalk.green("-h, --help")}          Print help
+    ${chalk.green("-v, --version")}       Print version
   `);
 }

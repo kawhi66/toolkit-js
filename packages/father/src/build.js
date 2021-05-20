@@ -1,8 +1,10 @@
-import { ModuleFormat, rollup, watch as rollupWatch } from "rollup";
+import { join } from "path";
+import { rollup, watch as rollupWatch } from "rollup";
 import getRollupConfig from "./config/rollup";
 import log from "./utils/log";
+import chalk from "chalk";
+import rimraf from "rimraf";
 import signale from "signale";
-// import { Dispose, IBundleOptions } from "./types";
 
 export default async function (opts) {
   const { cwd, rootPath, type, watch, dispose, disableTypeCheck, babelOpts, rollupOpts } = opts;
@@ -14,6 +16,10 @@ export default async function (opts) {
     babelOpts,
     rollupOpts,
   });
+
+  // Clean dist
+  // log(chalk.gray(`Clean dist directory`));
+  // rimraf.sync(join(cwd, "dist"));
 
   for (const rollupConfig of rollupConfigs) {
     if (watch) {

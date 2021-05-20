@@ -2,7 +2,7 @@ import { extname } from "path";
 
 export default function (opts) {
   const {
-    isTransforming = false,
+    transform = false,
     type,
     babelOpts: {
       target = "browser",
@@ -46,7 +46,7 @@ export default function (opts) {
         ...extraBabelPresets,
       ],
       plugins: [
-        ...(isTransforming && type === "cjs" && lazy && !isBrowser
+        ...(transform && type === "cjs" && lazy && !isBrowser
           ? [[require.resolve("@babel/plugin-transform-modules-commonjs"), { lazy: true }]]
           : []),
         require.resolve("@babel/plugin-syntax-dynamic-import"),

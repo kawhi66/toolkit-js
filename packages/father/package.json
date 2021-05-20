@@ -21,9 +21,6 @@
     "type": "git",
     "url": "git+https://github.com/kawhi66/toolkit-js.git"
   },
-  "scripts": {
-    "test": "echo \"Error: run tests from root\" && exit 1"
-  },
   "bugs": {
     "url": "https://github.com/kawhi66/toolkit-js/issues"
   },

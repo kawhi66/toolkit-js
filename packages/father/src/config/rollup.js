@@ -1,23 +1,21 @@
 import { existsSync } from "fs";
 import { basename, extname, join } from "path";
-import { ModuleFormat, RollupOptions } from "rollup";
 import url from "@rollup/plugin-url";
 import json from "@rollup/plugin-json";
 import replace from "@rollup/plugin-replace";
 import commonjs from "@rollup/plugin-commonjs";
 import nodeResolve from "@rollup/plugin-node-resolve";
-import inject, { RollupInjectOptions } from "@rollup/plugin-inject";
-import babel, { RollupBabelInputPluginOptions } from "@rollup/plugin-babel";
+import inject from "@rollup/plugin-inject";
+import babel from "@rollup/plugin-babel";
 import postcss from "rollup-plugin-postcss";
 import { terser } from "rollup-plugin-terser";
 import typescript2 from "rollup-plugin-typescript2";
-import { camelCase } from "lodash";
+import { camelCase, isEmpty } from "lodash";
 import tempDir from "temp-dir";
 import autoprefixer from "autoprefixer";
 import NpmImport from "less-plugin-npm-import";
 import svgr from "@svgr/rollup";
 import getBabelConfig from "./babel";
-// import { IBundleOptions } from "./types";
 
 export default function (opts) {
   const {
@@ -62,7 +60,6 @@ export default function (opts) {
   const runtimeHelpers = type === "cjs" ? false : runtimeHelpersOpts;
   const babelConfig = {
     ...getBabelConfig({
-      isTransforming: false,
       type,
       babelOpts: {
         ...babelOpts,
@@ -151,7 +148,7 @@ export default function (opts) {
         ],
       }),
       ...(injectOpts ? [inject(injectOpts)] : []),
-      ...(replaceOpts && Object.keys(replaceOpts || {}).length ? [replace(replaceOpts)] : []),
+      ...(replaceOpts && !isEmpty(replaceOpts) ? [replace({ preventAssignment: true, ...replaceOpts })] : []),
       nodeResolve({
         mainFields: ["module", "jsnext:main", "main"],
         extensions,
@@ -195,7 +192,11 @@ export default function (opts) {
       return [
         {
           input,
-          output: { format, file: join(cwd, `dist/${name}.esm.js`) },
+          output: {
+            format,
+            file: join(cwd, `dist/${name}.esm.js`),
+            exports: "named",
+          },
           plugins: [...getPlugins(), ...(minify ? [terser(terserOpts)] : [])],
           external: testExternal.bind(null, external, externalsExclude),
         },
@@ -205,7 +206,11 @@ export default function (opts) {
       return [
         {
           input,
-          output: { format, file: join(cwd, `dist/${name}.js`) },
+          output: {
+            format,
+            file: join(cwd, `dist/${name}.js`),
+            exports: "named",
+          },
           plugins: [...getPlugins(), ...(minify ? [terser(terserOpts)] : [])],
           external: testExternal.bind(null, external, externalsExclude),
         },
@@ -225,12 +230,16 @@ export default function (opts) {
             file: join(cwd, `dist/${name}.umd.js`),
             globals: umd && umd.globals,
             name: (umd && umd.name) || (pkg.name && camelCase(basename(pkg.name))),
+            exports: "named",
           },
           plugins: [
             ...getPlugins(),
             ...extraUmdPlugins,
             replace({
-              "process.env.NODE_ENV": JSON.stringify("development"),
+              preventAssignment: true,
+              values: {
+                "process.env.NODE_ENV": JSON.stringify("development"),
+              },
             }),
           ],
           external: testExternal.bind(null, externalPeerDeps, externalsExclude),
@@ -243,12 +252,16 @@ export default function (opts) {
             file: join(cwd, `dist/${name}.umd.min.js`),
             globals: umd && umd.globals,
             name: (umd && umd.name) || (pkg.name && camelCase(basename(pkg.name))),
+            exports: "named",
           },
           plugins: [
             ...getPlugins({ minCSS: true }),
             ...extraUmdPlugins,
             replace({
-              "process.env.NODE_ENV": JSON.stringify("production"),
+              preventAssignment: true,
+              values: {
+                "process.env.NODE_ENV": JSON.stringify("production"),
+              },
             }),
             terser(terserOpts),
           ],

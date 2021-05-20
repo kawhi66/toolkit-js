@@ -1,5 +1,5 @@
 import { existsSync, readFileSync } from "fs";
-import { join, basename, relative } from "path";
+import { join, relative } from "path";
 import { merge } from "lodash";
 import { getExistFile } from "../utils";
 import * as assert from "assert";
@@ -21,7 +21,6 @@ function testDefault(obj) {
 // automatically compile files on the fly
 function registerBabel(cwd, only) {
   const { opts: babelConfig } = getBabelConfig({
-    isTransforming: false,
     babelOpts: {
       target: "node",
       typescript: true,
@@ -87,8 +86,6 @@ ${errors.join("\n")}
 }
 
 // TODO - root config file
-// TODO - babelOpts
-// TODO - rollupOpts
 export function getConfig(opts) {
   const { cwd, rootConfig = {}, args = {} } = opts;
   const defaultEntry = getExistFile({
@@ -100,7 +97,7 @@ export function getConfig(opts) {
   const userConfigs = Array.isArray(userConfig) ? userConfig : [userConfig];
   return userConfigs.map((userConfig) => {
     const {
-      isTransforming,
+      transform,
       watch,
       entry,
       file,
@@ -131,7 +128,7 @@ export function getConfig(opts) {
       umd,
     } = merge({ entry: defaultEntry }, rootConfig, userConfig, args);
     return {
-      isTransforming,
+      transform,
       watch,
       type,
       disableTypeCheck,
@@ -176,11 +173,11 @@ export function validateConfig(opts, { cwd, rootPath }) {
     assert((pkg.dependencies || {})["@babel/runtime"], `@babel/runtime dependency is required to use runtimeHelpers`);
   }
 
-  if (!opts.isTransforming && opts.type === "cjs" && opts.babelOpts.lazy) {
-    signale.info(`Option lazy is only working for transform task. Will skit it`);
+  if (opts.babelOpts.lazy && !(opts.transform && opts.type === "cjs")) {
+    signale.info(`Option lazy is only working for transform cjs. Will skit it`);
   }
 
-  if (opts.isTransforming && opts.type === "umd") {
+  if (opts.transform && opts.type === "umd") {
     throw new Error(
       `
 Format umd is only working for build task.

@@ -1,3 +1,3 @@
 # toolkit-js
 
-- [father](packages/father) - library build tool.
+- [ibuild](packages/ibuild) - library build tool.

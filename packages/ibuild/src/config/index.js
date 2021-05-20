@@ -84,7 +84,7 @@ ${errors.join("\n")}
 }
 
 export function getConfig(opts) {
-  const { cwd, rootConfig = {}, args = {} } = opts;
+  const { cwd, rootConfig = {} } = opts;
   const defaultEntry = getExistFile({
     cwd,
     files: ["src/index.tsx", "src/index.ts", "src/index.jsx", "src/index.js"],
@@ -92,12 +92,12 @@ export function getConfig(opts) {
   });
   const userConfig = getUserConfig({ cwd });
   const {
-    transform,
-    transformType,
     watch,
     entry,
     file,
     type,
+    transform,
+    transformType,
     disableTypeCheck,
     target = "browser",
     runtimeHelpers,
@@ -122,12 +122,12 @@ export function getConfig(opts) {
     nodeResolveOpts = {},
     minify = false,
     umd,
-  } = merge({ entry: defaultEntry }, rootConfig, userConfig, args);
+  } = merge({ entry: defaultEntry }, rootConfig, userConfig);
   return {
-    transform,
-    transformType,
     watch,
     type,
+    transform,
+    transformType,
     disableTypeCheck,
     babelOpts: {
       target,
@@ -161,6 +161,7 @@ export function getConfig(opts) {
   };
 }
 
+// TODO
 export function validateConfig(opts, { cwd, rootPath }) {
   if (opts.babelOpts.runtimeHelpers) {
     const pkgPath = join(cwd, "package.json");

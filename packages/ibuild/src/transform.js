@@ -19,10 +19,11 @@ import getBabelConfig from "./config/babel";
 import * as ts from "typescript";
 
 export default async function (opts) {
-  const { cwd, rootPath, type, watch, dispose, disableTypeCheck, babelOpts } = opts;
+  const { cwd, rootPath, type: buildType, transformType, watch, dispose, disableTypeCheck, babelOpts } = opts;
   const srcPath = join(cwd, "src");
   const targetDir = "lib";
   const targetPath = join(cwd, targetDir);
+  const type = transformType || (lodash.isArray(buildType) ? "cjs" : buildType);
 
   log(chalk.gray(`Clean ${targetDir} directory`));
   rimraf.sync(targetPath);

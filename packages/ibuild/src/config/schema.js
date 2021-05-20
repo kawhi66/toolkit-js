@@ -1,4 +1,6 @@
 const noEmptyStr = { type: "string", minLength: 1 };
+const buildType = { type: "string", pattern: "^(cjs|esm|umd)$" };
+const transformType = { type: "string", pattern: "^(cjs|esm)$" };
 
 export default {
   type: "object",
@@ -6,7 +8,9 @@ export default {
   properties: {
     entry: noEmptyStr,
     file: { type: "string" },
-    type: { type: "string", pattern: "^(cjs|esm|umd)$" },
+    type: { oneOf: [buildType, { type: "array", items: buildType }] },
+    transform: { type: "boolean" },
+    transformType: transformType,
     disableTypeCheck: { type: "boolean" },
     target: noEmptyStr,
     runtimeHelpers: { type: "boolean" },

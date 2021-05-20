@@ -1,6 +1,9 @@
 export default {
   file: "test-ibuild",
-  // type: "umd", // not recommended
+  // type: ["cjs", "esm", "umd"],
+  type: "cjs",
+  transform: true,
+  // transformType: "esm",
   disableTypeCheck: false,
   target: "browser",
   runtimeHelpers: false,
@@ -8,8 +11,4 @@ export default {
   umd: {
     name: "abc",
   },
-
-  // type: ["esm", "umd"],
-  // transform: true,
-  // transformType: "cjs",
 };

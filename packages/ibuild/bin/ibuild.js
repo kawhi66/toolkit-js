@@ -29,8 +29,6 @@ updater({ pkg }).notify({ defer: true });
 
 require("../lib")
   .build({
-    transform: args.transform || false,
-    // type: args.t || args.type || "cjs",
     watch: args.w || args.watch || false,
   })
   .catch((e) => {
@@ -44,8 +42,6 @@ function printHelp() {
 
   Options:
 
-    ${chalk.green("--transform")}         Skip bundle and transform src to lib (default: false)
-    ${chalk.green("-t, --type")}          Use specified build type (cjs | esm | umd, default: cjs)
     ${chalk.green("-w, --watch")}         Watch building (default: false)
     ${chalk.green("-h, --help")}          Print help
     ${chalk.green("-v, --version")}       Print version

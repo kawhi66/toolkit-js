@@ -30,7 +30,7 @@ updater({ pkg }).notify({ defer: true });
 require("../lib")
   .build({
     transform: args.transform || false,
-    type: args.t || args.type || "cjs",
+    // type: args.t || args.type || "cjs",
     watch: args.w || args.watch || false,
   })
   .catch((e) => {

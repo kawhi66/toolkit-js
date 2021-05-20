@@ -62,30 +62,27 @@ function getUserConfig({ cwd }) {
     registerBabel(cwd, CONFIG_FILES);
 
     const userConfig = testDefault(require(configFile));
-    const userConfigs = Array.isArray(userConfig) ? userConfig : [userConfig];
-    userConfigs.forEach((userConfig) => {
-      const ajv = extendAjv(new AJV({ allErrors: true }));
-      const isValid = ajv.validate(schema, userConfig);
-      if (!isValid) {
-        const errors = ajv.errors.map(({ dataPath, message }, index) => {
-          return `${index + 1}. ${dataPath}${dataPath ? " " : ""}${message}`;
-        });
-        throw new Error(
-          `
+    const ajv = extendAjv(new AJV({ allErrors: true }));
+    const isValid = ajv.validate(schema, userConfig);
+    if (!isValid) {
+      const errors = ajv.errors.map(({ dataPath, message }, index) => {
+        return `${index + 1}. ${dataPath}${dataPath ? " " : ""}${message}`;
+      });
+      throw new Error(
+        `
 Invalid options in ${slash(relative(cwd, configFile))}
 
 ${errors.join("\n")}
 `.trim()
-        );
-      }
-    });
-    return userConfig;
+      );
+    } else {
+      return userConfig;
+    }
   } else {
     return {};
   }
 }
 
-// TODO - root config file
 export function getConfig(opts) {
   const { cwd, rootConfig = {}, args = {} } = opts;
   const defaultEntry = getExistFile({
@@ -94,75 +91,74 @@ export function getConfig(opts) {
     returnRelative: true,
   });
   const userConfig = getUserConfig({ cwd });
-  const userConfigs = Array.isArray(userConfig) ? userConfig : [userConfig];
-  return userConfigs.map((userConfig) => {
-    const {
-      transform,
-      watch,
+  const {
+    transform,
+    transformType,
+    watch,
+    entry,
+    file,
+    type,
+    disableTypeCheck,
+    target = "browser",
+    runtimeHelpers,
+    browserFiles = [],
+    nodeVersion,
+    nodeFiles = [],
+    lazy,
+    extraBabelPresets = [],
+    extraBabelPlugins = [],
+    extractCSS = false,
+    injectCSS = true,
+    cssModules,
+    extraPostCSSPlugins = [],
+    extraRollupPlugins = [],
+    autoprefixer,
+    include = /node_modules/,
+    replace,
+    inject,
+    extraExternals = [],
+    externalsExclude = [],
+    typescriptOpts,
+    nodeResolveOpts = {},
+    minify = false,
+    umd,
+  } = merge({ entry: defaultEntry }, rootConfig, userConfig, args);
+  return {
+    transform,
+    transformType,
+    watch,
+    type,
+    disableTypeCheck,
+    babelOpts: {
+      target,
+      runtimeHelpers,
+      browserFiles,
+      nodeVersion,
+      nodeFiles,
+      lazy,
+      extraBabelPresets,
+      extraBabelPlugins,
+    },
+    rollupOpts: {
       entry,
       file,
-      type,
-      disableTypeCheck,
-      target = "browser",
-      runtimeHelpers,
-      browserFiles = [],
-      nodeVersion,
-      nodeFiles = [],
-      lazy,
-      extraBabelPresets = [],
-      extraBabelPlugins = [],
-      extractCSS = false,
-      injectCSS = true,
+      extractCSS,
+      injectCSS,
       cssModules,
-      extraPostCSSPlugins = [],
-      extraRollupPlugins = [],
+      extraPostCSSPlugins,
+      extraRollupPlugins,
       autoprefixer,
-      include = /node_modules/,
+      include,
       replace,
       inject,
-      extraExternals = [],
-      externalsExclude = [],
+      extraExternals,
+      externalsExclude,
       typescriptOpts,
-      nodeResolveOpts = {},
-      minify = false,
+      nodeResolveOpts,
+      minify,
       umd,
-    } = merge({ entry: defaultEntry }, rootConfig, userConfig, args);
-    return {
-      transform,
-      watch,
-      type,
-      disableTypeCheck,
-      babelOpts: {
-        target,
-        runtimeHelpers,
-        browserFiles,
-        nodeVersion,
-        nodeFiles,
-        lazy,
-        extraBabelPresets,
-        extraBabelPlugins,
-      },
-      rollupOpts: {
-        entry,
-        file,
-        extractCSS,
-        injectCSS,
-        cssModules,
-        extraPostCSSPlugins,
-        extraRollupPlugins,
-        autoprefixer,
-        include,
-        replace,
-        inject,
-        extraExternals,
-        externalsExclude,
-        typescriptOpts,
-        nodeResolveOpts,
-        minify,
-        umd,
-      },
-    };
-  });
+    },
+  };
 }
 
 export function validateConfig(opts, { cwd, rootPath }) {
@@ -174,7 +170,7 @@ export function validateConfig(opts, { cwd, rootPath }) {
   }
 
   if (opts.babelOpts.lazy && !(opts.transform && opts.type === "cjs")) {
-    signale.info(`Option lazy is only working for transform cjs. Will skit it`);
+    signale.info(`Option lazy is only working for transform cjs. Will skit it.`);
   }
 
   if (opts.transform && opts.type === "umd") {

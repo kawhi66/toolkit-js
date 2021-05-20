@@ -4,8 +4,10 @@ import { getConfig, validateConfig } from "./config";
 
 /**
  * TODO
- *  - rootPath
  *  - dispose
+ *  - ibuild
+ *  - type: string | string[]
+ *  - lerna
  */
 
 const cwd = process.cwd();
@@ -13,15 +15,12 @@ const cwd = process.cwd();
 const dispose = [];
 
 export async function build(args) {
-  const optsArray = getConfig({ cwd, args });
+  const opts = getConfig({ cwd, args });
+  validateConfig(opts, { cwd });
 
-  if (args.transform) {
-    validateConfig(optsArray[0], { cwd });
+  if (opts.transform) {
     await transformTask({ ...optsArray[0], cwd, dispose });
   } else {
-    for (const opts of optsArray) {
-      validateConfig(opts, { cwd });
-      await buildTask({ ...opts, cwd, dispose });
-    }
+    await buildTask({ ...opts, cwd, dispose });
   }
 }

@@ -28,7 +28,7 @@ const pkg = require("../package.json");
 updater({ pkg }).notify({ defer: true });
 
 require("../lib")
-  .build({
+  .default({
     watch: args.w || args.watch || false,
   })
   .catch((e) => {

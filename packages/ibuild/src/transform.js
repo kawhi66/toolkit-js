@@ -15,7 +15,6 @@ import gulpPlumber from "gulp-plumber";
 import gulpIf from "gulp-if";
 import chalk from "chalk";
 import getBabelConfig from "./config/babel";
-// import { Dispose, IBundleOptions } from "./types";
 import * as ts from "typescript";
 
 export default async function (opts) {

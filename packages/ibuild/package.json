@@ -9,7 +9,7 @@
     "toolkit"
   ],
   "author": "https://kawhi.site",
-  "homepage": "https://github.com/kawhi66/toolkit-js",
+  "homepage": "https://github.com/kawhi66/toolkit-js/tree/master/packages/ibuild",
   "license": "MIT",
   "main": "lib/index.js",
   "bin": {

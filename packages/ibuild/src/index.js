@@ -1,7 +1,8 @@
 import { existsSync } from "fs";
-import { join } from "path";
-import { getPackages } from "@lerna/project";
+import { join, resolve } from "path";
 import { getConfig, validateConfig } from "./config";
+import { getPackages } from "@lerna/project";
+import { PackageGraph } from "@lerna/package-graph";
 import * as assert from "assert";
 import buildTask from "./build";
 import transformTask from "./transform";
@@ -32,26 +33,48 @@ export async function build(opts) {
 export default async function (args) {
   const cwd = process.cwd();
   const isLerna = existsSync(join(cwd, "lerna.json"));
+  let userConfig = getConfig({ cwd });
+  // validateConfig(userConfig, { cwd });
+
+  userConfig = { ...userConfig, ...args };
 
   if (isLerna) {
-    let pkgs = await getPackages(cwd);
+    const packages = await getPackages(cwd);
+    const packageGraph = new PackageGraph(packages, "allDependencies");
+    const cacheNodes = [];
 
-    // support define pkgs in lerna
-    // TODO: 使用lerna包解决依赖编译问题
-    // if (userConfig.pkgs) {
-    //   pkgs = userConfig.pkgs
-    //     .map((item) => {
-    //       return pkgs.find((pkg) => basename(pkg.contents) === item);
-    //     })
-    //     .filter(Boolean);
-    // }
+    // build lerna package recursively
+    const buildNode = async function (node) {
+      if (node.localDependencies.size) {
+        for (const [dependencyName, resolved] of node.localDependencies) {
+          if (resolved.type === "directory") {
+            // a local file: specifier is already a symlink
+            continue;
+          }
 
-    for (const pkg of pkgs) {
-      // build error when .DS_Store includes in packages root
-      const pkgPath = pkg.contents;
-      assert.ok(existsSync(join(pkgPath, "package.json")), `package.json not found in packages/${pkg}`);
-      process.chdir(pkgPath);
-      await build({ ...args, cwd: pkgPath, rootPath: cwd });
+          const dependencyNode = packageGraph.get(dependencyName);
+          await buildNode(dependencyNode);
+        }
+      }
+
+      // get PackageGraphNode of dependency
+      const dependencyName = node.name;
+      const dependencyNode = packageGraph.get(dependencyName);
+      const dependencyLocation = dependencyNode.pkg.contents
+        ? resolve(dependencyNode.location, dependencyNode.pkg.contents)
+        : dependencyNode.location;
+
+      if (cacheNodes.includes(dependencyName)) return;
+      cacheNodes.push(dependencyName);
+
+      assert.ok(existsSync(join(dependencyLocation, "package.json")), `package.json not found in ${dependencyName}`);
+      process.chdir(dependencyLocation);
+      await build({ ...args, cwd: dependencyLocation, rootPath: cwd });
+    };
+
+    for (const node of packageGraph.values()) {
+      if (cacheNodes.includes(node.name)) continue;
+      await buildNode(node);
     }
   } else {
     await build({ ...args, cwd });

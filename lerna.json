@@ -10,7 +10,7 @@
       "registry": "https://r.npm.taobao.org"
     },
     "version": {
-      "allowBranch": "main",
+      "allowBranch": "master",
       "ignoreChanges": [
         "**/__tests__/**",
         "**/*.md"

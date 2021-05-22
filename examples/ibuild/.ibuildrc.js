@@ -1,9 +1,9 @@
 export default {
   file: "test-ibuild",
   // type: ["cjs", "esm", "umd"],
-  type: "cjs",
+  type: "esm",
   transform: true,
-  // transformType: "esm",
+  transformType: "cjs",
   disableTypeCheck: false,
   target: "browser",
   runtimeHelpers: false,

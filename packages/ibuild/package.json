@@ -1,6 +1,6 @@
 {
   "name": "@toolkit-js/ibuild",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Library build tool inspired by [father](https://github.com/umijs/father).",
   "keywords": [
     "father",

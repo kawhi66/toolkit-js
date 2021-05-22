@@ -372,7 +372,7 @@ export default {
 
 ## Bonus
 
-一些小贴士：
+使用建议：
 
 1. 通常只要配置 `type: "esm"` 就够了
 2. build 模式是跟进 entry 把项目依赖打包在一起输出一个文件，支持 cjs | esm | umd 三种类型；transform 模式是把 src 目录转化成 lib，仅支持 cjs | esm 两种类型
@@ -386,7 +386,7 @@ export default {
 
 ### 关于 transform 模式
 
-babel 模式下一些文件不会被编译到 lib 下，包含：
+transform 模式下一些文件不会被编译到 lib 下，包含：
 
 - `__test__` 目录
 - `fixtures` 目录

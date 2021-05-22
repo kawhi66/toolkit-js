@@ -9,7 +9,7 @@ import transformTask from "./transform";
 
 /**
  * TODO
- *  - validateConfig
+ *  - esbuild
  */
 
 const dispose = [];
@@ -17,7 +17,7 @@ const dispose = [];
 export async function build(opts) {
   const cwd = opts.cwd || process.cwd();
   let userConfig = getConfig({ cwd });
-  // validateConfig(userConfig, { cwd });
+  validateConfig(userConfig, { cwd });
 
   userConfig = { ...userConfig, ...opts, cwd, dispose };
 
@@ -33,10 +33,6 @@ export async function build(opts) {
 export default async function (args) {
   const cwd = process.cwd();
   const isLerna = existsSync(join(cwd, "lerna.json"));
-  let userConfig = getConfig({ cwd });
-  // validateConfig(userConfig, { cwd });
-
-  userConfig = { ...userConfig, ...args };
 
   if (isLerna) {
     // https://github.com/lerna/lerna/blob/main/utils/symlink-dependencies/symlink-dependencies.js

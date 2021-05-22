@@ -161,45 +161,29 @@ export function getConfig(opts) {
   };
 }
 
-// TODO
 export function validateConfig(opts, { cwd, rootPath }) {
   if (opts.babelOpts.runtimeHelpers) {
     const pkgPath = join(cwd, "package.json");
-    assert(existsSync(pkgPath), `@babel/runtime dependency is required to use runtimeHelpers`);
+    assert.ok(existsSync(pkgPath), `@babel/runtime dependency is required to use runtimeHelpers`);
     const pkg = JSON.parse(readFileSync(pkgPath, "utf-8"));
-    assert((pkg.dependencies || {})["@babel/runtime"], `@babel/runtime dependency is required to use runtimeHelpers`);
-  }
-
-  if (opts.babelOpts.lazy && !(opts.transform && opts.type === "cjs")) {
-    signale.info(`Option lazy is only working for transform cjs. Will skit it.`);
-  }
-
-  if (opts.transform && opts.type === "umd") {
-    throw new Error(
-      `
-Format umd is only working for build task.
-    `.trim()
+    assert.ok(
+      (pkg.dependencies || {})["@babel/runtime"],
+      `@babel/runtime dependency is required to use runtimeHelpers`
     );
   }
 
-  if (!["esm", "cjs", "umd"].includes(opts.type)) {
-    throw new Error(
-      `
-None format of ${chalk.cyan(
-        "cjs | esm | umd"
-      )} is configured, checkout https://github.com/kawhi66/toolkit-js for usage details.
-`.trim()
-    );
+  if (opts.babelOpts.lazy) {
+    signale.info(`Option lazy is only working for cjs transform task.`);
+  }
+
+  if (opts.transform && !opts.transformType && (opts.type === "umd" || opts.type.includes("umd"))) {
+    throw new Error("Format umd is only working for build task.");
   }
 
   if (opts.rollupOpts.entry) {
     const tsConfigPath = join(cwd, "tsconfig.json");
     const tsConfig = existsSync(tsConfigPath) || (rootPath && existsSync(join(rootPath, "tsconfig.json")));
-    if (
-      !tsConfig &&
-      ((Array.isArray(opts.rollupOpts.entry) && opts.rollupOpts.entry.some(isTypescriptFile)) ||
-        (!Array.isArray(opts.rollupOpts.entry) && isTypescriptFile(opts.rollupOpts.entry)))
-    ) {
+    if (!tsConfig && isTypescriptFile(opts.rollupOpts.entry)) {
       signale.info(`Project using ${chalk.cyan("typescript")} but tsconfig.json not exists. Use default config.`);
     }
   }

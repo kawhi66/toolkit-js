@@ -39,6 +39,7 @@ export default async function (args) {
   userConfig = { ...userConfig, ...args };
 
   if (isLerna) {
+    // https://github.com/lerna/lerna/blob/main/utils/symlink-dependencies/symlink-dependencies.js
     const packages = await getPackages(cwd);
     const packageGraph = new PackageGraph(packages, "allDependencies");
     const cacheNodes = [];

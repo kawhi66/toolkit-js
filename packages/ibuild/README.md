@@ -1,4 +1,4 @@
-# `ibuild`
+# ibuild
 
 **Library build tool** inspired by [father](https://github.com/umijs/father).
 

@@ -16,17 +16,19 @@ const dispose = [];
 
 export async function build(opts) {
   const cwd = opts.cwd || process.cwd();
-  let userConfig = getConfig({ cwd });
-  validateConfig(userConfig, { cwd });
+  const userConfigs = getConfig({ cwd });
 
-  userConfig = { ...userConfig, ...opts, cwd, dispose };
+  for (let userConfig of userConfigs) {
+    validateConfig(userConfig, { cwd });
+    userConfig = { ...userConfig, ...opts, cwd, dispose };
 
-  if (userConfig.transform) {
-    await transformTask(userConfig);
-  }
+    if (userConfig.transform) {
+      await transformTask(userConfig);
+    }
 
-  if (userConfig.type) {
-    await buildTask(userConfig);
+    if (userConfig.type) {
+      await buildTask(userConfig);
+    }
   }
 }
 
@@ -35,7 +37,7 @@ export default async function (args) {
   const isLerna = existsSync(join(cwd, "lerna.json"));
 
   if (isLerna) {
-    // https://github.com/lerna/lerna/blob/main/utils/symlink-dependencies/symlink-dependencies.js
+    // 参考 https://github.com/lerna/lerna/blob/main/utils/symlink-dependencies/symlink-dependencies.js
     const packages = await getPackages(cwd);
     const packageGraph = new PackageGraph(packages, "allDependencies");
     const cacheNodes = [];

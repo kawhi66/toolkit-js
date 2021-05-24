@@ -1,6 +1,6 @@
 import { existsSync, readFileSync } from "fs";
 import { join, relative } from "path";
-import { merge } from "lodash";
+import { isArray, merge } from "lodash";
 import { getExistFile } from "../utils";
 import * as assert from "assert";
 import AJV from "ajv";
@@ -62,22 +62,24 @@ function getUserConfig({ cwd }) {
     registerBabel(cwd, CONFIG_FILES);
 
     const userConfig = testDefault(require(configFile));
-    const ajv = extendAjv(new AJV({ allErrors: true }));
-    const isValid = ajv.validate(schema, userConfig);
-    if (!isValid) {
-      const errors = ajv.errors.map(({ dataPath, message }, index) => {
-        return `${index + 1}. ${dataPath}${dataPath ? " " : ""}${message}`;
-      });
-      throw new Error(
-        `
+    const userConfigs = isArray(userConfig) ? userConfig : [userConfig];
+    userConfigs.forEach((userConfig) => {
+      const ajv = extendAjv(new AJV({ allErrors: true }));
+      const isValid = ajv.validate(schema, userConfig);
+      if (!isValid) {
+        const errors = ajv.errors.map(({ dataPath, message }, index) => {
+          return `${index + 1}. ${dataPath}${dataPath ? " " : ""}${message}`;
+        });
+        throw new Error(
+          `
 Invalid options in ${slash(relative(cwd, configFile))}
 
 ${errors.join("\n")}
 `.trim()
-      );
-    } else {
-      return userConfig;
-    }
+        );
+      }
+    });
+    return userConfig;
   } else {
     return {};
   }
@@ -91,74 +93,77 @@ export function getConfig(opts) {
     returnRelative: true,
   });
   const userConfig = getUserConfig({ cwd });
-  const {
-    watch,
-    entry,
-    file,
-    type,
-    transform,
-    transformType,
-    disableTypeCheck,
-    target = "browser",
-    runtimeHelpers,
-    browserFiles = [],
-    nodeVersion,
-    nodeFiles = [],
-    lazy,
-    extraBabelPresets = [],
-    extraBabelPlugins = [],
-    extractCSS = false,
-    injectCSS = true,
-    cssModules,
-    extraPostCSSPlugins = [],
-    extraRollupPlugins = [],
-    autoprefixer,
-    include = /node_modules/,
-    replace,
-    inject,
-    extraExternals = [],
-    externalsExclude = [],
-    typescriptOpts,
-    nodeResolveOpts = {},
-    minify = false,
-    umd,
-  } = merge({ entry: defaultEntry }, rootConfig, userConfig);
-  return {
-    watch,
-    type,
-    transform,
-    transformType,
-    disableTypeCheck,
-    babelOpts: {
-      target,
-      runtimeHelpers,
-      browserFiles,
-      nodeVersion,
-      nodeFiles,
-      lazy,
-      extraBabelPresets,
-      extraBabelPlugins,
-    },
-    rollupOpts: {
+  const userConfigs = isArray(userConfig) ? userConfig : [userConfig];
+  return userConfigs.map((userConfig) => {
+    const {
+      watch,
       entry,
       file,
-      extractCSS,
-      injectCSS,
+      type,
+      transform,
+      transformType,
+      disableTypeCheck,
+      target = "browser",
+      runtimeHelpers,
+      browserFiles = [],
+      nodeVersion,
+      nodeFiles = [],
+      lazy,
+      extraBabelPresets = [],
+      extraBabelPlugins = [],
+      extractCSS = false,
+      injectCSS = true,
       cssModules,
-      extraPostCSSPlugins,
-      extraRollupPlugins,
+      extraPostCSSPlugins = [],
+      extraRollupPlugins = [],
       autoprefixer,
-      include,
+      include = /node_modules/,
       replace,
       inject,
-      extraExternals,
-      externalsExclude,
+      extraExternals = [],
+      externalsExclude = [],
       typescriptOpts,
-      nodeResolveOpts,
-      minify,
+      nodeResolveOpts = {},
+      minify = false,
       umd,
-    },
-  };
+    } = merge({ entry: defaultEntry }, rootConfig, userConfig);
+    return {
+      watch,
+      type,
+      transform,
+      transformType,
+      disableTypeCheck,
+      babelOpts: {
+        target,
+        runtimeHelpers,
+        browserFiles,
+        nodeVersion,
+        nodeFiles,
+        lazy,
+        extraBabelPresets,
+        extraBabelPlugins,
+      },
+      rollupOpts: {
+        entry,
+        file,
+        extractCSS,
+        injectCSS,
+        cssModules,
+        extraPostCSSPlugins,
+        extraRollupPlugins,
+        autoprefixer,
+        include,
+        replace,
+        inject,
+        extraExternals,
+        externalsExclude,
+        typescriptOpts,
+        nodeResolveOpts,
+        minify,
+        umd,
+      },
+    };
+  });
 }
 
 export function validateConfig(opts, { cwd, rootPath }) {

@@ -181,7 +181,7 @@ export function validateConfig(opts, { cwd, rootPath }) {
     signale.info(`Option lazy is only working for cjs transform task.`);
   }
 
-  if (opts.transform && !opts.transformType && (opts.type === "umd" || opts.type.includes("umd"))) {
+  if (opts.transform && !opts.transformType && (opts.type === "umd" || opts.type?.includes("umd"))) {
     throw new Error("Format umd is only working for build task.");
   }
 

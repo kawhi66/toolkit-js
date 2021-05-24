@@ -11,10 +11,6 @@ export default async function (opts) {
   const { cwd, rootPath, type, watch, dispose, disableTypeCheck, babelOpts, rollupOpts } = opts;
   const buildTypes = isArray(type) ? type : [type];
 
-  // Clean dist
-  log(chalk.gray(`Clean dist directory`));
-  rimraf.sync(join(cwd, "dist"));
-
   for (const buildType of buildTypes) {
     const rollupConfigs = getRollupConfig({
       cwd,
@@ -26,6 +22,10 @@ export default async function (opts) {
     });
 
     for (const rollupConfig of rollupConfigs) {
+      // Clean dist file
+      log(chalk.gray(`Clean file ${rollupConfig?.output?.file}`));
+      rimraf.sync(rollupConfig?.output?.file);
+
       if (watch) {
         const watcher = rollupWatch([{ ...rollupConfig, watch: {} }]);
         watcher.on("event", (event) => {

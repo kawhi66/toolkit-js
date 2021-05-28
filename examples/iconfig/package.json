@@ -4,12 +4,18 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "prettier": "prettier --write ."
+    "lint": "eslint --ext .js src",
+    "prettier": "prettier -c --write '**/*.{js,jsx,tsx,ts,less,md,json}'"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "prettier": "2.3.0"
+    "@typescript-eslint/eslint-plugin": "^4.25.0",
+    "@typescript-eslint/parser": "^4.25.0",
+    "eslint": "^7.27.0",
+    "eslint-plugin-vue": "^7.9.0",
+    "prettier": "2.3.0",
+    "typescript": "^4.3.2"
   }
 }

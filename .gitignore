@@ -1,4 +1,5 @@
 /examples/*/lib
+/examples/*/package-lock.json
 /packages/*/lib
 .vscode
 

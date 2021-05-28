@@ -10,9 +10,9 @@ const rimraf = require("rimraf");
 const vfs = require("vinyl-fs");
 const through = require("through2");
 const chokidar = require("chokidar");
+const signale = require("signale");
 
 const cwd = process.cwd();
-let pkgCount = null;
 
 function getBabelConfig(isBrowser, path) {
   const targets = isBrowser ? { browsers: ["last 2 versions", "IE 10"] } : { node: 6 };
@@ -58,7 +58,7 @@ function transform(opts = {}) {
   }).code;
 }
 
-function build(dir, opts = {}) {
+async function build(dir, opts = {}) {
   const { cwd, watch } = opts;
   assert(dir.charAt(0) !== "/", `dir should be relative`);
   assert(cwd, `opts.cwd should be supplied`);
@@ -107,44 +107,53 @@ function build(dir, opts = {}) {
   }
 
   // build
-  const stream = createStream(join(srcDir, "**/*"));
-  stream.on("end", () => {
-    pkgCount -= 1;
-    if (pkgCount === 0 && process.send) {
-      process.send("BUILD_COMPLETE");
-    }
-    // watch
-    if (watch) {
-      log.pending("start watch", srcDir);
-      const watcher = chokidar.watch(join(cwd, srcDir), {
-        ignoreInitial: true,
-      });
-      watcher.on("all", (event, fullPath) => {
-        const relPath = fullPath.replace(join(cwd, srcDir), "");
-        log.watch(`[${event}] ${join(srcDir, relPath)}`);
-        if (!existsSync(fullPath)) return;
-        if (statSync(fullPath).isFile()) {
-          createStream(fullPath);
-        }
-      });
-    }
+  return new Promise((resolve) => {
+    const stream = createStream(join(srcDir, "**/*"));
+    stream.on("end", () => {
+      resolve();
+      if (process.send) {
+        process.send("BUILD_COMPLETE");
+      }
+      // watch
+      if (watch) {
+        log.pending("start watch", srcDir);
+        const watcher = chokidar.watch(join(cwd, srcDir), {
+          ignoreInitial: true,
+        });
+        watcher.on("all", (event, fullPath) => {
+          const relPath = fullPath.replace(join(cwd, srcDir), "");
+          log.watch(`[${event}] ${join(srcDir, relPath)}`);
+          if (!existsSync(fullPath)) return;
+          if (statSync(fullPath).isFile()) {
+            createStream(fullPath);
+          }
+        });
+      }
+    });
   });
 }
 
-function isLerna(cwd) {
-  return existsSync(join(cwd, "lerna.json"));
+async function main() {
+  const args = yParser(process.argv.slice(2));
+  const watch = args.w || args.watch;
+
+  await build("./packages/ibuild", { cwd, watch });
+
+  const dirs = readdirSync(join(cwd, "packages"))
+    .filter((dir) => dir.charAt(0) !== ".")
+    .filter((pkg) => pkg !== "ibuild");
+
+  for (const pkg of dirs) {
+    process.chdir(join(cwd, `./packages/${pkg}`));
+    require("../packages/ibuild/lib")
+      .default({
+        watch,
+      })
+      .catch((e) => {
+        signale.error(e);
+        process.exit(1);
+      });
+  }
 }
 
-// Init
-const args = yParser(process.argv.slice(2));
-const watch = args.w || args.watch;
-if (isLerna(cwd)) {
-  const dirs = readdirSync(join(cwd, "packages")).filter((dir) => dir.charAt(0) !== ".");
-  pkgCount = dirs.length;
-  dirs.forEach((pkg) => {
-    build(`./packages/${pkg}`, { cwd, watch });
-  });
-} else {
-  pkgCount = 1;
-  build("./", { cwd, watch });
-}
+main();

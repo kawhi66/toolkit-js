@@ -16,6 +16,7 @@ import gulpIf from "gulp-if";
 import chalk from "chalk";
 import getBabelConfig from "./config/babel";
 import * as ts from "typescript";
+import { transform as esTransform, transformSync as esTransformSync } from "esbuild";
 
 export default async function (opts) {
   const { cwd, rootPath, type: buildType, transformType, watch, dispose, disableTypeCheck, babelOpts } = opts;
@@ -29,18 +30,35 @@ export default async function (opts) {
 
   function transform(opts) {
     const { file, type } = opts;
-    const { opts: babelConfig, isBrowser } = getBabelConfig({
-      transform: true,
-      type,
-      babelOpts: {
-        ...babelOpts,
-        filePath: slash(relative(cwd, file.path)),
-        typescript: true,
-      },
-    });
+    // const { opts: babelConfig, isBrowser } = getBabelConfig({
+    //   transform: true,
+    //   type,
+    //   babelOpts: {
+    //     ...babelOpts,
+    //     filePath: slash(relative(cwd, file.path)),
+    //     typescript: true,
+    //   },
+    // });
+
+    const isBrowser = true;
 
     const relFile = slash(file.path).replace(`${cwd}/`, "");
     log(`Transform to ${type} for ${chalk[isBrowser ? "yellow" : "blue"](relFile)}`);
+
+    // The transform API call just takes a single loader
+    // since it doesn't involve interacting with the file system,
+    // and therefore doesn't deal with file extensions.
+
+    console.log(file);
+
+    // console.log(
+    //   "111111",
+    //   esTransformSync(file.contents, {
+    //     format: "cjs",
+    //   })
+    // );
+
+    return "";
 
     return babel.transform(file.contents, {
       ...babelConfig,

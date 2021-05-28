@@ -15,7 +15,7 @@
     "lib"
   ],
   "publishConfig": {
-    "registry": "http://artifactory.hundsun.com/artifactory/api/npm/jresui2-npm-virtual/"
+    "access": "public"
   },
   "repository": {
     "type": "git",

@@ -1,6 +1,7 @@
 /examples/*/lib
-/examples/*/package-lock.json
 /packages/*/lib
+/packages/**/yarn.lock
+/packages/**/package-lock.json
 .vscode
 
 # Logs

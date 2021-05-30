@@ -1,0 +1,17 @@
+{
+  "name": "iconfig",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint --ext .js src",
+    "prettier": "prettier -c --write **/*.{js,jsx,tsx,ts,less,md,json}"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^7.27.0",
+    "prettier": "2.3.0"
+  }
+}

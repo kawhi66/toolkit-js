@@ -77,7 +77,7 @@ in `.stylelintrc.js`
 
 ### rules
 
-```json
+```js
 {
   // enforce that class methods use "this"
   // https://eslint.org/docs/rules/class-methods-use-this

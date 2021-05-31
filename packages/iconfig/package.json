@@ -12,6 +12,7 @@
   "license": "MIT",
   "main": "lib/index.js",
   "files": [
+    "dist",
     "lib"
   ],
   "publishConfig": {

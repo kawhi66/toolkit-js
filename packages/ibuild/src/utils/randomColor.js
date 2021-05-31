@@ -1,19 +1,19 @@
-import chalk from "chalk";
+import chalk from 'chalk';
 
 const colors = [
-  "red",
-  "green",
-  "yellow",
-  "blue",
-  "magenta",
-  "cyan",
-  "gray",
-  "redBright",
-  "greenBright",
-  "yellowBright",
-  "blueBright",
-  "magentaBright",
-  "cyanBright",
+  'red',
+  'green',
+  'yellow',
+  'blue',
+  'magenta',
+  'cyan',
+  'gray',
+  'redBright',
+  'greenBright',
+  'yellowBright',
+  'blueBright',
+  'magentaBright',
+  'cyanBright',
 ];
 
 let index = 0;

@@ -1,5 +1,5 @@
 export default {
-  type: "cjs",
+  type: 'cjs',
   transform: true,
-  target: "node",
+  target: 'node',
 };

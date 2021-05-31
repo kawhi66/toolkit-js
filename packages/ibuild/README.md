@@ -45,13 +45,13 @@ $ yarn build
 // .ibuildrc.js
 export default {
   // type: ["cjs", "esm", "umd"],
-  type: "esm",
+  type: 'esm',
   transform: true,
-  transformType: "cjs",
+  transformType: 'cjs',
   disableTypeCheck: false,
-  target: "browser",
+  target: 'browser',
   umd: {
-    name: "foo",
+    name: 'foo',
   },
 };
 ```
@@ -131,7 +131,7 @@ export default {
 ```js
 export default {
   autoprefixer: {
-    browsers: ["ie>8", "Safari >= 6"],
+    browsers: ['ie>8', 'Safari >= 6'],
   },
 };
 ```
@@ -152,7 +152,7 @@ export default {
 ```js
 export default {
   cssModules: {
-    generateScopedName: "foo-bar_[name]__[local]___[hash:base64:5]",
+    generateScopedName: 'foo-bar_[name]__[local]___[hash:base64:5]',
   },
 };
 ```
@@ -191,10 +191,10 @@ export default {
 export default {
   extraBabelPlugins: [
     [
-      "babel-plugin-import",
+      'babel-plugin-import',
       {
-        libraryName: "antd",
-        libraryDirectory: "es",
+        libraryName: 'antd',
+        libraryDirectory: 'es',
         style: true,
       },
     ],
@@ -217,7 +217,7 @@ export default {
 - Default: `[]`
 
 ```js
-import url from "rollup-plugin-url";
+import url from 'rollup-plugin-url';
 
 export default {
   extraRollupPlugins: [url()],
@@ -242,8 +242,8 @@ export default {
 
 ```js
 export default {
-  extraExternals: ["foo"],
-  externalsExclude: ["foo/bar"],
+  extraExternals: ['foo'],
+  externalsExclude: ['foo/bar'],
 };
 ```
 
@@ -319,7 +319,7 @@ target 为 `browser` 时，配置例外文件走 `node` target。
 ```js
 export default {
   replace: {
-    VERSION: JSON.stringify(require("./package").version),
+    VERSION: JSON.stringify(require('./package').version),
   },
 };
 ```
@@ -336,7 +336,7 @@ export default {
 ```js
 export default {
   inject: {
-    "window.foo": "foo",
+    'window.foo': 'foo',
   },
 };
 ```
@@ -350,7 +350,7 @@ console.log(window.foo);
 会被编译成，
 
 ```js
-import $inject_window_foo from "foo";
+import $inject_window_foo from 'foo';
 console.log($inject_window_foo);
 ```
 
@@ -365,7 +365,7 @@ console.log($inject_window_foo);
 
 ```js
 export default {
-  target: "node",
+  target: 'node',
   nodeVersion: 8,
 };
 ```

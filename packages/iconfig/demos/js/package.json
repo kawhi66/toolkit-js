@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint --ext .js src",
-    "prettier": "prettier -c --write **/*.{js,jsx,tsx,ts,less,md,json}"
+    "lint": "../../node_modules/.bin/eslint --ext .js src",
+    "prettier": "../../../../node_modules/.bin/prettier -c --write **/*.{js,jsx,tsx,ts,less,md,json}"
   },
   "keywords": [],
   "author": "",

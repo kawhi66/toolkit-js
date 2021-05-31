@@ -1,11 +1,11 @@
-import { join } from "path";
-import { rollup, watch as rollupWatch } from "rollup";
-import getRollupConfig from "./config/rollup";
-import chalk from "chalk";
-import log from "./utils/log";
-import rimraf from "rimraf";
-import signale from "signale";
-import { isArray } from "lodash";
+import { join } from 'path';
+import { rollup, watch as rollupWatch } from 'rollup';
+import getRollupConfig from './config/rollup';
+import chalk from 'chalk';
+import log from './utils/log';
+import rimraf from 'rimraf';
+import signale from 'signale';
+import { isArray } from 'lodash';
 
 export default async function (opts) {
   const { cwd, rootPath, type, watch, dispose, disableTypeCheck, babelOpts, rollupOpts } = opts;
@@ -28,14 +28,14 @@ export default async function (opts) {
 
       if (watch) {
         const watcher = rollupWatch([{ ...rollupConfig, watch: {} }]);
-        watcher.on("event", (event) => {
+        watcher.on('event', (event) => {
           if (event.error) {
             signale.error(event.error);
-          } else if (event.code === "START") {
+          } else if (event.code === 'START') {
             log(`[${buildType}] Rebuild since file changed`);
           }
         });
-        process.once("SIGINT", () => {
+        process.once('SIGINT', () => {
           watcher.close();
         });
         dispose?.push(() => watcher.close());

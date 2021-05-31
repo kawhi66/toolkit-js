@@ -1,24 +1,24 @@
 export default [
   {
-    file: "test-ibuild",
+    file: 'test-ibuild',
     // type: ["cjs", "esm", "umd"],
-    type: "esm",
+    type: 'esm',
     transform: true,
-    transformType: "cjs",
+    transformType: 'cjs',
     disableTypeCheck: false,
-    target: "browser",
+    target: 'browser',
     runtimeHelpers: false,
     lazy: true,
     umd: {
-      name: "abc",
+      name: 'abc',
     },
   },
   {
-    entry: "src/utils.js",
-    file: "test-utils",
-    type: "esm",
+    entry: 'src/utils.js',
+    file: 'test-utils',
+    type: 'esm',
     umd: {
-      name: "abcd",
+      name: 'abcd',
     },
   },
 ];

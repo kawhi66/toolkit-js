@@ -1,21 +1,21 @@
-import { existsSync } from "fs";
-import { basename, extname, join } from "path";
-import url from "@rollup/plugin-url";
-import json from "@rollup/plugin-json";
-import replace from "@rollup/plugin-replace";
-import commonjs from "@rollup/plugin-commonjs";
-import nodeResolve from "@rollup/plugin-node-resolve";
-import inject from "@rollup/plugin-inject";
-import babel from "@rollup/plugin-babel";
-import postcss from "rollup-plugin-postcss";
-import { terser } from "rollup-plugin-terser";
-import typescript2 from "rollup-plugin-typescript2";
-import { camelCase, isEmpty } from "lodash";
-import tempDir from "temp-dir";
-import autoprefixer from "autoprefixer";
-import NpmImport from "less-plugin-npm-import";
-import svgr from "@svgr/rollup";
-import getBabelConfig from "./babel";
+import { existsSync } from 'fs';
+import { basename, extname, join } from 'path';
+import url from '@rollup/plugin-url';
+import json from '@rollup/plugin-json';
+import replace from '@rollup/plugin-replace';
+import commonjs from '@rollup/plugin-commonjs';
+import nodeResolve from '@rollup/plugin-node-resolve';
+import inject from '@rollup/plugin-inject';
+import babel from '@rollup/plugin-babel';
+import postcss from 'rollup-plugin-postcss';
+import { terser } from 'rollup-plugin-terser';
+import typescript2 from 'rollup-plugin-typescript2';
+import { camelCase, isEmpty } from 'lodash';
+import tempDir from 'temp-dir';
+import autoprefixer from 'autoprefixer';
+import NpmImport from 'less-plugin-npm-import';
+import svgr from '@svgr/rollup';
+import getBabelConfig from './babel';
 
 export default function (opts) {
   const {
@@ -24,7 +24,7 @@ export default function (opts) {
     type,
     disableTypeCheck,
     babelOpts,
-    babelOpts: { target = "browser", runtimeHelpers: runtimeHelpersOpts },
+    babelOpts: { target = 'browser', runtimeHelpers: runtimeHelpersOpts },
     rollupOpts: {
       entry,
       file,
@@ -48,29 +48,29 @@ export default function (opts) {
 
   const entryExt = extname(entry);
   const name = file || basename(entry, entryExt);
-  const isTypeScript = entryExt === ".ts" || entryExt === ".tsx";
-  const extensions = [".js", ".jsx", ".ts", ".tsx", ".es6", ".es", ".mjs"];
+  const isTypeScript = entryExt === '.ts' || entryExt === '.tsx';
+  const extensions = ['.js', '.jsx', '.ts', '.tsx', '.es6', '.es', '.mjs'];
 
   let pkg = {};
   try {
-    pkg = require(join(cwd, "package.json"));
+    pkg = require(join(cwd, 'package.json'));
   } catch (e) {}
 
   // cjs 不给浏览器用，所以无需 runtimeHelpers
-  const runtimeHelpers = type === "cjs" ? false : runtimeHelpersOpts;
+  const runtimeHelpers = type === 'cjs' ? false : runtimeHelpersOpts;
   const babelConfig = {
     ...getBabelConfig({
       type,
       babelOpts: {
         ...babelOpts,
-        target: type === "esm" ? "browser" : target,
+        target: type === 'esm' ? 'browser' : target,
         // watch 模式下有几率走的 babel？原因未知。
         // ref: https://github.com/umijs/father/issues/158
         typescript: true,
       },
     }).opts,
     // ref: https://github.com/rollup/plugins/tree/master/packages/babel#babelhelpers
-    babelHelpers: runtimeHelpers ? "runtime" : "bundled",
+    babelHelpers: runtimeHelpers ? 'runtime' : 'bundled',
     exclude: /\/node_modules\//,
     babelrc: false,
     // ref: https://github.com/rollup/rollup-plugin-babel#usage
@@ -93,12 +93,12 @@ export default function (opts) {
   const externalPeerDeps = [...Object.keys(pkg.peerDependencies || {}), ...extraExternals];
 
   function getPkgNameByid(id) {
-    const splitted = id.split("/");
+    const splitted = id.split('/');
     // @ 和 @tmp 是为了兼容 umi 的逻辑
-    if (id.charAt(0) === "@" && splitted[0] !== "@" && splitted[0] !== "@tmp") {
-      return splitted.slice(0, 2).join("/");
+    if (id.charAt(0) === '@' && splitted[0] !== '@' && splitted[0] !== '@tmp') {
+      return splitted.slice(0, 2).join('/');
     } else {
-      return id.split("/")[0];
+      return id.split('/')[0];
     }
   }
 
@@ -132,7 +132,7 @@ export default function (opts) {
         minimize: !!minCSS,
         use: {
           less: {
-            plugins: [new NpmImport({ prefix: "~" })],
+            plugins: [new NpmImport({ prefix: '~' })],
             javascriptEnabled: true,
           },
           sass: {},
@@ -148,9 +148,11 @@ export default function (opts) {
         ],
       }),
       ...(injectOpts ? [inject(injectOpts)] : []),
-      ...(replaceOpts && !isEmpty(replaceOpts) ? [replace({ preventAssignment: true, ...replaceOpts })] : []),
+      ...(replaceOpts && !isEmpty(replaceOpts)
+        ? [replace({ preventAssignment: true, ...replaceOpts })]
+        : []),
       nodeResolve({
-        mainFields: ["module", "jsnext:main", "main"],
+        mainFields: ['module', 'jsnext:main', 'main'],
         extensions,
         ...nodeResolveOpts,
       }),
@@ -163,7 +165,9 @@ export default function (opts) {
               cacheRoot: `${tempDir}/.rollup_plugin_typescript2_cache`,
               // 支持往上找 tsconfig.json
               // 比如 lerna 的场景不需要每个 package 有个 tsconfig.json
-              tsconfig: [join(cwd, "tsconfig.json"), join(rootPath, "tsconfig.json")].find(existsSync),
+              tsconfig: [join(cwd, 'tsconfig.json'), join(rootPath, 'tsconfig.json')].find(
+                existsSync,
+              ),
               tsconfigDefaults: {
                 compilerOptions: {
                   // Generate declaration files by default
@@ -173,7 +177,7 @@ export default function (opts) {
               tsconfigOverride: {
                 compilerOptions: {
                   // Support dynamic import
-                  target: "esnext",
+                  target: 'esnext',
                 },
               },
               check: !disableTypeCheck,
@@ -188,35 +192,35 @@ export default function (opts) {
   }
 
   switch (type) {
-    case "esm":
+    case 'esm':
       return [
         {
           input,
           output: {
             format,
             file: join(cwd, `dist/${name}.esm.js`),
-            exports: "named",
+            exports: 'named',
           },
           plugins: [...getPlugins(), ...(minify ? [terser(terserOpts)] : [])],
           external: testExternal.bind(null, external, externalsExclude),
         },
       ];
 
-    case "cjs":
+    case 'cjs':
       return [
         {
           input,
           output: {
             format,
             file: join(cwd, `dist/${name}.js`),
-            exports: "named",
+            exports: 'named',
           },
           plugins: [...getPlugins(), ...(minify ? [terser(terserOpts)] : [])],
           external: testExternal.bind(null, external, externalsExclude),
         },
       ];
 
-    case "umd":
+    case 'umd':
       // Add umd related plugins
       // namedExports options has been remove from https://github.com/rollup/plugins/pull/149
       const extraUmdPlugins = [commonjs({ include })];
@@ -230,7 +234,7 @@ export default function (opts) {
             file: join(cwd, `dist/${name}.umd.js`),
             globals: umd && umd.globals,
             name: (umd && umd.name) || (pkg.name && camelCase(basename(pkg.name))),
-            exports: "named",
+            exports: 'named',
           },
           plugins: [
             ...getPlugins(),
@@ -238,7 +242,7 @@ export default function (opts) {
             replace({
               preventAssignment: true,
               values: {
-                "process.env.NODE_ENV": JSON.stringify("development"),
+                'process.env.NODE_ENV': JSON.stringify('development'),
               },
             }),
           ],
@@ -252,7 +256,7 @@ export default function (opts) {
             file: join(cwd, `dist/${name}.umd.min.js`),
             globals: umd && umd.globals,
             name: (umd && umd.name) || (pkg.name && camelCase(basename(pkg.name))),
-            exports: "named",
+            exports: 'named',
           },
           plugins: [
             ...getPlugins({ minCSS: true }),
@@ -260,7 +264,7 @@ export default function (opts) {
             replace({
               preventAssignment: true,
               values: {
-                "process.env.NODE_ENV": JSON.stringify("production"),
+                'process.env.NODE_ENV': JSON.stringify('production'),
               },
             }),
             terser(terserOpts),

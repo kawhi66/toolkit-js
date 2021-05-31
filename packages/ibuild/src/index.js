@@ -1,11 +1,11 @@
-import { existsSync } from "fs";
-import { join, resolve } from "path";
-import { getConfig, validateConfig } from "./config";
-import { getPackages } from "@lerna/project";
-import { PackageGraph } from "@lerna/package-graph";
-import * as assert from "assert";
-import buildTask from "./build";
-import transformTask from "./transform";
+import { existsSync } from 'fs';
+import { join, resolve } from 'path';
+import { getConfig, validateConfig } from './config';
+import { getPackages } from '@lerna/project';
+import { PackageGraph } from '@lerna/package-graph';
+import * as assert from 'assert';
+import buildTask from './build';
+import transformTask from './transform';
 
 /**
  * TODO
@@ -34,19 +34,19 @@ export async function build(opts) {
 
 export default async function (args) {
   const cwd = process.cwd();
-  const isLerna = existsSync(join(cwd, "lerna.json"));
+  const isLerna = existsSync(join(cwd, 'lerna.json'));
 
   if (isLerna) {
     // 参考 https://github.com/lerna/lerna/blob/main/utils/symlink-dependencies/symlink-dependencies.js
     const packages = await getPackages(cwd);
-    const packageGraph = new PackageGraph(packages, "allDependencies");
+    const packageGraph = new PackageGraph(packages, 'allDependencies');
     const cacheNodes = [];
 
     // build lerna package recursively
     const buildNode = async function (node) {
       if (node.localDependencies.size) {
         for (const [dependencyName, resolved] of node.localDependencies) {
-          if (resolved.type === "directory") {
+          if (resolved.type === 'directory') {
             // a local file: specifier is already a symlink
             continue;
           }
@@ -66,7 +66,10 @@ export default async function (args) {
       if (cacheNodes.includes(dependencyName)) return;
       cacheNodes.push(dependencyName);
 
-      assert.ok(existsSync(join(dependencyLocation, "package.json")), `package.json not found in ${dependencyName}`);
+      assert.ok(
+        existsSync(join(dependencyLocation, 'package.json')),
+        `package.json not found in ${dependencyName}`,
+      );
       process.chdir(dependencyLocation);
       await build({ ...args, cwd: dependencyLocation, rootPath: cwd });
     };

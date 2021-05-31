@@ -1,5 +1,5 @@
-import { existsSync } from "fs";
-import { join } from "path";
+import { existsSync } from 'fs';
+import { join } from 'path';
 
 export function getExistFile({ cwd, files, returnRelative }) {
   for (const file of files) {

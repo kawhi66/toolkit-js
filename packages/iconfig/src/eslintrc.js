@@ -7,11 +7,10 @@ const isTsProject = fs.existsSync(path.join(process.cwd() || '.', './tsconfig.js
 const eslintOptions = {
   extends: [
     'airbnb-base',
-    'prettier',
+    'plugin:eslint-comments/recommended',
     'plugin:vue/essential',
-    ...(isTsProject
-      ? ['prettier/@typescript-eslint', 'plugin:@typescript-eslint/recommended']
-      : []),
+    'prettier',
+    ...(isTsProject ? ['plugin:@typescript-eslint/recommended'] : []),
   ],
   env: {
     browser: true,
@@ -21,8 +20,9 @@ const eslintOptions = {
     jest: true,
     jasmine: true,
   },
-  parser: isTsProject ? '@typescript-eslint/parser' : '@babel/eslint-parser',
   parserOptions: {
+    // https://eslint.vuejs.org/user-guide/#how-to-use-a-custom-parser
+    parser: isTsProject ? '@typescript-eslint/parser' : '@babel/eslint-parser',
     ecmaFeatures: { jsx: true },
     babelOptions: {
       presets: ['@babel/preset-env', '@babel/preset-typescript'],
@@ -35,16 +35,10 @@ const eslintOptions = {
     requireConfigFile: false,
     project: './tsconfig.json',
   },
-  plugins: [
-    'eslint-comments',
-    'jest',
-    'unicorn',
-    'vue',
-    ...(isTsProject ? ['@typescript-eslint'] : []),
-  ],
+  plugins: ['jest', 'unicorn'],
   rules: {
-    'unicorn/prevent-abbreviations': 'off',
     'eslint-comments/no-unlimited-disable': 0,
+    'unicorn/prevent-abbreviations': 0,
     ...(isTsProject ? tsEslintConfig : {}),
   },
   settings: {

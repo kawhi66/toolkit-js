@@ -39,7 +39,13 @@ module.exports = {
 in `.stylelintrc.js`
 
 ```js
-// todo
+module.exports = {
+  extends: [require.resolve('@toolkit-js/iconfig/lib/stylelintrc')],
+
+  rules: {
+    // your rules
+  },
+};
 ```
 
 ## prettierOptions
@@ -152,5 +158,46 @@ in `.stylelintrc.js`
   "import/no-useless-path-segments": 0,
   "eslint-comments/no-unlimited-disable": 0,
   "unicorn/prevent-abbreviations": 0
+}
+```
+
+## stylelintOptions
+
+### extends
+
+```js
+[
+  'stylelint-config-standard',
+  'stylelint-config-css-modules',
+  'stylelint-config-rational-order',
+  'stylelint-config-prettier',
+],
+```
+
+### plugins
+
+```js
+[
+  'stylelint-order',
+  'stylelint-no-unsupported-browser-features',
+  'stylelint-declaration-block-no-ignored-properties',
+];
+```
+
+### rules
+
+```json
+{
+  "font-family-no-missing-generic-family-keyword": null, // iconfont
+  "function-calc-no-invalid": null,
+  "function-url-quotes": "always",
+  "no-descending-specificity": null,
+  "unit-no-unknown": [
+    true,
+    {
+      "ignoreUnits": ["rpx"]
+    }
+  ],
+  "plugin/declaration-block-no-ignored-properties": true
 }
 ```

@@ -1,17 +1,16 @@
 {
-  "name": "iconfig",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "private": true,
   "scripts": {
-    "lint": "../../node_modules/.bin/eslint --ext .js src",
-    "prettier": "../../../../node_modules/.bin/prettier -c --write **/*.{js,jsx,tsx,ts,less,md,json}"
+    "lint": "npm run lint:js && npm run lint:style && npm run lint:prettier",
+    "lint:fix": "eslint --fix --cache --ext .js,.jsx,.ts,.tsx --format=pretty ./src && npm run lint:style",
+    "lint:js": "eslint --cache --ext .js,.jsx,.ts,.tsx --format=pretty ./src",
+    "lint:prettier": "prettier --check \"**/*\" --end-of-line auto",
+    "lint:style": "stylelint --fix \"src/**/*.less\" --syntax less",
+    "prettier": "prettier -c --write **/*.{js,jsx,tsx,ts,less,md,json}"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "devDependencies": {
     "eslint": "^7.27.0",
-    "prettier": "2.3.0"
+    "prettier": "2.3.0",
+    "stylelint": "^13.13.1"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@toolkit-js/iconfig",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A collection of configuration files containing prettier, eslint, stylelint inspired by [fabric](https://github.com/umijs/fabric).",
   "keywords": [
     "prettier",

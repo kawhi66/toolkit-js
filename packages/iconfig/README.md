@@ -186,7 +186,7 @@ module.exports = {
 
 ### rules
 
-```json
+```js
 {
   "font-family-no-missing-generic-family-keyword": null, // iconfont
   "function-calc-no-invalid": null,

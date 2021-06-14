@@ -8,7 +8,7 @@ const eslintOptions = {
   extends: [
     'airbnb-base',
     'plugin:eslint-comments/recommended',
-    'plugin:vue/essential',
+    'plugin:vue/recommended',
     'prettier',
     ...(isTsProject ? ['plugin:@typescript-eslint/recommended'] : []),
   ],

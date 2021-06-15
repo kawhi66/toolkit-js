@@ -1,0 +1,41 @@
+{
+  "name": "@toolkit-js/icss",
+  "version": "0.0.0",
+  "description": "Css build tool",
+  "keywords": [
+    "css",
+    "bundle",
+    "icss",
+    "toolkit"
+  ],
+  "author": "https://kawhi.site",
+  "homepage": "https://github.com/kawhi66/toolkit-js/tree/master/packages/icss",
+  "license": "MIT",
+  "main": "lib/index.js",
+  "bin": {
+    "icss": "./bin/icss.js"
+  },
+  "files": [
+    "dist",
+    "lib"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://kawhi66:zuoyan1949@github.com/kawhi66/toolkit-js.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/kawhi66/toolkit-js/issues"
+  },
+  "dependencies": {
+    "chalk": "^4.1.1",
+    "signale": "^1.4.0",
+    "update-notifier": "^5.1.0",
+    "yargs-parser": "^20.2.7"
+  }
+}

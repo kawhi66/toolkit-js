@@ -1,0 +1,8 @@
+{
+  "private": "true",
+  "main": "index.js",
+  "scripts": {
+    "icss": "icss"
+  },
+  "dependencies": {}
+}

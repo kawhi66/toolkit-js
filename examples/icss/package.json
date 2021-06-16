@@ -4,5 +4,7 @@
   "scripts": {
     "icss": "icss"
   },
-  "dependencies": {}
+  "dependencies": {
+    "gulp-sass": "^4.1.0"
+  }
 }

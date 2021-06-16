@@ -27,14 +27,14 @@ const updater = require('update-notifier');
 const pkg = require('../package.json');
 updater({ pkg }).notify({ defer: true });
 
-// require('../lib')
-//   .default({
-//     watch: args.w || args.watch || false,
-//   })
-//   .catch((e) => {
-//     signale.error(e);
-//     process.exit(1);
-//   });
+require('../lib')
+  .default({
+    watch: args.w || args.watch || false,
+  })
+  .catch((e) => {
+    signale.error(e);
+    process.exit(1);
+  });
 
 function printHelp() {
   console.log(`

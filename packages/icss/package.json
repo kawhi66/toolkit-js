@@ -16,7 +16,6 @@
     "icss": "./bin/icss.js"
   },
   "files": [
-    "dist",
     "lib"
   ],
   "publishConfig": {
@@ -26,16 +25,24 @@
     "type": "git",
     "url": "git+https://kawhi66:zuoyan1949@github.com/kawhi66/toolkit-js.git"
   },
-  "scripts": {
-    "test": "echo \"Error: run tests from root\" && exit 1"
-  },
   "bugs": {
     "url": "https://github.com/kawhi66/toolkit-js/issues"
   },
   "dependencies": {
     "chalk": "^4.1.1",
+    "chokidar": "^3.5.2",
+    "gulp-autoprefixer": "^8.0.0",
+    "gulp-cssmin": "^0.2.0",
+    "gulp-if": "^3.0.0",
+    "gulp-less": "^4.0.1",
+    "gulp-plumber": "^1.2.1",
     "signale": "^1.4.0",
+    "through2": "^4.0.2",
     "update-notifier": "^5.1.0",
+    "vinyl-fs": "^3.0.3",
     "yargs-parser": "^20.2.7"
+  },
+  "peerDependencies": {
+    "gulp-sass": "^4.1.0"
   }
 }

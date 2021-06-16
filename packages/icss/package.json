@@ -1,7 +1,7 @@
 {
   "name": "@toolkit-js/icss",
   "version": "0.0.0",
-  "description": "Css build tool",
+  "description": "CSS build tool",
   "keywords": [
     "css",
     "bundle",
@@ -36,6 +36,7 @@
     "gulp-if": "^3.0.0",
     "gulp-less": "^4.0.1",
     "gulp-plumber": "^1.2.1",
+    "lodash": "4.17.21",
     "signale": "^1.4.0",
     "through2": "^4.0.2",
     "update-notifier": "^5.1.0",

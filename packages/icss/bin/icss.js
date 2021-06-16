@@ -30,6 +30,7 @@ updater({ pkg }).notify({ defer: true });
 require('../lib')
   .default({
     watch: args.w || args.watch || false,
+    entry: args._[0],
   })
   .catch((e) => {
     signale.error(e);
@@ -38,7 +39,7 @@ require('../lib')
 
 function printHelp() {
   console.log(`
-  Usage: icss [options]
+  Usage: icss [options] <entry>
 
   Options:
 

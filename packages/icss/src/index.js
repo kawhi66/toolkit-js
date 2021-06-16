@@ -10,7 +10,7 @@ import cssmin from 'gulp-cssmin';
 import * as chokidar from 'chokidar';
 
 export default async function (opts) {
-  const { cwd = process.cwd(), watch } = opts;feat:
+  const { cwd = process.cwd(), watch } = opts;
   const entry = './element-ui/theme-chalk/src/*.scss';
   const srcPath = cwd;
   const targetDir = 'lib';

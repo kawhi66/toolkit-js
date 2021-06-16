@@ -1,4 +1,6 @@
 /examples/*/lib
+/examples/**/yarn.lock
+/examples/**/package-lock.json
 /packages/*/lib
 /packages/**/yarn.lock
 /packages/**/package-lock.json

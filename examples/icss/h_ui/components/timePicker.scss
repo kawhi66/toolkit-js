@@ -1,0 +1,162 @@
+$time-picker-prefix-cls: "#{$css-prefix}time-picker";
+
+
+.#{$time-picker-prefix-cls} {
+  &-cells{
+    min-width: $time-picker-cells-width;
+    &-with-seconds{
+      min-width: $time-picker-cells-width-with-seconds;
+    }
+
+    &-list{
+      width: $time-picker-cells-width-base;
+      max-height: $time-picker-cells-list-max-height;
+      float: left;
+      overflow: hidden;
+      border-left: 1px solid $border-color-split;
+      position: relative;
+      &:hover{
+        overflow-y: auto;
+      }
+
+      &:first-child{
+        border-left: none;
+        border-radius: $btn-border-radius 0 0 $btn-border-radius;
+      }
+      &:last-child{
+        border-radius: 0 $btn-border-radius $btn-border-radius 0;
+      }
+      ul{
+        width: $time-picker-cells-list-ul-width;
+        margin: $time-picker-cells-list-ul-margin;
+        padding:$time-picker-cells-list-ul-padding;
+        list-style: none;
+        li{
+          width: $time-picker-cells-list-ul-li-width;
+          height:$time-picker-cells-list-ul-li-height;
+          line-height: $time-picker-cells-list-ul-li-line-height;
+          margin: $time-picker-cells-list-ul-li-margin;
+          padding: $time-picker-cells-list-ul-li-padding;
+          box-sizing: content-box;
+          text-align: left;
+          user-select: none;
+          cursor: pointer;
+          list-style: none;
+          transition: background $transition-time $ease-in-out;
+        }
+      }
+    }
+    &-cell{
+      &:hover{
+        background: $background-color-select-hover;
+      }
+      &-disabled {
+        color: $btn-disable-color;
+        cursor: $cursor-disabled;
+
+        &:hover {
+          color: $btn-disable-color;
+          background-color: $time-picker-cells-cell-hover-background-color;
+          cursor: $cursor-disabled;
+        }
+      }
+      &-selected ,&-selected:hover{
+        color: $primary-color;
+        background: $background-color-select-hover;
+      }
+    }
+  }
+
+  &-header{
+    height: $time-picker-header-height;
+    line-height: $time-picker-header-line-height;
+    text-align: center;
+    border-bottom: 1px solid $border-color-split;
+  }
+
+  &-with-range{
+    .#{$picker-prefix-cls}-panel{
+      &-body{
+        min-width: $time-picker-cells-width * 2 + 4px;
+      }
+      &-content{
+        float: left;
+        position: relative;
+
+        &:after{
+          content: '';
+          display: block;
+          width: $time-picker-with-range-content-after-width;
+          position: absolute;
+          top: $time-picker-with-range-content-after-top;
+          bottom: $time-picker-with-range-content-after-bottom;
+          right: $time-picker-with-range-content-after-right;
+          background: $border-color-split;
+          z-index: 1;
+        }
+
+        &-right{
+          float: right;
+          &:after{
+            right: auto;
+            left: $time-picker-with-range-content-right-after-left;
+          }
+        }
+      }
+    }
+    .#{$time-picker-prefix-cls}-cells{
+      &-list{
+        &:first-child{
+          border-radius: 0;
+        }
+        &:last-child{
+          border-radius: 0;
+        }
+      }
+    }
+  }
+  &-with-range.#{$time-picker-prefix-cls}-with-seconds{
+    .#{$picker-prefix-cls}-panel{
+      &-body{
+        min-width: $time-picker-cells-width-with-seconds * 2 + 4px;
+      }
+    }
+  }
+}
+
+.#{$picker-prefix-cls}-panel-content{
+  .#{$picker-prefix-cls}-panel-content{
+    .#{$time-picker-prefix-cls}{
+      &-cells{
+        min-width: $time-picker-cells-width-with-date-with-seconds;
+        &-with-seconds{
+          min-width: $time-picker-cells-width-with-date-with-seconds;
+          .#{$time-picker-prefix-cls}-cells-list{
+            width: $time-picker-cells-width-with-date-with-seconds / 3;
+            ul{
+              li{
+                padding: $time-picker-panel-content-with-second-li-padding;
+              }
+            }
+          }
+        }
+        &-list {
+          width: $time-picker-cells-width-with-date-with-seconds / 2;
+          max-height: $time-picker-panel-content-list-max-height;
+          &:first-child{
+            border-radius: 0;
+          }
+          &:last-child{
+              border-radius: 0;
+          }
+          ul{
+            padding: $time-picker-panel-content-list-ul-padding;
+            li{
+              padding: $time-picker-panel-content-list-li-padding;
+            }
+          }
+        }
+      }
+    }
+  }
+}

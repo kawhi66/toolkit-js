@@ -1,0 +1,24 @@
+  .h-tree-space {
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1;
+    width: 16px;
+    height: 14px;
+}
+.h-editgird-wrapper {
+  .h-spin-fix {
+    border-bottom: 1px solid $border-color-base;
+    border-right: 1px solid $border-color-base;
+  }
+}
+.h-editgird-stripe .h-editgird-body {
+  tr.h-editgird-stripe-dark td {
+      background-color: $table-td-stripe-bg;
+  }
+  tr.h-editgird-stripe-light td {
+    background-color: #fff;
+  }
+}

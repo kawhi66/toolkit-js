@@ -1,0 +1,535 @@
+$selectTable-prefix-cls:  "#{$css-prefix}selectTable";
+$selectTable-item-prefix-cls:  "#{$css-prefix}selectTable-item";
+$select-group-prefix-cls:  "#{$css-prefix}selectTable-group";
+
+.#{$selectTable-prefix-cls} {
+    display: inline-block;
+    width: 100%;
+    box-sizing: border-box;
+    vertical-align: middle;
+    color: $text-color;
+    font-size: $font-size-base;
+    line-height: normal;
+    height: $form-component-height;
+    position: relative;
+
+    &-selection {
+        display: block;
+        box-sizing: border-box;
+        outline: none;
+        user-select: none;
+        cursor: pointer;
+
+        background-color: $selectTable-selection-background-color;
+        border-radius: $btn-border-radius;
+        border: 1px solid $border-color-base;
+        transition: all $transition-time $ease-in-out;
+
+
+        .#{$selectTable-prefix-cls}-arrow.h-icon-close {
+            display: none;
+            cursor: pointer;
+        }
+
+        &:hover {
+            @include hover();
+            .#{$selectTable-prefix-cls}-arrow:nth-of-type(1) {
+                display: inline-block;
+            }
+            .#{$selectTable-prefix-cls}-arrow:nth-of-type(2) {
+              display: none;
+            }
+        }
+        .h-tag {
+            max-width: $selectTable-selection-h-tag-max-width;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            padding-right: $selectTable-selection-h-tag-padding-right;
+        }
+        .h-tag span {
+            display: inline-block;
+            width: 100%;
+        }
+
+      // 扩大singleSelect和multiSelect右侧箭头点击区域
+      .#{$selectTable-prefix-cls}-arrowWrapper {
+        width: 24px;
+        height: $input-height-base;
+        line-height: $input-height-base;
+        position: absolute;
+        right: 0;
+        top:0;
+      }
+    }
+    &-show-clear &-selection:hover .#{$selectTable-prefix-cls}-arrow:nth-of-type(2) {
+        display: none;
+    }
+
+    &-arrow {
+        @include inner-arrow();
+    }
+
+    &-visible{
+        .#{$selectTable-prefix-cls}-selection{
+            @include active();
+        }
+
+        .#{$selectTable-prefix-cls}-arrow.icon-unfold {
+            transform: rotate(180deg);
+        }
+    }
+    &-disabled,&-readonly{
+        .#{$selectTable-prefix-cls}-selection {
+            .#{$selectTable-prefix-cls}-arrow:nth-of-type(2) {
+                display: none;
+            }
+            .#{$selectTable-prefix-cls}-input {
+                cursor: not-allowed;
+            }
+            &:hover {
+                border-color: $border-color-base;
+                box-shadow: none;
+                .#{$selectTable-prefix-cls}-arrow:nth-of-type(1) {
+                    display: inline-block;
+                }
+            }
+        }
+    }
+    &-disabled {
+        .#{$selectTable-prefix-cls}-selection {
+            @include disabled();
+        }
+    }
+    &-readonly {
+        .#{$selectTable-prefix-cls}-selection {
+            @include readonly();
+        }
+    }
+
+    &-single &-selection{
+        height: $input-height-base;
+        position: relative;
+        overflow: hidden;
+        .#{$selectTable-prefix-cls}-placeholder{
+            color: $input-placeholder-color;
+        }
+
+        .#{$selectTable-prefix-cls}-placeholder, .#{$selectTable-prefix-cls}-selected-value{
+            display: block;
+            height: $input-height-base - 2px;
+            line-height: $input-height-base - 2px;
+            font-size: $font-size-small;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            padding-left: $selectTable-single-selection-selected-value-padding-left;
+            padding-right: $selectTable-single-selection-selected-value-padding-right;
+        }
+    }
+
+    .#{$selectTable-prefix-cls}-large.#{$selectTable-prefix-cls}-single &-selection{
+        height: $input-height-large;
+
+        .#{$selectTable-prefix-cls}-placeholder, .#{$selectTable-prefix-cls}-selected-value{
+            height: $input-height-large - 2px;
+            line-height: $input-height-large - 2px;
+            font-size: $font-size-base;
+        }
+    }
+
+    .#{$selectTable-prefix-cls}-small.#{$selectTable-prefix-cls}-single &-selection{
+        height: $input-height-small;
+        border-radius: $btn-border-radius-small;
+
+        .#{$selectTable-prefix-cls}-placeholder, .#{$selectTable-prefix-cls}-selected-value{
+            height: $input-height-small - 2px;
+            line-height: $input-height-small - 2px;
+        }
+    }
+
+    &-multiple &-selection{
+        overflow-x: hidden;
+        overflow-y: auto;
+        height: $input-height-base;
+        padding-left:$selectTable-multiple-selection-padding-left;
+        padding-right:$selectTable-multiple-selection-padding-right;
+
+        .#{$selectTable-prefix-cls}-placeholder{
+            display: block;
+            height: $input-height-base - 2px;
+            line-height: $input-height-base - 2px;
+            color: $input-placeholder-color;
+            font-size: $font-size-small;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            padding-left: $selectTable-multiple-selection-placeholder-padding-left;
+            padding-right: $selectTable-multiple-selection-placeholder-padding-right;
+        }
+    }
+
+    // input
+    &-input{
+        display: inline-block;
+        height: $input-height-base;
+        line-height: $input-height-base;
+        padding: $selectTable-input-padding;
+        font-size: $font-size-small;
+        outline: none;
+        border: none;
+        box-sizing: border-box;
+        color: $input-color;
+        background-color: transparent;
+        position: relative;
+        cursor: pointer;
+        @include placeholder();
+    }
+
+    &-single &-input{
+        width: 100%;
+    }
+
+    &-large &-input{
+        font-size: $font-size-base;
+        height: $input-height-large;
+    }
+
+    &-small &-input{
+        height: $input-height-small;
+    }
+
+    &-multiple &-input{
+        height: $input-height-base - 3px;
+        line-height: $input-height-base;
+        padding:$selectTable-multiple-input-padding;
+        vertical-align: top;
+    }
+
+    &-not-found{
+        text-align: center;
+        color: $btn-disable-color;
+    }
+    &-loading{
+        text-align: center;
+        color: $btn-disable-color;
+    }
+    &-not-data{
+        text-align: center;
+        color: $btn-disable-color;
+    }
+    &-multiple .#{css-prefix}tag{
+        margin:$selectTable-multiple-tag-margin;
+    }
+
+    &-dropdown {
+      &-transfer{
+        z-index: $zindex-transfer;
+      }
+      // select-dropdown-list checkbox
+      &-list {
+        .#{$selectTable-prefix-cls}-item {
+            position: relative;
+            & label {
+                // position: absolute;
+                // left: 8px;
+            }
+        }
+      }
+    }
+    &-block-loading {
+      position: absolute;
+      top: $selectTable-block-loading-top;
+      left:$selectTable-block-loading-left;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background:$selectTable-block-loading-background;
+      color: $text-color;
+    }
+
+    &-dropdown-content{
+        // max-height:$max-height;
+        // padding: 0;
+        // overflow:auto;
+        .h-selectTable-search {
+            position: absolute;
+            background:$selectTable-dropdown-content-background;
+            height: $selectTable-dropdown-content-height;
+            padding: $selectTable-dropdown-content-padding;
+            left: 0;
+            top: 0;
+            z-index: 1;
+            input {
+                // height: 32px;
+                // line-height: 32px;
+                padding: $selectTable-dropdown-content-input-padding;
+                border: $selectTable-dropdown-content-input-border;
+            }
+            input:focus {
+                box-shadow: none;
+            }
+        }
+        .h-selectTable-dropdown-list {
+            max-height:$max-height;
+            overflow:auto;
+            position:relative;
+
+            .h-table-wrapper {
+                border: 0;
+                // margin-top: 52px;
+                // padding: 0 10px;
+                .h-table:after {
+                    width: 0;
+                }
+                .h-table:before{
+                    background-color:$selectTable-dropdown-content-dropdown-list-table-before-background-color;
+                }
+                .h-table th,
+                .h-table td {
+                    border-bottom: 0;
+                    border-top:$selectTable-dropdown-content-dropdown-list-table-border-top;
+                }
+                .h-table-row-highlight td,
+                .h-table-row-checked td {
+                    background:$selectTable-dropdown-content-dropdown-list-table-row-checked-background;
+                    color: $selectTable-dropdown-content-dropdown-list-table-row-checked-color;
+                }
+                .h-table-row-hover td {
+                    background:$background-color-select-hover;
+                }
+            }
+        }
+        .#{$selectTable-prefix-cls}-checkHead{
+            .h-checkbox-wrapper{
+                margin-left:$selectTable-dropdown-content-checkHead-margin-left;
+                line-height: $selectTable-dropdown-content-checkHead-line-height;
+            }
+        }
+    }
+    &-dropdown-noline-content {
+        padding: 0;
+        .h-selectTable-search {
+            position: absolute;
+            background: $selectTable-dropdown-noline-content-selectTable-search-background;
+            height: $selectTable-dropdown-noline-content-selectTable-search-height;
+            padding: $selectTable-dropdown-noline-content-selectTable-search-padding;
+            left: 0;
+            top: 0;
+            z-index: 1;
+            input {
+                border: 0;
+                padding: $selectTable-dropdown-noline-content-selectTable-search-input-padding;
+                border-radius: 0;
+                border-bottom: $selectTable-dropdown-noline-content-selectTable-search-input-border-bottom;
+            }
+            input:focus {
+                box-shadow: none;
+            }
+        }
+        .h-selectTable-dropdown-list {
+            max-height:$max-height;
+            overflow:auto;
+            position: relative;
+
+            .h-table-wrapper {
+                border: 0;
+                // margin-top: 38px;
+                // padding: 0 5px;
+                .h-table:after {
+                    width: 0;
+                }
+                .h-table:before{
+                    background-color:$selectTable-dropdown-noline-content-h-table-wrapper-background-color;
+                }
+                .h-table th {
+                    border-bottom: 0;
+                }
+                .h-table td {
+                    border-bottom: 0;
+                }
+                .h-table-row-highlight td,
+                .h-table-row-checked td{
+                    background: $selectTable-dropdown-noline-content-h-table-wrapper-row-checked-background;
+                    color: $selectTable-dropdown-noline-content-h-table-wrapper-row-checked-color;
+
+                }
+                .h-table-row-hover td {
+                    background:$background-color-select-hover;
+                }
+            }
+        }
+        .#{$selectTable-prefix-cls}-checkHead{
+            .h-checkbox-wrapper{
+                margin-left:12px;
+                margin-right:5px;
+                line-height: 29px;
+            }
+        }
+    }
+    &-left {
+        text-align:left;
+    }
+    &-center {
+        text-align:center;
+    }
+    &-right {
+        text-align:right;
+    }
+    &-hideMultHead{
+        position: relative;
+        display: block;
+        font-size: $font-size-small;
+        padding: $selectTable-hideMultHead-padding;
+    }
+    &-hideMultHead:hover{
+        cursor: pointer;
+    }
+    &-hideMultHead:after{
+        @include h-icon();
+        font-size: $selectTable-hideMultHead-after-font-size;
+        content: '\E734';
+        color: $no-select-color;
+        position: absolute;
+        top: $selectTable-hideMultHead-after-top;
+        right: $selectTable-hideMultHead-after-right;
+    }
+    &-hideMultHead-select,&-hideMultHead-select:after{
+        color: $selected-color;
+    }
+    &-selected-num{
+        display: block;
+        height: $input-height-base - 2px;
+        line-height: $input-height-base - 2px;
+        padding-left: 8px;
+        font-size: $font-size-small;
+    }
+
+  &-btnToTop {
+    padding: 7px 14px;
+    &-invert {
+      float: right;
+      margin-right: 12px;
+    }
+  }
+}
+.#{$selectTable-prefix-cls}-checkHead{
+    input{
+        width: calc(100% - 45px)
+    }
+}
+
+@include select-item($selectTable-prefix-cls, $selectTable-item-prefix-cls);
+
+.#{$selectTable-prefix-cls}-multiple .#{$selectTable-item-prefix-cls} {
+    &-selected{
+        color: $selected-color;
+        background: $selectTable-multiple-selected-background;
+    }
+    &-focus,&-selected:hover{
+        color:$selected-color;
+        background: $background-color-select-hover;
+    }
+
+    .#{$selectTable-item-prefix-cls}-selected.#{$selectTable-item-prefix-cls}-focus {
+        color: shade($selected-color, 10%);
+        background: $selectTable-multiple-selected-background;
+    }
+    // .#{$checkbox-prefix-cls}-wrapper {
+    //     float: right;
+    // }
+    // &-selected:after{
+    //     @include h-icon();
+    //     float: right;
+    //     font-size: 20px;
+    //     content: "\e734";
+    //     color: $selected-color;
+    // }
+}
+.#{$select-group-prefix-cls} {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    &-title {
+        padding-left: $selectTable-select-group-title-padding-left;
+        font-size: $selectTable-select-group-title-font-size;
+        color: $legend-color;
+        height: $selectTable-select-group-title-height;
+        line-height: $selectTable-select-group-title-height;
+    }
+}
+
+.#{$form-item-prefix-cls}-error{
+    .#{$selectTable-prefix-cls}{
+        &-selection{
+            border: 1px solid $error-color;
+            &:hover{
+                border: 1px solid $error-color;
+            }
+        }
+        &-arrow{
+            color: $error-color;
+        }
+        &-visible .#{$selectTable-prefix-cls}-selection{
+            @include active-error;
+        }
+    }
+}
+.#{$form-item-prefix-cls}-changed{
+    .#{$selectTable-prefix-cls}{
+        &-selection{
+            color:$changed-color;
+        }
+        .h-tag{
+            color:$changed-color !important;
+        }
+        &-input{
+            color:$changed-color;
+        }
+    }
+}
+.#{$editgird-prefix-cls}-cell-error{
+    .#{$selectTable-prefix-cls}{
+        &-selection{
+            border: 1px solid $error-color;
+        }
+        &-arrow{
+            color: $error-color;
+        }
+        &-visible .#{$selectTable-prefix-cls}-selection{
+            @include active-error;
+        }
+    }
+}
+.#{$editgird-prefix-cls}-cell{
+    .#{$selectTable-prefix-cls}{
+        &-dropdown{
+            ul{
+                user-select:none;
+            }
+        }
+    }
+}
+.#{$selectTable-prefix-cls}-multiple{
+    .#{$selectTable-prefix-cls}{
+        &-checkall{
+            border-top: $selectTable-multiple-checkall-border-top;
+            text-align: right;
+            padding: $selectTable-multiple-checkall-padding;
+            clear: both;
+        }
+    }
+    .h-tag{
+        background: $selectTable-multiple-h-tag-background !important;
+        border: $selectTable-multiple-h-tag-border !important
+    }
+}
+.#{$selectTable-prefix-cls}-header-slot{
+    border-bottom: $selectTable-header-slot-border-bottom;
+}
+.#{$selectTable-prefix-cls}-header-slot-top{
+    border-bottom:$selectTable-header-slot-border-bottom;
+    margin-top:$selectTable-header-slot-margin-top;
+}

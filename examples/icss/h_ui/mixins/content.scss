@@ -1,0 +1,49 @@
+//content
+$icon-prefix-cls: "#{$css-prefix}icon";
+
+@mixin content-header() {
+    border-bottom: 1px solid $border-color-split;
+    padding: $mixin-content-header-padding;
+    line-height: 1;
+
+    p,
+    &-inner
+    {
+        display: inline-block;
+        width: 100%;
+        height: 20px;
+        line-height: 20px;
+        font-size: $font-size-base;
+        color: $mixin-content-header-color;
+        font-weight: bold;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+}
+
+@mixin content-close($top: 0, $icon-font-size: 22px) {
+    font-size: $font-size-small;
+    position: absolute;
+    right: 16px;
+    top: 12px;
+    overflow: hidden;
+    cursor: pointer;
+
+    .#{$icon-prefix-cls}-ios-close-empty {
+        @include close-base($top, $icon-font-size);
+    }
+}
+@mixin content-maximise($top: 0, $icon-font-size: 22px) {
+    font-size: $font-size-small;
+    padding-top: $top;
+    position: absolute;
+    right: 38px;
+    top: 12px;
+    overflow: hidden;
+    cursor: pointer;
+
+    i{
+        font-size: $icon-font-size;
+    }
+}

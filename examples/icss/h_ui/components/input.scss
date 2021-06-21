@@ -1,0 +1,177 @@
+$input-prefix-cls: "#{$css-prefix}input";
+
+.#{$input-prefix-cls} {
+  @include input();
+  &-type{
+    height:$form-component-height;
+  }
+  &-wrapper{
+    display: inline-block;
+    width: 100%;
+    position: relative;
+    // vertical-align: top;
+    vertical-align: $input-wrapper-vertical-align;
+  }
+  &-icon {
+    width: $input-icon-width;
+    height: $input-height-base;
+    line-height: $input-height-base;
+    text-align: center;
+    color: $icon-color;
+    position: absolute;
+    right: 0;
+    z-index: 3;
+  }
+  &-hide-icon &-icon{
+      display: none;
+  }
+  &-icon-validate{
+    display: none;
+  }
+
+  &-icon-normal + &{
+    padding-right: $input-icon-normal-padding-right;
+  }
+  // #554
+  &-hide-icon &-icon-normal + &{
+    padding-right: $input-padding-horizontal;
+  }
+
+  &-wrapper-large &-icon{
+    font-size: $font-size-base;
+    height: $input-height-large;
+    line-height: $input-height-large;
+  }
+  &-wrapper-small &-icon{
+    width: $input-icon-small-width;
+    font-size: $font-size-small;
+    height: $input-height-small;
+    line-height: $input-height-small;
+
+    //+ .@{input-prefix-cls} {
+    //    padding-right: 24px;
+    //}
+  }
+  &-left{
+    text-align:left;
+  }
+  &-center{
+    text-align:center;
+  }
+  &-right{
+    text-align:right;
+  }
+  &-tips{
+    padding-top: $input-tips-padding-top;
+    ul{
+      li{
+        display: inline-block;
+        width: 25%;
+        max-width:$input-tips-ul-li-max-width;
+        text-align: center;
+        div{
+          height:$input-tips-ul-li-div-height;
+          background:$border-color-base;
+          margin-bottom: $input-tips-ul-li-div-margin-bottom;
+        }
+      }
+    }
+    &-weak{
+      background:$error-color !important;
+    }
+    &-general{
+      background:$warning-color !important;
+    }
+    &-complex{
+      background:$success-color !important;
+    }
+  }
+  &-noresize{
+    resize:none;
+  }
+  &-word-limit {
+    position: absolute;
+    bottom: $input-word-limit-bottom;
+    right: $input-word-limit-right;
+    color: $input-hint;
+    background: $input-bg;
+  }
+}
+// Reset height for textarea
+textarea.#{$input-prefix-cls} {
+  max-width: 100%;
+  height: auto;
+  vertical-align: bottom;
+  font-size: $font-size-small;
+  overflow:auto;
+  // 解决 ie 浏览器下 textarea 不换行问题
+  white-space: pre-line;
+}
+
+.#{$input-prefix-cls}-group{
+  @include input-group("#{$input-prefix-cls}");
+}
+
+.#{$form-item-prefix-cls}-error{
+  .#{$input-prefix-cls}{
+    @include input-error();
+    &-icon{
+      color: $error-color;
+    }
+  }
+  .#{$input-prefix-cls}-group{
+    @include input-group-error();
+  }
+  .#{$transfer-prefix-cls} {
+    .#{$input-prefix-cls} {
+      @include input();
+      &-icon{
+        color: $icon-color;
+      }
+    }
+  }
+}
+.#{$form-item-prefix-cls}-changed{
+  .#{$input-prefix-cls}{
+    @include changed();
+  }
+}
+.#{$form-item-prefix-cls}-validating{
+  .#{$input-prefix-cls}{
+    &-icon-validate{
+        display: inline-block;
+    }
+    &-icon + .#{$input-prefix-cls}{
+        padding-right: $input-icon-validate-padding-right;
+    }
+  }
+}
+.#{$editgird-prefix-cls}-cell-error{
+  .#{$input-prefix-cls}{
+    @include input-error();
+    &-icon{
+      color: $error-color;
+    }
+  }
+  .#{$input-prefix-cls}-group{
+    @include input-group-error();
+  }
+  .#{$transfer-prefix-cls} {
+    .#{$input-prefix-cls} {
+      @include input();
+      &-icon{
+        color: $icon-color;
+      }
+    }
+  }
+}
+.#{$editgird-prefix-cls}-validating{
+  .#{$input-prefix-cls}{
+    &-icon-validate{
+        display: inline-block;
+    }
+    &-icon + .#{$input-prefix-cls}{
+        padding-right: $input-icon-validate-padding-right;
+    }
+  }
+}

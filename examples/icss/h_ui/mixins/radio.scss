@@ -1,0 +1,14 @@
+
+@mixin hover-error() {
+  border-color: $error-color;
+}
+
+@mixin radio-error() {
+  $radio-inner-prefix-cls: "#{$radio-prefix-cls}-inner";
+  .#{$radio-inner-prefix-cls} {
+    border: 1px solid $error-color;
+  }
+  &:hover {
+    @include hover-error;
+  }
+}

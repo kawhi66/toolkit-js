@@ -1,0 +1,450 @@
+$select-prefix-cls:  "#{$css-prefix}select";
+$select-item-prefix-cls:  "#{$css-prefix}select-item";
+$select-group-prefix-cls:  "#{$css-prefix}select-group";
+
+.#{$select-prefix-cls} {
+    display: inline-block;
+    width: 100%;
+    box-sizing: border-box;
+    vertical-align: $select-vertical-align;
+    color: $text-color;
+    font-size: $font-size-base;
+    // line-height: normal;
+    height: $input-height-base;
+    position: relative;
+
+    &-selection {
+        display: block;
+        box-sizing: border-box;
+        outline: none;
+        user-select: none;
+        cursor: pointer;
+
+        background-color: $select-selection-background-color;
+        border-radius: $btn-border-radius;
+        border: 1px solid $border-color-base;
+        transition: all $transition-time $ease-in-out;
+
+
+        // .#{$select-prefix-cls}-arrow.h-icon-close {
+        //     display:none;
+        //     cursor: pointer;
+        // }
+
+        &:hover {
+            @include hover();
+            .#{$select-prefix-cls}-arrow:nth-of-type(1) {
+                display: inline-block;
+            }
+            // .#{$select-prefix-cls}-arrow:nth-of-type(2) {
+            //     display: none;
+            // }
+        }
+
+        .#{$css-prefix}tag {
+            position: relative;
+            white-space: nowrap;
+            max-width: 45%;
+            text-overflow: ellipsis;
+            height: $select-tag-height;
+            line-height:$select-tag-line-height;
+            // margin: 0;
+            padding: $select-tag-padding;
+            padding-right: $select-tag-padding-right;
+            padding-left: $select-tag-padding-left;
+            margin-left:$select-tag-margin-left;
+            background: $select-tag-background !important;
+            border: 1px solid $border-color-split !important;
+            &>.#{$css-prefix}icon {
+              position: absolute;
+              right: 0;
+            }
+            span{
+                display: inline-block;
+                width: 100%;
+            }
+        }
+    }
+    // &-show-clear &-selection:hover .#{$select-prefix-cls}-arrow:nth-of-type(2) {
+    //     display: none;
+    // }
+
+    &-arrow {
+        @include inner-arrow();
+    }
+
+    &-visible{
+        .#{$select-prefix-cls}-selection{
+            @include active();
+        }
+
+        .#{$select-prefix-cls}-arrow.h-icon-unfold {
+            transform: rotate(180deg);
+        }
+    }
+
+    &-disabled,&-readonly{
+        .#{$select-prefix-cls}-selection {
+            .#{$select-prefix-cls}-arrow:nth-of-type(1) {
+                display: none;
+            }
+            .#{$select-prefix-cls}-input {
+              cursor: not-allowed;
+            }
+            &:hover {
+                border-color: $border-color-base;
+                box-shadow: none;
+
+                .#{$select-prefix-cls}-arrow:nth-of-type(2) {
+                    display: inline-block;
+                }
+            }
+        }
+    }
+    &-disabled {
+        .#{$select-prefix-cls}-selection {
+            @include disabled();
+        }
+    }
+    &-readonly {
+        .#{$select-prefix-cls}-selection {
+            @include readonly();
+        }
+    }
+
+    &-single &-selection{
+        height: $input-height-base;
+        position: relative;
+
+        .#{$select-prefix-cls}-placeholder{
+            color: $input-placeholder-color;
+        }
+
+        .#{$select-prefix-cls}-placeholder, .#{$select-prefix-cls}-selected-value{
+            display: block;
+            height: $input-height-base - 2px;
+            line-height: $input-height-base - 2px;
+            font-size: $select-single-selection-font-size;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            padding-left: $select-single-selection-selected-value-padding-left;
+            padding-right: $select-single-selection-selected-value-padding-right;
+        }
+        .#{$select-prefix-cls}-selected-value-close{
+            padding-right: $select-single-selection-selected-value-padding-right-close;
+        }
+    }
+
+    .#{$select-prefix-cls}-large.#{$select-prefix-cls}-single &-selection{
+        height: $input-height-large;
+
+        .#{$select-prefix-cls}-placeholder, .#{$select-prefix-cls}-selected-value{
+            height: $input-height-large - 2px;
+            line-height: $input-height-large - 2px;
+            font-size: $font-size-base;
+        }
+    }
+
+    .#{$select-prefix-cls}-small.#{$select-prefix-cls}-single &-selection{
+        height: $input-height-small;
+        border-radius: $btn-border-radius-small;
+
+        .#{$select-prefix-cls}-placeholder, .#{$select-prefix-cls}-selected-value{
+            height: $input-height-small - 2px;
+            line-height: $input-height-small - 2px;
+        }
+    }
+
+    &-multiple &-selection{
+        overflow-y: auto;
+        height: $input-height-base;
+        padding-right:$select-multiple-selection-padding-right;
+        padding-left: $select-multiple-selection-padding-left;
+        display: flex;
+        flex-flow: wrap;
+        .#{$select-prefix-cls}-placeholder{
+            display: block;
+            height: $input-height-base - 2px;
+            line-height: $input-height-base - 2px;
+            color: $input-placeholder-color;
+            font-size: $select-multiple-selection-font-size;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            padding-left: $select-multiple-selection-placeholder-padding-left;
+            padding-right: $select-multiple-selection-placeholder-padding-right;
+        }
+    }
+
+    &-multiple &-selection &-input {
+      flex-grow: 1;
+      width: 100%;
+    }
+
+    // input
+    &-input,&-content-input{
+        vertical-align: top;
+        display: inline-block;
+        height: $input-height-base;
+        line-height: $input-height-base;
+        padding:$select-input-padding;
+        font-size: $select-content-input-font-size;
+        outline: none;
+        border: none;
+        box-sizing: border-box;
+        color: $input-color;
+        background-color: transparent;
+        position: relative;
+        cursor: pointer;
+        @include placeholder();
+    }
+
+    &-content-input{
+        width:100%;
+    }
+    &-checkHead{
+      .h-checkbox-wrapper{
+          margin-left:$select-checkHead-margin-left;
+          margin-right:$select-checkHead-margin-right;
+      }
+      .#{$select-prefix-cls}-content-input{
+          width: calc(100% - 36px);
+          height: $select-checkHead-content-input-height;
+          line-height: $select-checkHead-content-input-line-height;
+      }
+    }
+
+    &-single &-input{
+        width: 100%;
+    }
+
+    &-large &-input{
+        font-size: $font-size-base;
+        height: $input-height-large;
+    }
+
+    &-small &-input{
+        height: $input-height-small;
+    }
+
+    &-multiple &-input{
+        height: $input-height-base - 3px;
+        line-height: $input-height-base;
+        padding:$select-multiple-input-padding;
+    }
+
+    &-not-found{
+        text-align: center;
+        color: $btn-disable-color;
+    }
+    &-loading{
+        text-align: center;
+        color: $btn-disable-color;
+    }
+    &-not-data{
+        text-align: center;
+        color: $btn-disable-color;
+    }
+    &-multiple .#{css-prefix}tag{
+        margin:$select-multiple-tag-margin;
+    }
+    &-hideMultHead{
+        position: relative;
+        display: block;
+        font-size: $select-hideMultHead-font-size;
+        padding:$select-hideMultHead-padding;
+    }
+    &-hideMultHead:hover{
+        cursor: pointer;
+    }
+    &-hideMultHead:after{
+        @include h-icon();
+        font-size: $select-hideMultHead-after-font-size;
+        content: '\E734';
+        color: $no-select-color;
+        position: absolute;
+        top: $select-hideMultHead-after-top;
+        right: $select-hideMultHead-after-right;
+    }
+    &-hideMultHead-select,&-hideMultHead-select:after{
+        color: $selected-color;
+    }
+    // select-arrow
+    &-single &-selection {
+        .#{$select-prefix-cls}-arrow {
+            right: $select-single-selection-arrow-right!important;
+        }
+        // #177543  客户经常会出现点下拉图标查看所有选项时，误将当前选项清除的情况 (期望和下拉标志显示一行)
+        .#{$select-prefix-cls}-arrow.h-icon-close {
+            right: $select-single-selection-arrow-right-close!important;
+        }
+    }
+
+    // select-dropdown-list checkbox
+    &-dropdown &-dropdown-list {
+        .#{$select-prefix-cls}-item {
+            position: relative;
+            height: $select-dropdown-item-height;
+            line-height: $select-dropdown-item-line-height;
+            display: flex;
+            align-items: baseline;
+            & label {
+                // position: absolute;
+                // left: 8px;
+            }
+        }
+    }
+    &-dropdown-content{
+        max-height:$max-height;
+        padding: $select-dropdown-content-padding;
+        overflow:auto;
+    }
+    &-left{
+        text-align:left;
+    }
+    &-center{
+        text-align:center;
+    }
+    &-right{
+        text-align:right;
+    }
+
+  &-btnToTop {
+    padding: 7px 12px;
+    &-invert {
+      float: right;
+      margin-right: 12px;
+    }
+  }
+}
+
+@include select-item($select-prefix-cls, $select-item-prefix-cls);
+
+.#{$select-prefix-cls}-multiple .#{$select-item-prefix-cls} {
+    &-selected{
+        color: $selected-color;
+        background: $select-multiple-selected-item-background;
+    }
+    &-focus,&-selected:hover{
+        color:$selected-color;
+        background: $background-color-select-hover;
+    }
+
+    .#{$select-item-prefix-cls}-selected.#{$select-item-prefix-cls}-focus {
+        color: shade($selected-color, 10%);
+        background: $select-multiple-selected-item-focus-background;
+    }
+}
+.#{$select-prefix-cls}-hideMult .#{$select-item-prefix-cls} {
+    padding-right: 12px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    &:after{
+        @include h-icon();
+        font-size: $select-hideMultHead-after-font-size;
+        content: '\E734';
+        color: $select-hideMultHead-after-color;
+        position: absolute;
+        top: $select-hideMult-top;
+        right: $select-hideMult-right;
+    }
+    &:hover:after{
+        color: $no-select-color;
+    }
+    &-selected:after{
+        color: $selected-color !important;
+    }
+}
+.#{$select-group-prefix-cls} {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    &-title {
+        padding-left: $select-group-title-padding-left;
+        font-size: $select-group-title-font-size;
+        color: $legend-color;
+        height: $select-group-title-height;
+        line-height: $select-group-title-line-height;
+    }
+}
+
+.#{$form-item-prefix-cls}-error{
+    .#{$select-prefix-cls}{
+        &-selection{
+            border: 1px solid $error-color;
+            &:hover{
+                border: 1px solid $error-color;
+            }
+        }
+        &-arrow{
+            color: $error-color;
+        }
+        &-visible .#{$select-prefix-cls}-selection{
+            @include active-error;
+        }
+    }
+}
+
+.#{$form-item-prefix-cls}-changed{
+    .#{$select-prefix-cls}{
+        &-selection{
+            color:$changed-color;
+        }
+        .h-tag{
+            color:$changed-color !important;
+        }
+        .h-select-input{
+            color:$changed-color;
+        }
+    }
+}
+
+.#{$editgird-prefix-cls}-cell-error{
+    .#{$select-prefix-cls}{
+        &-selection{
+            border: 1px solid $error-color;
+        }
+        &-arrow{
+            color: $error-color;
+        }
+        &-visible .#{$select-prefix-cls}-selection{
+            @include active-error;
+        }
+    }
+}
+.#{$editgird-prefix-cls}-cell{
+    .#{$select-prefix-cls}{
+        &-dropdown{
+            ul{
+                user-select:none;
+            }
+        }
+    }
+}
+// .#{$select-prefix-cls}-multiple{
+.#{$select-prefix-cls}{
+    &-checkall{
+        border-top: $select-checkall-border-top;
+        text-align: right;
+        padding: $select-checkall-padding;
+        clear: both;
+    }
+    &-check-no-padding{
+        padding: 0;
+    }
+}
+
+.#{$input-prefix-cls}-group,.#{$typefield-prefix-cls}-group{
+    &-append,
+    &-prepend{
+        .#{$select-prefix-cls}-selection{
+            border-color:transparent;
+            &:hover{
+                border-color:transparent;
+            }
+        }
+    }
+}

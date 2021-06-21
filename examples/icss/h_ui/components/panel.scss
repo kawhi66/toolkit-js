@@ -1,0 +1,42 @@
+$page-prefix-cls: "#{$css-prefix}field-panel";
+.#{$page-prefix-cls} {
+  &-wrap{
+    width:100%;
+    padding:$panel-wrap-padding;
+    border:$panel-wrap-border;
+    border-radius:$panel-wrap-border-radius;
+    height:auto;
+    position:relative;
+  }
+  &-footer{
+    position: absolute;
+    top:50%;
+    right:0;
+    margin-top:$panel-footer-margin-top;
+    margin-right:$panel-footer-margin-right;
+    background:$panel-footer-background;
+    a{
+      line-height: $panel-footer-a-line-height;
+      padding:$panel-footer-a-padding;
+      margin-left: $panel-footer-a-margin-left;
+      font-weight: $panel-footer-a-font-weight;
+      text-align: center;
+      display: inline-block;
+      cursor: pointer;
+      -webkit-border-radius: 50%;
+      -moz-border-radius: 50%;
+      border-radius: 50%;
+      color: $panel-footer-a-color;
+      background: $panel-footer-a-background;
+    }
+    &-icon{
+      transform: rotate(180deg);
+      margin-right:-1px;
+    }
+  }
+  legend{
+      font-size:$panel-legend-font-size;
+      color:$text-color;
+      font-weight:bold;
+  }
+}

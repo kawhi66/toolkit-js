@@ -1,0 +1,271 @@
+$cascader-prefix-cls: "#{$css-prefix}cascader";
+$cascader-item-prefix-cls: "#{$css-prefix}cascader-menu-item";
+
+@mixin selectDropDown(){
+  width: auto;
+  padding: 0;
+  white-space: nowrap;
+  overflow: visible;
+}
+
+.#{$cascader-prefix-cls} {
+  position: relative;
+  line-height: normal;
+
+  &-loading {
+    text-align: center;
+    color: #c3cbd6;
+    font-size: $font-size-base;
+    height: $input-height-base;
+    line-height: $input-height-base;
+  }
+
+
+  &.#{$cascader-prefix-cls}-multiple {
+    .#{$cascader-prefix-cls}-rel {
+      line-height: $input-height-base;
+      height: $input-height-base;
+      background: #fff;
+      border: 1px solid $border-color-base;
+      border-radius: $border-radius-small;
+      transition: all $transition-time $ease-in-out;
+      cursor: pointer;
+      overflow: hidden;
+      &:hover {
+        border-color: #54a4ff;
+      }
+      .#{$cascader-prefix-cls}-tag-wrapper {
+        width: 100%;
+        padding-right: 25px;
+        overflow-y: auto;
+        height: 100%;
+        .#{$css-prefix}tag {
+          cursor: inherit;
+          position: relative;
+          white-space: nowrap;
+          max-width: 40%;
+          text-overflow: ellipsis;
+          height: $form-component-height - 12px;
+          line-height: $form-component-height - 12px;
+          padding: 0;
+          padding-right: 12px;
+          padding-left: 2px;
+          margin-left:8px;
+          background: #F5F5F5 !important;
+          border: 1px solid $border-color-split !important;
+          &>.#{$css-prefix}icon {
+            position: absolute;
+            right: 0;
+          }
+          span{
+              display: inline-block;
+              width: 100%;
+          }
+        }
+      }
+      i.offset-left {
+        right: 20px;
+      }
+    }
+    &.#{$cascader-prefix-cls}-disabled .#{$cascader-prefix-cls}-rel {
+      background-color: #f7f7f7;
+      &:hover {
+        border-color: $border-color-base;
+      }
+      .#{$css-prefix}tag {
+        color: #999;
+      }
+    }
+    &.#{$cascader-prefix-cls}-visible {
+      .#{$cascader-prefix-cls}-rel {
+        border-color: #54a4ff;
+        box-shadow: 0 0 0 2px rgba(41, 141, 255, 0.2);
+      }
+    }
+  }
+
+  &.#{$cascader-prefix-cls}-multiple.#{$cascader-prefix-cls}-size-small &-rel {
+    line-height: 26px;
+    height: 26px;
+  }
+
+  &.#{$cascader-prefix-cls}-multiple.#{$cascader-prefix-cls}-size-large &-rel {
+    line-height: $input-height-large;
+    height: $input-height-large;
+  }
+
+  &-rel{
+      display: inline-block;
+      width: 100%;
+      position: relative;
+  }
+
+  .#{$css-prefix}input{
+      display: block;
+      cursor: pointer;
+  }
+  &-disabled .#{$css-prefix}input, &-disabled &-tag-wrapper {
+      cursor: $cursor-disabled;
+  }
+
+  .#{$css-prefix}input-readonly {
+    color: #495060;
+    background: #ffffff;
+  }
+
+  &-label{
+      width: 100%;
+      height: 100%;
+      line-height: $cascader-label-line-height;
+      padding: $cascader-label-line-padding;
+      box-sizing: border-box;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      cursor: pointer;
+      font-size: $font-size-small;
+      position: absolute;
+      left: 0;
+      top: 0;
+  }
+  &-size-large &-label{
+      line-height: $cascader-size-large-line-height;
+      font-size: $font-size-base;
+  }
+  &-size-small &-label{
+      line-height: $cascader-size-small-line-height;
+  }
+
+  .#{$cascader-prefix-cls}-arrow:nth-of-type(1) {
+      display: none;
+      cursor: pointer;
+  }
+
+  &:hover {
+      .#{$cascader-prefix-cls}-arrow:nth-of-type(1) {
+          display: inline-block;
+      }
+  }
+  &-show-clear:hover .#{$cascader-prefix-cls}-arrow:nth-of-type(2){
+      display: none;
+  }
+
+  &-arrow {
+      @include inner-arrow();
+  }
+  &-visible &-arrow:nth-of-type(2) {
+      transform: rotate(180deg);
+  }
+
+  .#{$select-dropdown-prefix-cls} {
+      @include selectDropDown();
+  }
+
+  @include select-item($cascader-prefix-cls, $cascader-item-prefix-cls);
+  .h-select-item span{
+      color: $error-color;
+  }
+
+  &-dropdown{
+      padding:$cascader-dropdown-padding;
+      .#{$select-dropdown-prefix-cls}-list{
+          max-height: 190px;
+          box-sizing: border-box;
+          overflow: auto;
+      }
+  }
+
+  &-not-found-tip{
+      padding:$cascader-dropdown-padding;
+      text-align: center;
+      color: $btn-disable-color;
+      li:not([class^=h-]){
+          margin-bottom: 0;
+      }
+  }
+  &-not-found .#{$select-dropdown-prefix-cls} {
+      width: inherit;
+  }
+
+  &-menu{
+      display: inline-block;
+      min-width: $cascader-menu-min-width;
+      height: $cascader-menu-height;
+      margin: $cascader-menu-margin;
+      padding: $cascader-menu-padding !important;
+      vertical-align: top;
+      list-style: none;
+      border-right: 1px solid $border-color-split;
+      overflow: auto;
+
+      &:first-child {
+
+      }
+      &:last-child {
+          border-right-color: transparent;
+          margin-right: -1px;
+      }
+      &:only-child {
+
+      }
+      & &-item{
+          position: relative;
+          // 加！important是为了让item在transfer为true的时候也为24
+          // 否则级联内的文本会和右侧的展开箭头层叠在一起
+          padding-right: $cascader-item-padding-right !important;
+          transition: all $transition-time $ease-in-out;
+
+          i{
+              font-size: $font-size-small;
+              position: absolute;
+              right:$cascader-item-i-right;
+              top: 50%;
+              margin-top: $cascader-item-i-margin-top;
+          }
+
+          &-active{
+              background-color: $background-color-select-hover;
+              color: $primary-color;
+          }
+      }
+  }
+
+}
+.provice-city{
+  span span .h-cascader-menu{
+    width: 200px;
+    overflow: auto;
+    li{
+        float: left;
+        width: 33% !important;
+        clear: none;
+    }
+  }
+}
+.#{$cascader-prefix-cls}-transfer{
+  z-index: $zindex-transfer;
+  @include selectDropDown();
+}
+.#{$cascader-prefix-cls}-dropdown-transfer{
+  // 需求211595 cascader 组件开启transfer 后如果右侧空间不够 点到第三级，展示的内容会自动放到下拉面板下面
+  // 主要是少了一部分样式导致的
+  z-index: $zindex-transfer;
+  @include selectDropDown();
+  @include select-item($cascader-prefix-cls, $cascader-item-prefix-cls);
+  .h-select-item span{
+      color: $error-color;
+  }
+}
+
+.#{$form-item-prefix-cls}-error{
+  .#{$cascader-prefix-cls} {
+      &-arrow{
+          color: $error-color;
+      }
+  }
+}
+.#{$form-item-prefix-cls}-changed{
+  .#{$cascader-prefix-cls} {
+      color: $changed-color;
+  }
+}

@@ -1,0 +1,642 @@
+/*
+ * Template Name: JresUI - Simple Frame For JresUI
+ * Version: 0.9.0
+ * Author: Leon Cui
+ * Email: cuiyu$hundsun.com
+ *
+ * 1.0 $Frame
+ * 2.0 $Reset
+ * 3.0 $Grid
+ *  3.1 $Response-Row
+ *  3.2 $Response-Row-2or3grid
+ *  3.3 $Response-Mobile
+ * 4.0 $Text
+ * 5.0 $Font-Awesome
+ * 6.0 $Function
+ * 7.0 $Color
+ *
+ */
+
+// Color
+$primary-color: #037df3;
+$info-color: #3597f5;
+$success-color: #1cb77b;
+$warning-color: #f2b044;
+$error-color: #f14c5d;
+$changed-color: #d9534f; //?
+$link-color: #037df3;
+$link-hover-color: #3597f5; //从原来的lighten（20%）改成定值
+$link-active-color: #0270da; //darken($link-color, 5%)?
+$selected-color: lighten($primary-color, 10%); //?
+$no-select-color: #e5ebf1; //?
+
+$icon-color: #9ea7b4; //规范里的图标分通用图标、导航图标、其他图标，颜色不一样
+
+// Base
+$body-background: #fff;
+$font-family: "Helvetica Neue",
+  //one
+    Helvetica,
+  //two
+    "PingFang SC",
+  //1
+    "Hiragino Sans GB",
+  //2
+    "Microsoft YaHei",
+  //3
+    "微软雅黑",
+  Arial,
+  //three
+    sans-serif;
+$code-family: Consolas, Menlo, Courier, monospace; //？
+$title-color: #495060; //?
+$text-color: #495060; //?
+$font-size-base: 12px; //正文变小
+$font-size-small: 12px; //?
+
+$border-radius-small:2px;
+// Border color
+$border-color-base: #d7dde4; // outside
+$border-color-split: #dddddd; // inside//??
+$border-color-bottom: #dce1e7; ///?
+
+// Background color
+$table-thead-bg: #f7f7f7;
+$table-td-stripe-bg: #f9f9f9;
+$table-td-hover-bg: #f3f9ff;
+$table-td-highlight-bg: #d9ebfd;
+$table-td-selected-bg: #d9ebfd;
+
+//table
+$table-large-td: 28px;
+$table-small-td: 28px;
+$table-normal-td: 28px;
+
+$table-title-height: 30px;
+$table-title-line-height: 30px;
+
+$table-th-td-height: 28px;
+$table-th-height: 30px;
+$table-cell-padding-left: 8px;
+$table-cell-padding-right: 8px;
+
+$table-large-th-height: 30px;
+
+$table-large-td-height: 28px;
+$table-large-title-height: 30px;
+$table-large-title-line-height: 30px;
+$table-large-tiptext-height: 30px;
+$table-large-tiptext-line-height: 30px;
+$table-small-th-height: 28px;
+$table-small-td-height: 28px;
+$table-small-title-height: 30px;
+$table-small-title-line-height: 30px;
+$table-row-dragover-td-color: #fff;
+$table-summation-border: 1px solid #dce1e7;
+
+$table-tiptext-height: 30px;
+$table-tiptext-line-height: 30px;
+
+//Button
+
+$btn-padding-base: 0px 8px; //button没有height属性，只通过padding处理高度???
+$btn-padding-large: 0px 8px;
+$btn-padding-small: 0px 8px;
+
+$btn-font-size: 12px;
+$btn-font-size-large: 12px;
+$btn-font-size-small: 12px;
+
+$btn-border-radius: 2px;
+$btn-border-radius-small: 2px;
+
+$btn-height-small:22px;
+$btn-height-normal:28px;
+$btn-height-large:32px;
+
+$btn-min-width-small :20px;
+$btn-min-width-normal :30px;
+$btn-min-width-large :40px;
+
+
+$btn-group-border: shade($primary-color, 5%); //?
+
+$btn-disable-color: #999999;
+$btn-disable-bg: #f7f7f7;
+$btn-disable-border: #ededed;
+
+$btn-primary-color: #fff;
+$btn-primary-bg: #037df3;
+
+$btn-ghost-color: $text-color;
+$btn-ghost-bg: #fff;
+$btn-ghost-border: $border-color-base;
+
+$btn-danger-color: #f14c5d;
+$btn-danger-bg: #f7f7f7;
+$btn-danger-border: #d7dde4;
+
+$btn-border-radius: 2px;
+
+$btn-before-top: -1px;
+$btn-before-left: -1px;
+$btn-before-bottom: -1px;
+$btn-before-right: -1px;
+$btn-before-background: #fff;
+
+//datepicker
+
+$date-picker-cell-hover-bg: #f3f9ff;
+$date-picker-panel-shortcut-height:28px;
+$date-picker-panel-shortcut-hover-bg: #F3F9FF;
+
+$date-picker-cell-span-margin: 2px;
+$date-picker-cells-header-span-margin: 2px;
+
+$date-picker-cells-cell-span-width: 28px; //！
+$date-picker-cells-cell-span-height: 28px; //!
+
+
+$date-picker-panel-width: 16px;
+$date-picker-panel-height: 16px;
+
+$date-picker-panel-line-height: 26px;
+$date-picker-panel-margin-top: 4px;
+$date-picker-sidebar-width: 76px;
+$date-picker-sidebar-margin-left: -76px;
+$date-picker-sidebar-bg:#ffffff;
+$date-picker-sidebar-boder-color:#dddddd;
+
+$date-picker-confirm-border-top: 1px solid #dce1e7;
+
+// Input
+$input-height-base: 28px;
+$input-height-large: 28px;
+$input-height-small: 28px;
+
+$input-padding-horizontal: 8px;
+$input-padding-vertical-base: 4px;
+$input-padding-vertical-small: 1px;
+$input-padding-vertical-large: 5px;
+
+$input-placeholder-color: #999999;
+$input-readonly-color: #333333;
+$input-border-color: #dddddd;
+$input-hover-border-color: #3597f5;
+
+//$input-focus-border-color: $primary-color;
+$input-disabled-bg: #f7f7f7;
+$input-readonly-bg: #f7f7f7;
+$input-hint: #909399;
+
+$input-icon-width: 32px;
+$input-icon-normal-padding-right: 32px;
+$input-icon-small-width: 24px;
+$input-tips-padding-top: 5px;
+
+$input-tips-ul-li-max-width: 100px; //?
+$input-tips-ul-li-div-height: 4px; //?
+$input-tips-ul-li-div-margin-bottom: 2px; //?
+
+// Badges
+// ============================================================
+$badge-count-font-size: 12px;
+$badge-count-top: -8px;
+$badge-count-right: 0;
+
+$badge-count-height: 14px;
+$badge-count-border-radius: 40px;
+
+$badge-count-min-width: 20px;
+$badge-count-line-height: 14px;
+$badge-count-padding: 0 6px;
+
+//*******************************<UF3.0样式统一>**************************************
+
+//form
+
+$form-item-label-background: #f7f7f7; //???????????????????????
+$form-item-label-padding: 0px 8px 0px 0;
+$form-item-labelWrap-padding: 1px 8px 1px 0;
+$form-item-margin-bottom: 8px;
+
+$form-component-height:28px;
+
+//alert
+
+$alert-desc-color: #7e828a;
+$alert-desc-font-size: 12px;
+$alert-desc-line-height: 22px;
+
+$alert-message-color: $title-color;
+
+$alert-success-border-color: transform;
+$alert-success-bgcolor: #e9faf3;
+$alert-success-icon-color: #1cb77b;
+
+$alert-info-border-color: transform;
+$alert-info-bgcolor: #e6f5fe;
+$alert-info-icon-color: #029afd;
+
+$alert-warning-border-color: transform;
+$alert-warning-bgcolor: #fff8ed;
+$alert-warning-icon-color: #ffba48;
+
+$alert-error-border-color: transform;
+$alert-error-bgcolor: #fdedef;
+$alert-error-icon-color: #f14c5d;
+
+$alert-with-icon-padding: 8px 48px 8px 38px;
+$alert-icon-top: 9px;
+$alert-icon-left: 16px;
+$alert-close-iconfont-color: #979797;
+
+//backtop
+$backtop-inner-background-color: rgba(0, 0, 0, 0.5);
+$backtop-inner-border-radius: 2px;
+$backtop-inner-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+$backtop-inner-padding: 4px 6px;
+$backtop-inner-font-size: 14px;
+$backtop-inner-color: #fff;
+
+$backtop-inner-hover-background-color: rgba(53, 151, 245, 1); //#3597F5 100%
+
+//calendar
+$calendar-top-text-font-size: 18px;
+
+$calendar-top-change-height: 40px;
+$calendar-top-change-line-height: 10px;
+$calendar-month-content-color: #999999;
+$calendar-month-content-font-size: 12px;
+
+$calendar-month-content-border-color: transform;
+
+$calendar-month-content-item-color: #333333;
+$calendar-month-content-item-height: 32px;
+$calendar-month-content-item-font-size: 12px;
+$calendar-month-content-background: #F0F3F8 100%;
+$calendar-month-content-item-boder: 2px solid #dddddd;
+
+$calendar-month-content-item-border-width: 0 1px 1px 0;
+$calendar-month-content-item-nth-child-border-width: 0 1px 1px 1px;
+$calendar-month-restDay-color: #bbbbbb;
+
+$calendar-month-day-active-color: #fff;
+$calendar-month-day-selected-background: #037df3;
+$calendar-month-day-border: 1px #e9eaec solid;
+$calendar-month-div-box-shadow: 0 2px 8px #d3ddeb;
+
+$calendar-month-title-font-size: 15px;
+$calendar-month-title-height: 36px;
+$calendar-month-title-line-height: 40px;
+
+
+$calendar-handle-item-hover-background: #111;
+$calendar-handle-item-hover-color: #fff;
+
+
+
+$calendar-month-max-width:242px;
+$calendar-month-header-border-width:0px;
+$calendar-month-content-item-bg:none;
+
+//card
+
+//carousel 走马灯
+
+//cascader  级联
+//多选下checkbox的图案
+$cascader-label-line-height: 28px;
+$cascader-size-large-line-height: 28px;
+$cascader-size-small-line-height: 28px;
+
+//checkbox
+$checkbox-wrapper-font-size: 12px;
+$checkbox-wrapper-padding: 0 8px;
+$checkbox-wrapper-border-radius: 2px;
+
+//collapse
+$collapse-header-height: 28px;
+
+//drawer
+
+//editgrid
+
+$editgrid-background-color: #fff;
+$editgrid-th-height: 30px;
+
+$editgrid-cell-padding: 5px 8px;
+$editgrid-expand-margin-left: 8px;
+
+//fastdate
+
+$fastdate-edit-border-radius: 2px;
+$fastdate-activity-font-size: 12px;
+
+//form-gird
+
+// $form-gird-label-padding: 10px 10px 10px 0;//!! 当表单为录入表单时，Label标签固定尺寸为176px；
+// $form-gird-label-top-padding: 0 0 10px 0;
+// $form-gird-inline-margin-right: 10px;
+
+// $form-gird-row-padding: 5px;
+// $form-gird-row-content-line-height: 31px;
+// $form-gird-row-content-requiredIcon-left: -9px;
+
+// $form-gird-item-margin-bottom: 12px;
+// $form-gird-item-line-height: 31px;
+// $form-gird-item-error-tip-padding-top: 6px;
+// $form-gird-item-required-margin-right: 2px;
+// $form-gird-item-requiredIcon-left: -9px;
+// $form-gird-item-requiredIcon-height: 31px;
+
+//log
+
+//inputnumber
+//      输入卡号、身份证，自动显示放大效果？？？
+$inputnumber-input-color: #333333;
+
+$inputnumber-width: 200px;
+
+//loading bar
+$loading-bar-normal-color: $primary-color;
+
+//menu
+//message
+//msgbox
+$msgbox-title-font-size:14px;
+$msgbox-border-radius :2px;
+
+$msgbox-body-color: #333333;
+$msgbox-title-color: #333333;
+     
+//notice
+
+$notice-width: 335px;
+$notice-padding: 20px;
+$notice-margin-bottom: 10px;
+$notice-margin-right: 20px;
+$notice-notice-padding: 16px 20px;
+$notice-notice-background: #fff;
+$notice-desc-color: #666666;
+$notice-notice-close-color: #666666;
+$notice-title-padding-right: 20px;
+
+//page
+$page-item-height:24px;
+$page-item-line-height:24px; 
+$page-option-select-height:24px;
+ 
+
+//panel
+$panel-wrap-border-radius: 2px;
+
+//progress
+
+//poptip
+
+//radio
+
+$radio-inner-after-color: #ccc;
+$radio-inner-color: #f3f3f3;
+$radio-disabled-inner-border-color: $border-color-base;
+$radio-wrapper-font-size: $font-size-small;
+$radio-vertical-wrapper-height: 30px;
+$radio-vertical-verify-tip-margin-top: -5px;
+$radio-wrapper-margin-right: 8px;
+$radio-inner-width: 14px;
+$radio-inner-height: 14px;
+$radio-inner-top: 0;
+$radio-inner-left: 0;
+$radio-inner-background-color: #fff;
+$radio-inner-after-width: 6px;
+$radio-inner-after-height: 6px;
+$radio-inner-after-top: 3px;
+$radio-inner-after-left: 3px;
+
+$radio-large-inner-width: 16px;
+$radio-large-inner-height: 16px;
+$radio-large-inner-after-width: 8px;
+$radio-large-inner-after-height: 8px;
+$radio-small-inner-width: 12px;
+$radio-small-inner-height: 12px;
+$radio-small-inner-after-width: 5px;
+$radio-small-inner-after-height: 5px;
+
+//rate
+$rate-star-color: #f2b044;
+$rate-font-size: 16px;
+
+//schedule
+ 
+
+//select
+
+//tag需修改
+
+//selectBlock 
+//select-dropdown
+$selectDropdown-margin: 5px 0;
+$selectDropdown-background-color: #fff;
+
+//select-table
+
+//selectTree
+
+// Slider
+
+//spin
+$spin-dot-size-small: 28px;
+$spin-dot-size: 28px;
+$spin-dot-size-large: 28px;
+
+//split
+
+//steps
+
+$steps-head-inner-icon-font-size: 15px;
+
+//switch
+$switch-border-color: #c3cbd6;
+$switch-background-color: #c3cbd6;
+$switch-disabled-background-color: #d7dde4;
+$switch-disabled-border-color: #d7dde4;
+
+$switch-width: 48px;
+$switch-height: 22px;
+$switch-line-height: 24px;
+$switch-border-radius: 12px;
+
+//tabs
+
+$tabs-nav-tab-color: #495060;
+$tabs-tab-hover-color: #3597f5;
+
+$tabs-tab-nav-right-active-color: #fff;
+$tabs-tab-active-color: #007af7;
+
+$tabs-bar-active-background: #fff;
+$tabs-bar-active-border-color: $border-color-base;
+$tabs-bar-active-color: $primary-color;
+
+$tabs-bar-margin-bottom: 10px;
+$tabs-bar-top-margin-bottom: 10px;
+
+$tabs-tab-font-size: 12px;
+$tabs-tab-line-height: 20px;
+$tabs-tab-iconfont-width: 12px;
+$tabs-tab-iconfont-height: 12px;
+
+// tag
+$tag-height: 28px;
+
+$tag-font-size: 12px;
+$tag-line-height: 28px;
+$tag-background: #f7f7f7;
+
+$tag-dot-height: 28px;
+$tag-dot-line-height: 28px;
+$tag-dot-background: #fff;
+$tag-dot-padding: 0 8px;
+$tag-dot-inner-width: 10px;
+$tag-dot-inner-height: 10px;
+$tag-dot-inner-top: 8px;
+
+$tag-border-height: 28px;
+$tag-border-line-height: 28px;
+$tag-border-background: #fff;
+
+//textdiff
+
+$textdiff-wrapper-h-textdiff-content-border-radius: 2px;
+$textdiff-wrapper-h-textdiff-content-pre-font-family: "PingFangSC", Arial,
+  Microsoft Yahei, sans-serif, Verdana;
+$textdiff-h-textdiff-selectContent-height: 20px;
+$textdiff-h-textdiff-selectContent-line-height: 20px;
+
+//timeline 
+
+//$time-picker
+$time-picker-cells-width-base:66px;
+$time-picker-cells-list-ul-li-height: 28px;
+$time-picker-cells-list-ul-li-line-height: 28px; 
+$time-picker-header-height: 33px;
+$time-picker-header-line-height: 33px;
+
+
+
+//tooltip
+ 
+
+//transfer
+$transfer-header-bg:#F7F7F7  ;
+$transfer-border-radius:2px;
+//transfer-table
+$transfer-table-header-bg:#F7F7F7  ;
+$transfer-table-border-radius: 2px;
+//typefield
+$typefield-tip-font-family:'PingFangSC-Regular';
+$typefield-tip-line-height: 12px;
+$typefield-tip-top: 34px;
+$typefield-tip-left: 0;
+$typefield-tip-padding: 8px 8px 8px 8px;
+$typefield-tip-font-size: 12px;
+$typefield-tip-border: 0;
+$typefield-tip-background: #333333;
+$typefield-tip-color: #ffffff;
+$typefield-tip-color-box-shadow: 0 -2px 4px 0  ;
+ 
+$typefield-tip-border-radius:2px;
+//typefield-range 
+
+//tree
+$tree-title-focus-bgcolor: lighten($primary-color, 35%);
+$tree-title-focus-color: $text-color;
+
+//upload
+
+
+// Waves
+// ============================================================
+$waves-container-color: #fff;
+$waves-animation-background: currentColor;
+$waves-animation-transition: 0.7s transform cubic-bezier(0.2, 0.4, 0.4, 0.9),
+  0.3s opacity cubic-bezier(0.2, 0.4, 0.4, 0.1);
+$waves-animation-visible-opacity: 0.3;
+$waves-wrap-width: 100%;
+$waves-wrap-height: 100%;
+$waves-wrap-left: 0;
+$waves-wrap-top: 0;
+$waves-wrap-light-color: rgba(255, 255, 255, 0.45);
+$waves-animation-top: 0;
+$waves-animation-left: 0;
+$waves-animation-border-radius: 50%;
+
+//mixin
+$mixin-content-header-color: $title-color;
+$mixin-checkbox-disabled-check-color: #ccc;
+$mixin-input-disabled-color: #999;
+$mixin-checkbox-inner-border-color: #d7dde4;
+$mixin-checkbox-disabled-color: #f3f3f3;
+$mixin-checkbox-disabled-bg: $border-color-split;
+$mixin-checkbox-disabled-check-border-color: $border-color-base;
+$mixin-input-readonly-opacity: 0.8;
+$mixin-input-border-readonly-color: mix(#fff, $input-hover-border-color, 20%);
+$mixin-input-active-box-shadow: 0 0 0 2px rgba($input-hover-border-color, 0.2);
+$mixin-input-active-error-box-shadow: 0 0 0 2px rgba($error-color, 0.2);
+$mixin-select-item-font-size: $font-size-small;
+
+//button
+$btn-info-color: #fff;
+$btn-info-bg: #037DF3;
+$btn-info-border: #037DF3;
+$btn-info-hover-color: #fff;
+$btn-info-hover-bgcolor: #3597F5 ;
+$btn-info-hover-border-color: #3597F5 ;
+$btn-info-press-color:  #fff;
+$btn-info-press-bgcolor: #0270DA;
+$btn-info-press-border-color:#0270DA;
+
+//button danger
+$btn-danger-color: #F14C5D ;
+$btn-danger-bg: #f7f7f7;
+$btn-danger-border: #d7dde4;
+$btn-danger-hover-color: darken($btn-danger-color, 10%);
+$btn-danger-hover-bgcolor: $btn-danger-bg;
+$btn-danger-hover-border-color: darken($btn-danger-color, 10%);
+$btn-danger-press-color: darken($btn-danger-color, 5%);
+$btn-danger-press-bgcolor: $btn-danger-bg;
+$btn-danger-press-border-color: darken($btn-danger-color, 5%);
+
+//button success
+$btn-success-color: #fff;
+$btn-success-bg: #1CB77B ;
+$btn-success-border: #1CB77B ;
+$btn-success-hover-color: $btn-primary-color;
+$btn-success-hover-bgcolor: darken($success-color, 15%);
+$btn-success-hover-border-color: darken($success-color, 15%);
+$btn-success-press-color: $btn-primary-color;
+$btn-success-press-bgcolor: darken($success-color, 5%);
+$btn-success-press-border-color: darken($success-color, 5%);
+
+//button warning
+$btn-warning-color: #fff;
+$btn-warning-bg: #F2B044 ;
+$btn-warning-border: #F2B044 ;
+$btn-warning-hover-color: $btn-primary-color;
+$btn-warning-hover-bgcolor: darken($warning-color, 15%);
+$btn-warning-hover-border-color: darken($warning-color, 15%);
+$btn-warning-press-color: $btn-primary-color;
+$btn-warning-press-bgcolor: darken($warning-color, 5%);
+$btn-warning-press-border-color: darken($warning-color, 5%);
+
+//button error
+$btn-error-color: #fff;
+$btn-error-bg: #F14C5D ;
+$btn-error-border: #F14C5D ;
+$btn-error-hover-color: $btn-primary-color;
+$btn-error-hover-bgcolor: darken($error-color, 15%);
+$btn-error-hover-border-color: darken($error-color, 15%);
+$btn-error-press-color: $btn-primary-color;
+$btn-error-press-bgcolor: darken($error-color, 5%);
+$btn-error-press-border-color: darken($error-color, 5%);

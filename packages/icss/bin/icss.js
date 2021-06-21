@@ -29,8 +29,9 @@ updater({ pkg }).notify({ defer: true });
 
 require('../lib')
   .default({
+    dest: args.d || args.dest || 'dist',
     watch: args.w || args.watch || false,
-    entry: args._[0],
+    entry: args._,
   })
   .catch((e) => {
     signale.error(e);
@@ -43,6 +44,7 @@ function printHelp() {
 
   Options:
 
+    ${chalk.green('-d, --dest <dir>')}    Output directory (default: dist)
     ${chalk.green('-w, --watch')}         Watch building (default: false)
     ${chalk.green('-h, --help')}          Print help
     ${chalk.green('-v, --version')}       Print version

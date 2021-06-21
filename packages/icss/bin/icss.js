@@ -29,9 +29,10 @@ updater({ pkg }).notify({ defer: true });
 
 require('../lib')
   .default({
-    dest: args.d || args.dest || 'dist',
     watch: args.w || args.watch || false,
     entry: args._,
+    dest: args.d || args.dest || 'dist',
+    rootSelector: args.rootSelector,
   })
   .catch((e) => {
     signale.error(e);
@@ -44,9 +45,10 @@ function printHelp() {
 
   Options:
 
-    ${chalk.green('-d, --dest <dir>')}    Output directory (default: dist)
-    ${chalk.green('-w, --watch')}         Watch building (default: false)
-    ${chalk.green('-h, --help')}          Print help
-    ${chalk.green('-v, --version')}       Print version
+    ${chalk.green('-d, --dest <dir>')}              Output directory (default: dist)
+    ${chalk.green('-w, --watch')}                   Watch building (default: false)
+    ${chalk.green('--root-selector <selector>')}    Wrap root selector (default: '')
+    ${chalk.green('-h, --help')}                    Print help
+    ${chalk.green('-v, --version')}                 Print version
   `);
 }

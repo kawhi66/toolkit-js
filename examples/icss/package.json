@@ -6,5 +6,9 @@
   },
   "dependencies": {
     "gulp-sass": "^4.1.0"
+  },
+  "devDependencies": {
+    "cssnano": "^5.0.6",
+    "postcss": "^8.3.5"
   }
 }

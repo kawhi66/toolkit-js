@@ -1,6 +1,6 @@
 import { join } from 'path';
 import { existsSync, statSync } from 'fs';
-import { isUndefined, debounce } from 'lodash';
+import { isEmpty, debounce } from 'lodash';
 import log from './utils/log';
 import vfs from 'vinyl-fs';
 import through from 'through2';
@@ -9,13 +9,17 @@ import gulpIf from 'gulp-if';
 import gulpPlumber from 'gulp-plumber';
 import gulpLess from 'gulp-less';
 import gulpSass from 'gulp-sass';
-import autoprefixer from 'gulp-autoprefixer';
-import cssmin from 'gulp-cssmin';
+import postcss from 'gulp-postcss';
+import autoprefixer from 'autoprefixer';
+import cssnano from 'cssnano';
+import wrap from 'postcss-wrap-selector';
 import chalk from 'chalk';
 import * as chokidar from 'chokidar';
 
 /**
- * @todo watch crashed when glob
+ * @todo
+ *  - extend postcss config
+ *  - watch crashed when build glob files
  *
  * @feature
  *  - support less scss
@@ -29,11 +33,18 @@ import * as chokidar from 'chokidar';
 const dispose = [];
 
 export default async function (opts) {
-  const { cwd = process.cwd(), entry, dest, watch } = opts;
+  const {
+    cwd = process.cwd(),
+    entry,
+    dest = 'dist',
+    watch,
+    rootSelector = '',
+    skipRootSelector = [],
+  } = opts;
   const targetDir = dest;
   const targetPath = join(cwd, targetDir);
 
-  if (isUndefined(entry)) {
+  if (isEmpty(entry)) {
     throw new Error('Entry required but got undefined.');
   }
 
@@ -46,13 +57,30 @@ export default async function (opts) {
       .pipe(
         gulpIf(
           (f) => /\.(css|less|s[ac]ss)$/.test(f.path),
-          autoprefixer({
-            overrideBrowserslist: ['ie > 9', 'last 2 versions'],
-            cascade: false,
-          }),
+          // postcss((file) => {
+          //   const contextOptions = {};
+          //   const configPath = join(file.base);
+          //   return require('postcss-load-config')(
+          //     {
+          //       file: file,
+          //       options: contextOptions,
+          //     },
+          //     configPath,
+          //   );
+          // }),
+          postcss([
+            autoprefixer({
+              overrideBrowserslist: ['ie > 9', 'last 2 versions'],
+              cascade: false,
+            }),
+            cssnano(),
+            wrap({
+              selector: rootSelector,
+              skipRootSelector,
+            }),
+          ]),
         ),
       )
-      .pipe(gulpIf((f) => /\.(css|less|s[ac]ss)$/.test(f.path), cssmin()))
       .pipe(vfs.dest(targetPath));
   }
 

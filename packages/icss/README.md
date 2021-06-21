@@ -27,9 +27,17 @@ $ yarn add @toolkit-js/icss -D
 ```
 
 ```bash
+# bundle css
 $ yarn icss src/style/index.css
+# bundle less
 $ yarn icss src/style/index.less
+# bundle scss
+$ yarn icss src/style/index.scss
+# wrap selector before css rule
+$ yarn icss src/style/index.scss --root-selector .blue
+# build in glob
 $ yarn icss src/style/*.less
+# copy non-style file
 $ yarn icss src/fonts/**
 ```
 

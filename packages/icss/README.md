@@ -27,12 +27,16 @@ $ yarn add @toolkit-js/icss -D
 ```
 
 ```bash
-# Bundle library
-$ yarn icss index.css
-$ yarn icss index.less
-$ yarn icss src/*.less
+$ yarn icss src/style/index.css
+$ yarn icss src/style/index.less
+$ yarn icss src/style/*.less
+$ yarn icss src/fonts/**
 ```
 
 ## Tip
 
-gulp-sass 作为 peerDependencies 被依赖，支持 scss 需要手动确认在当前的项目下 gulp-sass 已经正确安装。
+如果遇到 node-sass 安装报错的问题，可以设置 `.npmrc` 文件：
+
+```
+sass_binary_site=https://npm.taobao.org/mirrors/node-sass/
+```

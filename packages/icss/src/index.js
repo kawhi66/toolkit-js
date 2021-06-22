@@ -10,15 +10,15 @@ import gulpPlumber from 'gulp-plumber';
 import gulpLess from 'gulp-less';
 import gulpSass from 'gulp-sass';
 import postcss from 'gulp-postcss';
+import atImport from 'postcss-import';
 import autoprefixer from 'autoprefixer';
 import cssnano from 'cssnano';
-import wrap from 'postcss-wrap-selector';
+import prefixWrap from 'postcss-prefixwrap';
 import chalk from 'chalk';
 import * as chokidar from 'chokidar';
 
 /**
  * @todo
- *  - extend postcss config
  *  - watch crashed when build glob files
  *
  * @feature
@@ -33,14 +33,7 @@ import * as chokidar from 'chokidar';
 const dispose = [];
 
 export default async function (opts) {
-  const {
-    cwd = process.cwd(),
-    entry,
-    dest = 'dist',
-    watch,
-    rootSelector = '',
-    skipRootSelector = [],
-  } = opts;
+  const { cwd = process.cwd(), entry, dest = 'dist', watch, rootSelector = '' } = opts;
   const targetDir = dest;
   const targetPath = join(cwd, targetDir);
 
@@ -57,28 +50,30 @@ export default async function (opts) {
       .pipe(
         gulpIf(
           (f) => /\.(css|less|s[ac]ss)$/.test(f.path),
-          // postcss((file) => {
-          //   const contextOptions = {};
-          //   const configPath = join(file.base);
-          //   return require('postcss-load-config')(
-          //     {
-          //       file: file,
-          //       options: contextOptions,
-          //     },
-          //     configPath,
-          //   );
-          // }),
-          postcss([
-            autoprefixer({
-              overrideBrowserslist: ['ie > 9', 'last 2 versions'],
-              cascade: false,
-            }),
-            cssnano(),
-            wrap({
-              selector: rootSelector,
-              skipRootSelector,
-            }),
-          ]),
+          postcss(async (file) => {
+            const contextOptions = {};
+            const configPath = join(file.base);
+            const userOptions = await require('postcss-load-config')(
+              {
+                file: file,
+                options: contextOptions,
+              },
+              configPath,
+            );
+
+            userOptions.plugins = [
+              atImport(),
+              prefixWrap(rootSelector),
+              ...userOptions.plugins, // user plugins
+              autoprefixer({
+                overrideBrowserslist: ['ie > 9', 'last 2 versions'],
+                cascade: false,
+              }),
+              cssnano(),
+            ];
+
+            return userOptions;
+          }),
         ),
       )
       .pipe(vfs.dest(targetPath));

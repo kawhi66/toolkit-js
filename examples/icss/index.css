@@ -1,3 +1,4 @@
+@console.log extend postcss options test;
 .abc {
   width: auto;
 }

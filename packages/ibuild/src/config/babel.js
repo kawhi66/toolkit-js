@@ -15,6 +15,7 @@ export default function (opts) {
       lazy,
       extraBabelPresets = [],
       extraBabelPlugins = [],
+      overridesBabel = [],
     },
   } = opts;
   let isBrowser = target === 'browser';
@@ -74,6 +75,7 @@ export default function (opts) {
         ...(process.env.COVERAGE ? [require.resolve('babel-plugin-istanbul')] : []),
         ...extraBabelPlugins,
       ],
+      overrides: overridesBabel,
     },
     isBrowser,
   };

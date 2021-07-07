@@ -20,6 +20,7 @@ export default {
     lazy: { type: 'boolean' },
     extraBabelPresets: { type: 'array' },
     extraBabelPlugins: { type: 'array' },
+    overridesBabel: { type: 'array' },
     cssModules: { oneOf: [{ type: 'boolean' }, { type: 'object' }] },
     extractCSS: { type: 'boolean' },
     injectCSS: { oneOf: [{ type: 'boolean' }, { instanceof: 'Function' }] },

@@ -111,6 +111,7 @@ export function getConfig(opts) {
       lazy,
       extraBabelPresets = [],
       extraBabelPlugins = [],
+      overridesBabel = [],
       extractCSS = false,
       injectCSS = true,
       cssModules,
@@ -142,6 +143,7 @@ export function getConfig(opts) {
         lazy,
         extraBabelPresets,
         extraBabelPlugins,
+        overridesBabel,
       },
       rollupOpts: {
         entry,

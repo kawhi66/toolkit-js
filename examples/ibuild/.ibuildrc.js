@@ -1,3 +1,5 @@
+import { resolve } from 'path';
+import nodePolyfills from 'rollup-plugin-node-polyfills';
 export default [
   {
     file: 'test-ibuild',
@@ -20,5 +22,23 @@ export default [
     umd: {
       name: 'abcd',
     },
+  },
+  {
+    entry: 'src/socket.js',
+    file: 'worker',
+    type: 'umd',
+    nodeResolveOpts: {
+      browser: true,
+      jail: resolve(__dirname, 'node_modules'),
+      preferBuiltins: false,
+    },
+    extraRollupPlugins: [nodePolyfills()],
+    overridesBabel: [
+      {
+        test: 'src/**',
+        include: [resolve(__dirname, 'node_modules')],
+        compact: true,
+      },
+    ],
   },
 ];

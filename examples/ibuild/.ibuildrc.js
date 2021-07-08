@@ -27,18 +27,13 @@ export default [
     entry: 'src/socket.js',
     file: 'worker',
     type: 'umd',
+    umd: {
+      name: 'abc',
+    },
     nodeResolveOpts: {
       browser: true,
-      jail: resolve(__dirname, 'node_modules'),
       preferBuiltins: false,
     },
     extraRollupPlugins: [nodePolyfills()],
-    overridesBabel: [
-      {
-        test: 'src/**',
-        include: [resolve(__dirname, 'node_modules')],
-        compact: true,
-      },
-    ],
   },
 ];

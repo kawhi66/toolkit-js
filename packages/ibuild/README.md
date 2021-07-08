@@ -171,6 +171,10 @@ export default {
 - Type: `boolean | function`
 - Default: `true`
 
+#### babelExclude
+
+配置 [@rollup/plugin-babel](https://www.npmjs.com/package/@rollup/plugin-babel) 的 [exclude][https://babeljs.io/docs/en/options#exclude]。
+
 #### extraBabelPresets
 
 配置额外的 babel preset。
@@ -246,10 +250,6 @@ export default {
   externalsExclude: ['foo/bar'],
 };
 ```
-
-#### include
-
-配置 rollup-plugin-commonjs 的 [include][https://github.com/rollup/rollup-plugin-commonjs#usage]。
 
 #### nodeResolveOpts
 

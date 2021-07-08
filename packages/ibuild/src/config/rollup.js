@@ -24,7 +24,11 @@ export default function (opts) {
     type,
     disableTypeCheck,
     babelOpts,
-    babelOpts: { target = 'browser', runtimeHelpers: runtimeHelpersOpts },
+    babelOpts: {
+      target = 'browser',
+      runtimeHelpers: runtimeHelpersOpts,
+      babelExclude = /\/node_modules\//,
+    },
     rollupOpts: {
       entry,
       file,
@@ -34,7 +38,6 @@ export default function (opts) {
       extraPostCSSPlugins = [],
       extraRollupPlugins = [],
       autoprefixer: autoprefixerOpts,
-      include = /node_modules/,
       replace: replaceOpts,
       inject: injectOpts,
       extraExternals = [],
@@ -71,7 +74,7 @@ export default function (opts) {
     }).opts,
     // ref: https://github.com/rollup/plugins/tree/master/packages/babel#babelhelpers
     babelHelpers: runtimeHelpers ? 'runtime' : 'bundled',
-    exclude: /\/node_modules\//,
+    exclude: babelExclude,
     babelrc: false,
     // ref: https://github.com/rollup/rollup-plugin-babel#usage
     extensions,
@@ -119,7 +122,7 @@ export default function (opts) {
   };
 
   function getPlugins(opts = {}) {
-    const { minCSS } = opts;
+    const { minCSS, isUMD } = opts;
     return [
       url(),
       svgr(),
@@ -156,6 +159,7 @@ export default function (opts) {
         extensions,
         ...nodeResolveOpts,
       }),
+      ...(isUMD ? [commonjs({ include: /node_modules/ })] : []),
       ...(isTypeScript
         ? [
             typescript2({
@@ -221,10 +225,6 @@ export default function (opts) {
       ];
 
     case 'umd':
-      // Add umd related plugins
-      // namedExports options has been remove from https://github.com/rollup/plugins/pull/149
-      const extraUmdPlugins = [commonjs({ include })];
-
       return [
         {
           input,
@@ -237,8 +237,7 @@ export default function (opts) {
             exports: 'named',
           },
           plugins: [
-            ...getPlugins(),
-            ...extraUmdPlugins,
+            ...getPlugins({ isUMD: true }),
             replace({
               preventAssignment: true,
               values: {
@@ -259,8 +258,7 @@ export default function (opts) {
             exports: 'named',
           },
           plugins: [
-            ...getPlugins({ minCSS: true }),
-            ...extraUmdPlugins,
+            ...getPlugins({ minCSS: true, isUMD: true }),
             replace({
               preventAssignment: true,
               values: {

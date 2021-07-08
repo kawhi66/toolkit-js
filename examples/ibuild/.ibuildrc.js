@@ -35,5 +35,6 @@ export default [
       preferBuiltins: false,
     },
     extraRollupPlugins: [nodePolyfills()],
+    babelExclude: [],
   },
 ];

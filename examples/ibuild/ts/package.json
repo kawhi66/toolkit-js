@@ -1,0 +1,12 @@
+{
+  "private": "true",
+  "main": "index.js",
+  "scripts": {
+    "build": "ibuild"
+  },
+  "dependencies": {
+    "parse-url": "^5.0.7",
+    "rollup-plugin-node-polyfills": "^0.2.1",
+    "socket.io-client": "2.2.0"
+  }
+}

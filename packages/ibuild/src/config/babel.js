@@ -45,6 +45,7 @@ export default function (opts) {
             modules: type === 'esm' ? false : 'auto',
           },
         ],
+        require.resolve('@vue/babel-preset-jsx'),
         ...extraBabelPresets,
       ],
       plugins: [

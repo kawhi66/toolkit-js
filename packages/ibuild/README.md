@@ -5,6 +5,7 @@
 ## Features
 
 - ✔︎ 基于 [rollup](http://rollupjs.org/) 和 babel 的组件打包功能
+- ✔︎ 支持 Vue 单文件组件和 JSX 语法
 - ✔︎ 支持 TypeScript
 - ✔︎ 支持 cjs、esm 和 umd 三种格式的打包
 - ✔︎ 支持 transform 模式

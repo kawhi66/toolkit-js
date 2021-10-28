@@ -8,6 +8,7 @@ import nodeResolve from '@rollup/plugin-node-resolve';
 import inject from '@rollup/plugin-inject';
 import babel from '@rollup/plugin-babel';
 import postcss from 'rollup-plugin-postcss';
+import syntax from 'postcss-less';
 import { terser } from 'rollup-plugin-terser';
 import typescript2 from 'rollup-plugin-typescript2';
 import { camelCase, isEmpty } from 'lodash';
@@ -148,6 +149,7 @@ export default function (opts) {
       // modules => all .less will convert into css modules
       ...(modules ? { autoModules: false } : {}),
       minimize: !!minCSS,
+      // syntax,
       use: {
         less: {
           plugins: [new NpmImport({ prefix: '~' })],
@@ -159,6 +161,10 @@ export default function (opts) {
     return [
       vue({
         css: extractCSS,
+        postcssOptions: {
+          syntax,
+        },
+        postcssPlugins: postcssPlugins,
       }),
       url(),
       svgr(),

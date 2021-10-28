@@ -161,6 +161,8 @@ export default function (opts) {
     return [
       vue({
         css: extractCSS,
+        // https://rollup-plugin-vue.vuejs.org/options.html#style-postcssoptions
+        // the question is style.postcssOptions not working, but postcssOptions work.
         postcssOptions: {
           syntax,
         },

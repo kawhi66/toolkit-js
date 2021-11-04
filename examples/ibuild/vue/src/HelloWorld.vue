@@ -8,11 +8,11 @@
 export default {
   data() {
     return {
-      text: "hello world"
+      text: 'hello world',
     };
   },
   mounted() {
     // todo
-  }
+  },
 };
 </script>

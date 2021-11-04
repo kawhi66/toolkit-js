@@ -39,7 +39,6 @@
     "gulp-postcss": "^9.0.0",
     "gulp-sass": "^4.1.0",
     "lodash": "4.17.21",
-    "postcss": "^8.3.5",
     "postcss-import": "^14.0.2",
     "postcss-prefixwrap": "^1.22.2",
     "signale": "^1.4.0",

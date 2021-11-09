@@ -1,4 +1,4 @@
-import { join } from 'path';
+import { join, resolve } from 'path';
 import { existsSync, statSync } from 'fs';
 import { isEmpty, debounce } from 'lodash';
 import log from './utils/log';
@@ -52,14 +52,24 @@ export default async function (opts) {
           (f) => /\.(css|less|s[ac]ss)$/.test(f.path),
           postcss(async (file) => {
             const contextOptions = {};
-            const configPath = join(file.base);
-            const userOptions = await require('postcss-load-config')(
-              {
-                file: file,
-                options: contextOptions,
-              },
-              configPath,
-            );
+            let userOptions; // Avoid No PostCSS Config Error
+            try {
+              userOptions = require('postcss-load-config').sync(
+                {
+                  file: file,
+                  options: contextOptions,
+                },
+                cwd,
+              );
+            } catch (error) {
+              userOptions = require('postcss-load-config').sync(
+                {
+                  file: file,
+                  options: contextOptions,
+                },
+                resolve(__dirname, '.postcssrc.js'),
+              );
+            }
 
             userOptions.plugins = [
               atImport(),

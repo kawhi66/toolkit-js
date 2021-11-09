@@ -50,6 +50,8 @@
     "yargs-parser": "^20.2.7"
   },
   "bundledDependencies": [
-    "cssnano"
+    "cssnano",
+    "postcss-import",
+    "postcss-prefixwrap"
   ]
 }

@@ -103,7 +103,7 @@ export default async function (opts) {
     }
 
     return vfs
-      .src(src, { allowEmpty: true, base: srcPath })
+      .src(src, { allowEmpty: true, base: srcPath, dot: true })
       .pipe(watch ? gulpPlumber() : through.obj())
       .pipe(gulpIf((f) => !disableTypeCheck && isTsFile(f.path), gulpTs(tsConfig)))
       .pipe(

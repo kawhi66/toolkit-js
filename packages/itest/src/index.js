@@ -1,6 +1,6 @@
-import jest from 'jest';
 import { existsSync } from 'fs';
 import { join } from 'path';
+import { runCLI } from 'jest';
 
 process.env.NODE_ENV = 'test';
 
@@ -44,14 +44,13 @@ export default async function (opts) {
   };
 
   return new Promise((resolve, reject) => {
-    jest
-      .runCLI(
-        {
-          config: JSON.stringify(config),
-          ...opts,
-        },
-        [cwd],
-      )
+    runCLI(
+      {
+        config: JSON.stringify(config),
+        ...opts,
+      },
+      [cwd],
+    )
       .then((result) => {
         const { results } = result;
         if (results.success) {

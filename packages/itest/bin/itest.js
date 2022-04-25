@@ -29,10 +29,7 @@ updater({ pkg }).notify({ defer: true });
 
 require('../lib')
   .default({
-    // watch: args.w || args.watch || false,
-    // entry: args._,
-    // dest: args.d || args.dest || 'dist',
-    // rootSelector: args.rootSelector,
+    watch: args.w || args.watch || false,
   })
   .catch((e) => {
     signale.error(e);
@@ -40,15 +37,13 @@ require('../lib')
   });
 
 function printHelp() {
-  // console.log(`
-  // Usage: itest [options] <entry>
+  console.log(`
+  Usage: itest [options]
 
-  // Options:
+  Options:
 
-  //   ${chalk.green('-d, --dest <dir>')}              Output directory (default: dist)
-  //   ${chalk.green('-w, --watch')}                   Watch building (default: false)
-  //   ${chalk.green('--root-selector <selector>')}    Wrap root selector (default: '')
-  //   ${chalk.green('-h, --help')}                    Print help
-  //   ${chalk.green('-v, --version')}                 Print version
-  // `);
+    ${chalk.green('-w, --watch')}                   Watch testing (default: false)
+    ${chalk.green('-h, --help')}                    Print help
+    ${chalk.green('-v, --version')}                 Print version
+  `);
 }

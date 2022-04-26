@@ -16,18 +16,28 @@ export default async function (opts) {
     rootDir: cwd,
     testEnvironment: 'jsdom',
     setupFiles: [require.resolve('./shim.js')],
-    setupFilesAfterEnv: [require.resolve('./jasmine')],
     resolver: require.resolve('jest-pnp-resolver'),
     transform: {
       // process *.vue files with vue-jest
       '^.+\\.vue$': require.resolve(`@vue/vue2-jest`),
-      '^.+\\.jsx?$': require.resolve('babel-jest'),
+      '^.+\\.jsx?$': require.resolve('./esmoduleTransformer'),
       '^.+\\.tsx?$': require.resolve('ts-jest'),
       '.+\\.(css|styl|less|sass|scss|jpg|jpeg|png|svg|gif|eot|otf|webp|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga|avif)$':
         require.resolve('jest-transform-stub'),
     },
     transformIgnorePatterns: ['/node_modules/'],
-    moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx', 'json', 'vue'], // tell Jest to handle *.vue files
+    // tell Jest to handle *.vue files
+    moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx', 'json', 'vue'],
+    globals: {
+      'vue-jest': {
+        transform: {
+          '^jsx?$': require.resolve('./esmoduleTransformer'),
+        },
+      },
+      'ts-jest': {
+        babelConfig: true,
+      },
+    },
     // support the same @ -> src alias mapping in source code
     moduleNameMapper: {
       '^@/(.*)$': '<rootDir>/src/$1',

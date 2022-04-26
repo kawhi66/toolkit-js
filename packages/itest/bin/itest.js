@@ -29,6 +29,7 @@ updater({ pkg }).notify({ defer: true });
 
 require('../lib')
   .default({
+    ...args,
     watch: args.w || args.watch || false,
   })
   .catch((e) => {

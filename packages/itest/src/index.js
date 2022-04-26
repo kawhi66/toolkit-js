@@ -43,7 +43,7 @@ export default async function (opts) {
       '^@/(.*)$': '<rootDir>/src/$1',
     },
     // serializer for snapshots
-    snapshotSerializers: ['jest-serializer-vue'],
+    snapshotSerializers: [require.resolve('jest-serializer-vue')],
     testMatch: ['**/?*.(spec|test|e2e).(j|t)s?(x)'],
     testPathIgnorePatterns: ['/node_modules/'],
     // https://github.com/facebook/jest/issues/6766

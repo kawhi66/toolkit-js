@@ -20,7 +20,6 @@ $ yarn add @toolkit-js/itest -D
 ## Usage
 
 ```json
-//  package.json
 {
   "main": "index.js",
   "scripts": {

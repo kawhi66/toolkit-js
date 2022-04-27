@@ -1,7 +1,7 @@
 {
   "name": "@toolkit-js/itest",
   "version": "0.1.0",
-  "description": "Test tool",
+  "description": "Unit or Component test tool",
   "keywords": [
     "itest",
     "toolkit",

@@ -71,7 +71,7 @@
     "rollup-plugin-postcss": "4.0.0",
     "rollup-plugin-terser": "7.0.2",
     "rollup-plugin-typescript2": "0.30.0",
-    "rollup-plugin-vue": "6.0.0",
+    "rollup-plugin-vue": "5.1.9",
     "signale": "^1.4.0",
     "slash2": "^2.0.0",
     "temp-dir": "^2.0.0",
@@ -79,6 +79,7 @@
     "typescript": "^4.2.4",
     "update-notifier": "^5.1.0",
     "vinyl-fs": "3.0.3",
+    "vue-template-compiler": "^2.6.10",
     "yargs-parser": "^20.2.7"
   }
 }

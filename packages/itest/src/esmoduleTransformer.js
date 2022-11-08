@@ -1,6 +1,7 @@
 import babelJest from 'babel-jest';
 
 module.exports = babelJest.createTransformer({
+  presets: ['@vue/babel-preset-jsx'],
   plugins: [
     '@babel/plugin-transform-modules-commonjs',
     '@babel/plugin-syntax-dynamic-import',

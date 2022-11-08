@@ -1,9 +1,9 @@
-import { render, fireEvent } from "@testing-library/vue";
-import HelloWorld from "./HelloWorld.vue";
+import { render, fireEvent } from '@testing-library/vue';
+import HelloWorld from './HelloWorld.vue';
 
-test("renders props.msg when passed", async () => {
+test('renders props.msg when passed', async () => {
   // The render method returns a collection of utilities to query your component.
-  const msg = "new message";
+  const msg = 'new message';
   const { getByText } = render(HelloWorld, {
     props: {
       msg,

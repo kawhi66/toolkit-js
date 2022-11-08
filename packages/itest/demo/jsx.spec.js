@@ -1,9 +1,9 @@
-import { render, fireEvent } from "@testing-library/vue";
-import Jsx from "./jsx.vue";
+import { render, fireEvent } from '@testing-library/vue';
+import Jsx from './jsx.vue';
 
-test("renders jsx", async () => {
+test('renders jsx', async () => {
   // The render method returns a collection of utilities to query your component.
-  const msg = "Hello, demo";
+  const msg = 'Hello, demo';
   const { getByText } = render(Jsx);
 
   // getByText returns the first matching node for the provided text, and
